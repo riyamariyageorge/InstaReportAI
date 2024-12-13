@@ -47,5 +47,5 @@ def chatbot():
     print("\nIf any details are incorrect, please re-run the chatbot to update them.")
 
 # Run the chatbot
-if _name_ == "_main_":
+if __name__ == "_main_":
     chatbot()
