@@ -10,14 +10,16 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #fcf4f4;
-            background-image: url('Images/background.jpg');
-            
+            background-image: url('Images/contact_us_bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff; /* Adjust text color to ensure readability */
         }
 
         header {
-            background-color: #007bff;
-            color: white;
+            background-color: white;
+            color: black;
             padding: 15px 20px;
             display: flex;
             align-items: center;
@@ -40,34 +42,44 @@
         }
 
         nav ul li a {
-            color: white;
+            color: black;
             text-decoration: none;
         }
 
         .dashboard {
             padding: 20px;
+            text-align: center;
         }
 
         .welcome {
-            margin-bottom: 20px;
+            margin-bottom: 40px;
         }
 
         .welcome h1 {
-            font-size: 2em;
+            font-size: 3em;
+            font-weight: bold;
+        }
+
+        .welcome p {
+            font-size: 1.5em;
         }
 
         .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             gap: 20px;
         }
 
         .card {
-            background: white;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             padding: 20px;
             text-align: center;
+            width: 80%;
+            max-width: 400px;
         }
 
         .card h2 {
@@ -78,7 +90,7 @@
             text-align: center;
             margin-top: 20px;
             padding: 10px;
-            background: #f4f4f4;
+            background: rgba(0, 0, 0, 0.7);
         }
 
         .btn {
@@ -104,7 +116,6 @@
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Templates</a></li>
                 <li><a href="#">My Reports</a></li>
-                <li><a href="#">Chatbot</a></li>
                 <li><a href="#">Profile</a></li>
                 <li><a href="#">Logout</a></li>
             </ul>
@@ -118,12 +129,6 @@
         </div>
 
         <div class="cards">
-            <div class="card">
-                <h2>Create New Report</h2>
-                <p>Start generating your custom report in just a few steps.</p>
-                <a href="#" class="btn">Start Now</a>
-            </div>
-
             <div class="card">
                 <h2>Upload Document</h2>
                 <p>Upload brochures or images for automated processing.</p>
