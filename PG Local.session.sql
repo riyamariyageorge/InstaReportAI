@@ -1,5 +1,5 @@
-
-
-
-
-insert into login(username, password, user_email) VALUES('Riya','123456','riya@gmail.com');
+CREATE TABLE Login (
+    Username VARCHAR(50) PRIMARY KEY,
+    User_Email VARCHAR(255) UNIQUE NOT NULL,
+    Password VARCHAR(255) NOT NULL
+);
