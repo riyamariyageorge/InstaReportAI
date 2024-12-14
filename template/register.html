@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login and Registration</title>
+    <title>Register</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -27,12 +27,12 @@
             background-size: cover;
         }
 
-        /* Login Form Box Styles */
-        .form-box {
+        /* Registration Form Box Styles */
+        .form-box-1 {
             position: relative;
             width: 90%;
             max-width: 400px;
-            height: 450px;
+            height: 500px;
             background: transparent;
             border: none;
             border-radius: 20px;
@@ -40,26 +40,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            margin: 0 20px;
+            padding: 40px 20px;
+            margin: 20px 20px;
         }
-
-        .form-box-1 {
-            position: relative;
-            width: 90%; /* Adjust width to be more flexible */
-            max-width: 400px; /* Set a max width for larger screens */
-            height: 500px; /* Increased height for more space */
-            background: transparent;
-            border: none;
-            border-radius: 20px;
-            backdrop-filter: blur(15px) brightness(80%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 20px; /* Added more padding to the top and bottom */
-            margin: 20px 20px; /* Added margin for spacing */
-        }
-
 
         h2 {
             font-size: 2em;
@@ -128,17 +111,12 @@
         }
 
         /* Register and Forget Section */
-        .forget,
         .register {
             margin: 10px 0;
             font-size: 0.9em;
             color: #fff;
             display: flex;
-            justify-content: space-between;
-        }
-
-        .register p {
-            text-align: center;
+            justify-content: center;
         }
 
         .register p a {
@@ -152,7 +130,6 @@
         }
 
         @media screen and (max-width: 480px) {
-            .form-box,
             .form-box-1 {
                 width: 95%;
                 max-width: 100%;
@@ -162,89 +139,40 @@
     </style>
 </head>
 <body>
-    <!-- Login Section -->
-    <section id="login-section">
-        <div class="form-box">
-            <div class="form-value">
-                <form>
-                    <h2>Login</h2>
-                    <!-- <div class="inputbox">
-                        <ion-icon name="mail-outline"></ion-icon>
-                        <input type="email" placeholder=" " required>
-                        <label>Email</label>
-                    </div> -->
-                    <div class="inputbox">
-                        <ion-icon name="person-outline"></ion-icon>
-                        <input type="text" placeholder=" " required>
-                        <label>Username</label>
-                    </div>
-                    <div class="inputbox">
-                        <ion-icon name="lock-closed-outline"></ion-icon>
-                        <input type="password" placeholder=" " required>
-                        <label>Password</label>
-                    </div>
-                    <div class="forget">
-                        <label>
-                            <input type="checkbox">Remember me
-                        </label>
-                        <a href="#">Forgot Password</a>
-                    </div>
-                    <button type="submit">Login</button>
-                    <div class="register">
-                        <p>Don't have an account? <a href="#register-section">Sign Up</a></p>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
-
     <!-- Registration Section -->
-    <section id="register-section" style="display: none;">
+    <section id="register-section">
         <div class="form-box-1">
             <div class="form-value">
                 <form>
                     <h2>Register</h2>
                     <div class="inputbox">
-                        <ion-icon name="mail-outline"></ion-icon>
-                        <input type="email" placeholder=" " required>
-                        <label>Email</label>
-                    </div>
-                    <div class="inputbox">
                         <ion-icon name="person-outline"></ion-icon>
-                        <input type="text" placeholder=" " required>
+                        <input type="text" name="username" required>
                         <label>Username</label>
                     </div>
                     <div class="inputbox">
                         <ion-icon name="lock-closed-outline"></ion-icon>
-                        <input type="password" placeholder=" " required>
+                        <input type="password" name="password" placeholder=" " required>
                         <label>Password</label>
                     </div>
                     <div class="inputbox">
-                        <ion-icon name="lock-closed-outline"></ion-icon>
-                        <input type="password" placeholder=" " required>
-                        <label>Confirm Password</label>
+                        <ion-icon name="mail-outline"></ion-icon>
+                        <input type="email" name="email" required>
+                        <label>Email</label>
                     </div>
-                    <button type="submit">Submit</button>
+                    <button type="submit">Register</button>
                     <div class="register">
-                        <p>Already have an account? <a href="#login-section">Sign In</a></p>
+                        <p>Already have an account? <a href="login.html">Login here</a></p>
                     </div>
                 </form>
             </div>
         </div>
     </section>
-
     <script>
-        // JavaScript to toggle between login and register sections
-        document.querySelector('.register a').addEventListener('click', function (e) {
+        // JavaScript to navigate to Login page
+        document.querySelector('.register a').addEventListener('click', function(e) {
             e.preventDefault();
-            document.getElementById('login-section').style.display = 'none';
-            document.getElementById('register-section').style.display = 'flex';
-        });
-
-        document.querySelector('#register-section .register a').addEventListener('click', function (e) {
-            e.preventDefault();
-            document.getElementById('register-section').style.display = 'none';
-            document.getElementById('login-section').style.display = 'flex';
+            window.location.href = 'login.html'; // Navigate to login page
         });
     </script>
 </body>
