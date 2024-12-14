@@ -1,16 +1,22 @@
-from app.db import insert_user, get_user_by_username
-import bcrypt
+from app.models import Login, db
+from werkzeug.security import generate_password_hash, check_password_hash
 
 def register_user(username, password, email):
-    # Hash the password before storing it
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-    insert_user(username, hashed_password.decode('utf-8'), email)
+     # Hash the password before saving it to the database
+    hashed_password = generate_password_hash(password)
+    new_user = Login(username=username, password=hashed_password, email=email)
+    
+    try:
+        db.session.add(new_user)
+        db.session.commit()
+        return True
+    except Exception as e:
+        print(f"Error: {e}")
+        db.session.rollback()
+        return False
 
 def login_user(username, password):
-    # Get the user by username from the database
-    user = get_user_by_username(username)
-    if user:
-        # Check if the password matches
-        if bcrypt.checkpw(password.encode('utf-8'), user[2].encode('utf-8')):  # user[2] is the password in DB
-            return True
+    user = Login.query.filter_by(username=username).first()  # Get user by username
+    if user and check_password_hash(user.password, password):  # Compare hashed password
+        return True
     return False

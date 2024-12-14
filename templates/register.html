@@ -165,7 +165,7 @@
         <div class="form-box-1">
             <div class="form-value">
                 <!-- Flash Messages -->
-                <div class="flash-messages">
+              <!--  <div class="flash-messages">
                     {% with messages = get_flashed_messages(with_categories = True) %}
                         {% if messages %}
                             <ul>
@@ -175,7 +175,7 @@
                             </ul>
                         {% endif %}
                     {% endwith %}
-                </div>
+                </div> -->
                 <form method="POST" action="{{ url_for('register') }}">
                     <h2>Register</h2>
                     <div class="inputbox">
@@ -187,6 +187,11 @@
                         <ion-icon name="lock-closed-outline"></ion-icon>
                         <input type="password" name="password" placeholder=" " required>
                         <label>Password</label>
+                    </div>
+                    <div class="inputbox">
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+                        <input type="password" name="confirm_password" placeholder=" " required>
+                        <label>Confirm Password</label>
                     </div>
                     <div class="inputbox">
                         <ion-icon name="mail-outline"></ion-icon>

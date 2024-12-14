@@ -1,10 +1,22 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from app.auth import register_user, login_user
+from app.models import Login
+from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
 import os
-#app = Flask(__name__)
-app = Flask(__name__, template_folder='template')
+app = Flask(__name__)
+#app = Flask(__name__, template_folder='template')
 #app.secret_key = "your_secret_key"  # Required for flash messages
+#app.secret_key = os.getenv("SECRET_KEY")
+# Load environment variables (for DB connection details)
+load_dotenv()
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")  # Example: postgresql://user:password@localhost/dbname
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = os.getenv("SECRET_KEY")
+
+# Initialize the database
+db = SQLAlchemy(app)
+
 # Home Route (After successful login)
 @app.route('/')
 def home():
