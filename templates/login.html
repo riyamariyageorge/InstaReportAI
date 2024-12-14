@@ -172,7 +172,7 @@
     <section id="login-section">
         <div class="form-box">
             <div class="form-value">
-                <form action="/login" method="POST">
+                <form onsubmit="navigateToDashboard(event)">
                     <h2>Login</h2>
                   <!--  {% with messages = get_flashed_messages(with_categories=True) %}
                         {% if messages %}
@@ -208,12 +208,11 @@
             </div>
         </div>
     </section>
-   <!-- <script>
-        // JavaScript to navigate to Register page
-        document.querySelector('.register a').addEventListener('click', function(e) {
-            e.preventDefault();
-            window.location.href = 'register.html'; // Navigate to register page
-        });
-    </script>  -->
+    <script>
+        function navigateToDashboard(event) {
+            event.preventDefault(); // Prevent form submission
+            window.location.href = 'dashboard.html';
+        }
+    </script>
 </body>
 </html>
