@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Base styles */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #fcf4f4;
+            background-image: url('Images/background.jpg');
+            
+        }
+
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header img {
+            height: 40px;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .dashboard {
+            padding: 20px;
+        }
+
+        .welcome {
+            margin-bottom: 20px;
+        }
+
+        .welcome h1 {
+            font-size: 2em;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card h2 {
+            margin-bottom: 10px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background: #f4f4f4;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <img src="logo.png" alt="Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Templates</a></li>
+                <li><a href="#">My Reports</a></li>
+                <li><a href="#">Chatbot</a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="dashboard">
+        <div class="welcome">
+            <h1>Welcome back, [User]!</h1>
+            <p>Start generating professional reports seamlessly.</p>
+        </div>
+
+        <div class="cards">
+            <div class="card">
+                <h2>Create New Report</h2>
+                <p>Start generating your custom report in just a few steps.</p>
+                <a href="#" class="btn">Start Now</a>
+            </div>
+
+            <div class="card">
+                <h2>Upload Document</h2>
+                <p>Upload brochures or images for automated processing.</p>
+                <a href="#" class="btn">Upload</a>
+            </div>
+
+            <div class="card">
+                <h2>View/Edit Templates</h2>
+                <p>Customize templates to match your preferences.</p>
+                <a href="#" class="btn">Edit Templates</a>
+            </div>
+
+            <div class="card">
+                <h2>Recent Reports</h2>
+                <p>Access and manage your recent reports easily.</p>
+                <a href="#" class="btn">View Reports</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Report Generation System. All rights reserved.</p>
+    </footer>
+</body>
+</html>
