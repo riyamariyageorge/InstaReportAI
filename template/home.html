@@ -173,7 +173,7 @@
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact Us</a></li>
         </ul>
-        <button class="login">Log In</button>
+        <button class="login" id="loginButton">Log In</button>
     </div>
     <section id="home">
         <div class="content">
@@ -181,7 +181,7 @@
             <p>Our event report generator helps you craft professional, engaging reports with ease. 
                 InstaReport AI empowers you to create, customize, and download professional event 
                 reports effortlessly, turning your ideas into visually stunning documents in just a few clicks.</p>
-            <button class="create-button">Create with AI</button>
+            <button class="create-button" id="createWithAIButton">Create with AI</button>
         </div>
     </section>
     <section id="about">
@@ -200,5 +200,14 @@
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquid atque commodi dolor est nobis veniam! Eius rerum, unde. Accusamus corporis esse eveniet exercitationem fugiat harum pariatur sequi similique tenetur vitae. Aliquam amet est excepturi, exercitationem facere fugit ipsa laborum molestiae nemo officiis placeat quos repellat saepe temporibus voluptatum.</p>
         </div>
     </section>
+    <script>
+        function navigateToLoginPage() {
+            window.location.href = 'loginregister.html';
+        }
+
+        // Add event listeners to the buttons
+        document.getElementById('loginButton').addEventListener('click', navigateToLoginPage);
+        document.getElementById('createWithAIButton').addEventListener('click', navigateToLoginPage);
+    </script>
 </body>
 </html>
