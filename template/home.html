@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Home Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page with Contact Us</title>
     <link href="style.css" rel="stylesheet">
     <style>
         html {
@@ -122,6 +123,8 @@
         #contact {
             background-image: url("Images/contact_us_bg.jpg");
             min-height: 100vh; 
+            padding-top: 20px;
+            color: white;
         }
         .content {
             width: 80%;
@@ -136,6 +139,103 @@
             line-height: 50px;
             color: #fff;
         }
+
+        /* Contact Form Styles */
+        .contact-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('Images/contact_us_bg.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            color: white;
+            padding: 20px;
+        }
+
+        .contact-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .contact-header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .contact-header p {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .contact-form {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-form label {
+            display: block;
+            font-weight: bold;
+            margin: 15px 0 5px;
+            color: #333;
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #333;
+            resize: none;
+        }
+
+        .contact-form textarea {
+            height: 120px;
+        }
+
+        .contact-form button {
+            margin-top: 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .contact-form button:hover {
+            background-color: gray;
+        }
+
+        .contact-info {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .contact-info p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .contact-info a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
         @media (max-width: 800px) {
             .logo {
                 text-align: center;
@@ -175,31 +275,49 @@
         </ul>
         <button class="login" id="loginButton">Log In</button>
     </div>
+
     <section id="home">
         <div class="content">
             <h1>Your Event Report, Perfected.</h1>
-            <p>Our event report generator helps you craft professional, engaging reports with ease. 
-                InstaReport AI empowers you to create, customize, and download professional event 
-                reports effortlessly, turning your ideas into visually stunning documents in just a few clicks.</p>
+            <p>Our event report generator helps you craft professional, engaging reports with ease. InstaReport AI empowers you to create, customize, and download professional event reports effortlessly, turning your ideas into visually stunning documents in just a few clicks.</p>
             <button class="create-button" id="createWithAIButton">Create with AI</button>
         </div>
     </section>
+
     <section id="about">
         <div class="content">
             <h1>Features of Our Event Report Generator</h1>
-            <p>Save yourself the added stress of starting a report design from scratch. Instead, use one of the pre-designed
-                report templates. You can fully customize it to fit your content, coming out with a stunning report without
-                having to put any design effort in. Start the process by uploading your event brochure and hop in to chat with 
-                our bot to provide the whole details of your event. InstaReport AI makes sure that you can review it once the 
-                report is generated, making it more reliable.</p>
+            <p>Save yourself the added stress of starting a report design from scratch. Instead, use one of the pre-designed report templates. You can fully customize it to fit your content, coming out with a stunning report without having to put any design effort in. Start the process by uploading your event brochure and hop in to chat with our bot to provide the whole details of your event. InstaReport AI makes sure that you can review it once the report is generated, making it more reliable.</p>
         </div>
     </section>
-    <section id="contact">
-        <div class="content">
-            <h1>Contact Us</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquid atque commodi dolor est nobis veniam! Eius rerum, unde. Accusamus corporis esse eveniet exercitationem fugiat harum pariatur sequi similique tenetur vitae. Aliquam amet est excepturi, exercitationem facere fugit ipsa laborum molestiae nemo officiis placeat quos repellat saepe temporibus voluptatum.</p>
+
+    <!-- Contact Us Section -->
+    <div class="contact-container" id="contact">
+        <div class="contact-header">
+            <h1>Get in Touch</h1>
+            <p>We'd love to hear from you! Please use the form below to reach out to us.</p>
         </div>
-    </section>
+
+        <form class="contact-form">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" placeholder="Your Name" required>
+
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="Your Email" required>
+
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+
+            <button type="submit">Send Message</button>
+        </form>
+
+        <div class="contact-info">
+          <!--  <p>Or reach us directly at:</p>
+            <p>Email: <a href="mailto:support@instareportai.com">support@instareportai.com</a></p>
+            <p>Phone: +1 (555) 123-4567</p> -->
+        </div> 
+    </div>
+
     <script>
         function navigateToLoginPage() {
             window.location.href = 'loginregister.html';
