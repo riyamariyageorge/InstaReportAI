@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from app.auth import register_user, login_user
-
-app = Flask(__name__)
-app.secret_key = "your_secret_key"  # Required for flash messages
-
+import os
+#app = Flask(__name__)
+app = Flask(__name__, template_folder='template')
+#app.secret_key = "your_secret_key"  # Required for flash messages
+app.secret_key = os.getenv("SECRET_KEY")
 # Home Route (After successful login)
 @app.route('/')
 def home():

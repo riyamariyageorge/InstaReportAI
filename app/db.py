@@ -24,6 +24,7 @@ def get_db_connection():
     return connection
 
 def insert_user(username, password, email):
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
     connection = get_db_connection()
     cursor = connection.cursor()
     try:

@@ -134,6 +134,30 @@
             text-decoration: none;
         }
 
+        ul.flash-messages {
+            list-style: none;
+            margin: 0 0 15px 0;
+            padding: 0;
+        }
+
+        ul.flash-messages li {
+            background: #ffdddd;
+            border-left: 6px solid #f44336;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        ul.flash-messages li.success {
+            border-left-color: #4CAF50;
+            background: #ddffdd;
+        }
+
+        ul.flash-messages li.error {
+            border-left-color: #f44336;
+            background: #ffdddd;
+        }
+
         @media screen and (max-width: 480px) {
             .form-box {
                 width: 95%;
@@ -148,8 +172,18 @@
     <section id="login-section">
         <div class="form-box">
             <div class="form-value">
-                <form>
+                <form action="/login" method="POST">
                     <h2>Login</h2>
+                    {% with messages = get_flashed_messages(with_categories=True) %}
+                        {% if messages %}
+                            <ul class="flash-messages">
+                                {% for category, message in messages %}
+                                    <li class="{{ category }}">{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endwith %}
+
                     <div class="inputbox">
                         <ion-icon name="person-outline"></ion-icon>
                         <input type="text" name="username" required>
@@ -168,18 +202,18 @@
                     </div>
                     <button type="submit">Login</button>
                     <div class="register">
-                        <p>Don't have an account? <a href="register.html">Sign Up</a></p>
+                        <p>Don't have an account? <a href="/register">Sign Up</a></p>
                     </div>
                 </form>
             </div>
         </div>
     </section>
-    <script>
+   <!-- <script>
         // JavaScript to navigate to Register page
         document.querySelector('.register a').addEventListener('click', function(e) {
             e.preventDefault();
             window.location.href = 'register.html'; // Navigate to register page
         });
-    </script>
+    </script>  -->
 </body>
 </html>

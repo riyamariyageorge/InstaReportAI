@@ -110,6 +110,27 @@
             font-weight: 600;
         }
 
+        /* Flash Message Styles */
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+
+        .flash-messages ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .flash-messages .success {
+            color: green;
+            font-weight: bold;
+        }
+
+        .flash-messages .error {
+            color: red;
+            font-weight: bold;
+        }
+
+
         /* Register and Forget Section */
         .register {
             margin: 10px 0;
@@ -143,7 +164,19 @@
     <section id="register-section">
         <div class="form-box-1">
             <div class="form-value">
-                <form>
+                <!-- Flash Messages -->
+                <div class="flash-messages">
+                    {% with messages = get_flashed_messages(with_categories = True) %}
+                        {% if messages %}
+                            <ul>
+                                {% for category, message in messages %}
+                                    <li class="{{ category }}">{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                <form method="POST" action="{{ url_for('register') }}">
                     <h2>Register</h2>
                     <div class="inputbox">
                         <ion-icon name="person-outline"></ion-icon>
@@ -162,18 +195,18 @@
                     </div>
                     <button type="submit">Register</button>
                     <div class="register">
-                        <p>Already have an account? <a href="login.html">Login here</a></p>
+                        <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
                     </div>
                 </form>
             </div>
         </div>
     </section>
-    <script>
+  <!--  <script>
         // JavaScript to navigate to Login page
         document.querySelector('.register a').addEventListener('click', function(e) {
             e.preventDefault();
             window.location.href = 'login.html'; // Navigate to login page
         });
-    </script>
+    </script> -->
 </body>
 </html>
