@@ -1,5 +1,9 @@
-CREATE TABLE Login (
-    Username VARCHAR(50) PRIMARY KEY,
-    User_Email VARCHAR(255) UNIQUE NOT NULL,
-    Password VARCHAR(255) NOT NULL
+
+CREATE TABLE "login" (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(150) NOT NULL UNIQUE,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password VARCHAR(256) NOT NULL
 );
+
+

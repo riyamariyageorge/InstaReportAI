@@ -22,7 +22,7 @@
             align-items: center;
             min-height: 100vh;
             width: 100%;
-            background: url("Images/bg.jpg") no-repeat center center;
+            background: url("{{ url_for('static', filename='Images/bg.jpg') }}") no-repeat center center;
             background-color: rgb(61, 58, 58);
             background-size: cover;
         }
@@ -165,7 +165,7 @@
         <div class="form-box-1">
             <div class="form-value">
                 <!-- Flash Messages -->
-              <!--  <div class="flash-messages">
+                <div class="flash-messages">
                     {% with messages = get_flashed_messages(with_categories = True) %}
                         {% if messages %}
                             <ul>
@@ -175,12 +175,12 @@
                             </ul>
                         {% endif %}
                     {% endwith %}
-                </div> -->
+                </div> 
                 <form method="POST" action="{{ url_for('register') }}">
                     <h2>Register</h2>
                     <div class="inputbox">
                         <ion-icon name="person-outline"></ion-icon>
-                        <input type="text" name="username" required>
+                        <input type="text" name="username" placeholder=" " required>
                         <label>Username</label>
                     </div>
                     <div class="inputbox">
@@ -195,7 +195,7 @@
                     </div>  -->
                     <div class="inputbox">
                         <ion-icon name="mail-outline"></ion-icon>
-                        <input type="email" name="email" required>
+                        <input type="email" name="email" placeholder=" " required>
                         <label>Email</label>
                     </div>
                     <button type="submit">Register</button>

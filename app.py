@@ -35,12 +35,31 @@ def register():
         if password != confirm_password:
             flash("Passwords do not match!", "error")
             return redirect(url_for('register'))
-        '''
+        
         if register_user(username, password, email):  # Attempt to register user
             flash("Registration successful! Please log in.", "success")
             return redirect(url_for('login'))
         else:
             flash("Registration failed. Username or email may already exist.", "error")
+            return redirect(url_for('register'))
+    return render_template('register.html')
+'''
+        existing_user = Login.query.filter(
+            (Login.username == username) | (Login.email == email)
+        ).first()
+
+        if existing_user:
+            flash("Registration failed. Username or email already exists.", "error")
+            return render_template('register.html', username=username, email=email)
+
+        # Register the user if no existing user found
+        result = register_user(username, password, email)  # Attempt to register the user
+
+        if result:  # If the registration was successful
+            flash("Registration successful! Please log in.", "success")
+            return redirect(url_for('login'))
+        else:  # If the registration failed for some other reason
+            flash("Registration failed. Please try again.", "error")
             return redirect(url_for('register'))
     return render_template('register.html')
 

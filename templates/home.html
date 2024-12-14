@@ -68,7 +68,7 @@
 
         #home {
             position: relative;
-            background-image: url("/static/Images/homebg.jpg");
+            background-image: url("{{ url_for('static', filename='Images/homebg.jpg') }}");
             width: 100%;
             height: 100vh;
             background-repeat: no-repeat;
@@ -119,10 +119,10 @@
             color: #fff;
         }
         #about {
-            background-image: url("/static/Images/about_bg.jpg");
+            background-image:  url("{{ url_for('static', filename='Images/about_bg.jpg') }}");
         }
         #contact {
-            background-image: url("/static/Images/contact_us_bg.jpg");
+            background-image: url("{{ url_for('static', filename='Images/contact_us_bg.jpg') }}");
             min-height: 100vh; 
             padding-top: 20px;
             color: white;
@@ -148,7 +148,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-image: url('/static/Images/contact_us_bg.jpg');
+            background-image: url("{{ url_for('static', filename='Images/contact_us_bg.jpg') }}");
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;
