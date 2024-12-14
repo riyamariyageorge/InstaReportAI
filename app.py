@@ -28,13 +28,14 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        confirm_password = request.form['confirm_password']
+        #confirm_password = request.form['confirm_password']
         email = request.form['email']
         
+        '''
         if password != confirm_password:
             flash("Passwords do not match!", "error")
             return redirect(url_for('register'))
-        
+        '''
         if register_user(username, password, email):  # Attempt to register user
             flash("Registration successful! Please log in.", "success")
             return redirect(url_for('login'))
