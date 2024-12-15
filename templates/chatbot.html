@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatBot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"> <!-- Load Montserrat font -->
+    <link href="style.css" rel="stylesheet">
+    <style>
+        
+    </style>    
+</head>
+<body>
+    <!-- Chat button to open Botpress Webchat -->
+    <button class="chat-btn" onclick="toggleBotpressChat()">
+        <i class="fa-solid fa-comments icon"></i>
+    </button>
+
+    <!-- Include Botpress Webchat -->
+    <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
+    <script src="https://files.bpcontent.cloud/2024/12/14/07/20241214070228-13ZKQAOI.js"></script>
+
+    <script>
+        function toggleBotpressChat() {
+            const botpressWebChat = window.botpressWebChat;
+            if (botpressWebChat) {
+                botpressWebChat.toggle();
+            }
+        }
+
+        // Configure and load Botpress Webchat
+        window.botpressWebChat.init({
+            botId: 'YOUR_BOT_ID', // Replace with your Botpress bot ID
+            hostUrl: 'https://cdn.botpress.cloud/webchat',
+            messagingUrl: 'https://files.bpcontent.cloud',
+            botName: 'My Chatbot', // Optional: Replace with your bot's name
+            showPoweredBy: false, // Optional: Hides "Powered by Botpress"
+            containerWidth: '900px', // Set custom width
+            containerHeight: '700px', // Set custom height
+            customStyle: {
+                botMessageBackground: '#1e90ff', // Change bot message background
+                userMessageBackground: '#ddd', // Change user message background
+                botMessageTextColor: '#fff', // Change bot message text color
+                userMessageTextColor: '#000', // Change user message text color
+                backgroundColor: '#000', // Change overall background color
+            },
+            showPoweredBy: false
+        });
+    </script>
+</body>
+</html>
