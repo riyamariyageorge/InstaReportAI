@@ -2,6 +2,8 @@ Flask==2.3.2
 psycopg2==2.9.5
 bcrypt==4.0.1
 python-dotenv==0.21.0
+Flask-SQLAlchemy
+Werkzeug
 
 easyocr
 spacy

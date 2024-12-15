@@ -176,11 +176,11 @@
                         {% endif %}
                     {% endwith %}
                 </div> 
-                <form method="POST" action="{{ url_for('register') }}">
+                <form method="POST" action="{{ url_for('auth_bp.register') }}">
                     <h2>Register</h2>
                     <div class="inputbox">
                         <ion-icon name="person-outline"></ion-icon>
-                        <input type="text" name="username" placeholder=" " required>
+                        <input type="text" name="username" placeholder=" " required value="{{ username|default('') }}">
                         <label>Username</label>
                     </div>
                     <div class="inputbox">
@@ -195,12 +195,12 @@
                     </div>  -->
                     <div class="inputbox">
                         <ion-icon name="mail-outline"></ion-icon>
-                        <input type="email" name="email" placeholder=" " required>
+                        <input type="email" name="email" placeholder=" " required value="{{ email|default('') }}">
                         <label>Email</label>
                     </div>
                     <button type="submit">Register</button>
                     <div class="register">
-                        <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+                        <p>Already have an account? <a href="{{ url_for('auth_bp.login') }}">Login here</a></p>
                     </div>
                 </form>
             </div>
