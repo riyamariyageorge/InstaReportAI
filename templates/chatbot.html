@@ -4,11 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatBot</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"> <!-- Load Montserrat font -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"> -->
     <link href="style.css" rel="stylesheet">
     <style>
-        
-    </style>    
+    /* Target the Botpress chat container */
+    #bp-web-widget {
+        width: 400px !important;
+        height: 600px !important;
+    }
+
+    /* Change the background color */
+    #bp-web-widget .bp-widget-web {
+        background-color: #f0f0f0 !important;
+    }
+
+    /* Customize bot messages */
+    #bp-web-widget .bp-bot-message {
+        background-color: #1e90ff !important;
+        color: #fff !important;
+    }
+
+    /* Customize user messages */
+    #bp-web-widget .bp-user-message {
+        background-color: #ddd !important;
+        color: #000 !important;
+    }
+
+    /* Customize header (if visible) */
+    #bp-web-widget .bp-header {
+        background: linear-gradient(160deg, #1e90ff, #80d0c7) !important;
+        color: white !important;
+    }
+
+    :root {
+        --bp-widget-bg: #f5f5f5; /* Background color */
+        --bp-bot-bubble-bg: #1e90ff; /* Bot message background */
+        --bp-bot-bubble-text: #fff; /* Bot message text color */
+        --bp-user-bubble-bg: #ddd; /* User message background */
+        --bp-user-bubble-text: #000; /* User message text color */
+        --bp-widget-width: 800px; /* Widget width */
+        --bp-widget-height: 700px; /* Widget height */
+    }
+</style>    
 </head>
 <body>
     <!-- Chat button to open Botpress Webchat -->
@@ -19,6 +57,7 @@
     <!-- Include Botpress Webchat -->
     <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
     <script src="https://files.bpcontent.cloud/2024/12/14/07/20241214070228-13ZKQAOI.js"></script>
+    
 
     <script>
         function toggleBotpressChat() {
@@ -30,7 +69,7 @@
 
         // Configure and load Botpress Webchat
         window.botpressWebChat.init({
-            botId: 'YOUR_BOT_ID', // Replace with your Botpress bot ID
+            botId: '7082f6a9-dbb0-468b-b17b-94846e3ad9b0', // Replace with your Botpress bot ID
             hostUrl: 'https://cdn.botpress.cloud/webchat',
             messagingUrl: 'https://files.bpcontent.cloud',
             botName: 'My Chatbot', // Optional: Replace with your bot's name
