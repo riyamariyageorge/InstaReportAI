@@ -10,7 +10,7 @@ def create_app():
     # Load environment variables
     load_dotenv()
      # Initialize the Flask app
-    app = Flask(__name__, template_folder='../templates')
+    app = Flask(__name__, template_folder='../templates', static_folder='../static')
 
     # Configure the app
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")

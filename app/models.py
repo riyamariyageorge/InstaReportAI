@@ -1,6 +1,5 @@
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+#from flask_sqlalchemy import SQLAlchemy
+from app import db
 
 class Login(db.Model):
     __tablename__ = 'login'  # Explicitly setting the table name to 'login'
