@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+
+        .chatbot-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .chatbot-frame {
+            width: 400px;
+            height: 600px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="chatbot-container">
+        <h1>Welcome to the Chatbot Interface</h1>
+        <div class="chatbot-frame" id="chatbot"></div>
+    </div>
+
+    <!-- Botpress Scripts -->
+    <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
+    <script src="https://files.bpcontent.cloud/2024/12/14/07/20241214070228-13ZKQAOI.js"></script>
+    
+    <!-- Chatbot Configuration -->
+    <script>
+        window.botpressWebChat.init({
+            botId: "7082f6a9-dbb0-468b-b17b-94846e3ad9b0",
+            hostUrl: "https://cdn.botpress.cloud/webchat/v2.2",
+            containerId: "chatbot",
+            enableReset: true,
+            enableTranscriptDownload: true,
+            showBotAvatar: true,
+            showUserAvatar: true,
+        });
+    </script>
+</body>
+</html>
