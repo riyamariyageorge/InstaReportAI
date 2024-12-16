@@ -11,7 +11,7 @@ def register_user(username, password, email):
         db.session.commit()
         return True
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error during registration: {e}")
         db.session.rollback()
         return False
 

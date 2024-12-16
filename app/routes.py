@@ -11,9 +11,9 @@ def home():
 @auth_bp.route('/register', methods=['GET','POST'])
 def register():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        email = request.form['email']
+        username = request.form.get('username')
+        password = request.form.get('password')
+        email = request.form.get('email')
 
         existing_user = Login.query.filter((Login.username == username) | (Login.email == email)).first()
         if existing_user:
@@ -29,6 +29,7 @@ def register():
         else:  # If registration failed
             flash("Registration failed. Please try again.", "error")
             return redirect(url_for('auth_bp.register'))
+            
 
     return render_template('register.html')
 
@@ -36,8 +37,8 @@ def register():
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form.get('username')
+        password = request.form.get('password')
 
         if login_user(username, password):  # Check login credentials
             flash("Login successful!", "success")
