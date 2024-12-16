@@ -1,6 +1,6 @@
 from app.models import Login, db
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from flask import session
 def register_user(username, password, email):
      # Hash the password before saving it to the database
     hashed_password = generate_password_hash(password)
@@ -18,5 +18,6 @@ def register_user(username, password, email):
 def login_user(username, password):
     user = Login.query.filter_by(username=username).first()  # Get user by username
     if user and check_password_hash(user.password, password):  # Compare hashed password
+        session['user'] = user.username
         return True
     return False

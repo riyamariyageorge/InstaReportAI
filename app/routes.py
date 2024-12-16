@@ -42,9 +42,13 @@ def login():
 
         if login_user(username, password):  # Check login credentials
             flash("Login successful!", "success")
-            return redirect(url_for('auth_bp.home'))  # Redirect to the home route
+            return redirect(url_for('auth_bp.dashboard', username=username))  # Redirect to the dashboard route
         else:
             flash("Invalid username or password. Please try again.", "error")
             return redirect(url_for('auth_bp.login'))
 
     return render_template('login.html')
+
+@auth_bp.route('/dashboard/<username>')
+def dashboard(username):
+    return render_template('dashboard.html', username=username)
