@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from app.auth import register_user, login_user
 from app.models import Login
 
@@ -6,6 +6,9 @@ auth_bp = Blueprint('auth_bp', __name__)
 
 @auth_bp.route('/')
 def home():
+    username = session.get('user')
+    if username:
+        return redirect(url_for('auth_bp.dashboard'))
     return render_template('home.html')
 
 @auth_bp.route('/register', methods=['GET','POST'])
@@ -41,6 +44,7 @@ def login():
         password = request.form.get('password')
 
         if login_user(username, password):  # Check login credentials
+            session['user'] = username
             flash("Login successful!", "success")
             return redirect(url_for('auth_bp.dashboard', username=username))  # Redirect to the dashboard route
         else:
@@ -48,7 +52,17 @@ def login():
             return redirect(url_for('auth_bp.login'))
 
     return render_template('login.html')
+@auth_bp.route('/logout')
+def logout():
+    session.clear()
+    flash("You have been logged out.","success")
+    return redirect(url_for('auth_bp.login'))
 
-@auth_bp.route('/dashboard/<username>')
-def dashboard(username):
+
+@auth_bp.route('/dashboard')
+def dashboard():
+    username = session.get('user')
+    if not username:
+        flash("Please log in to access the dashboard.","warning")
+        return redirect(url_for('auth_bp.login'))
     return render_template('dashboard.html', username=username)

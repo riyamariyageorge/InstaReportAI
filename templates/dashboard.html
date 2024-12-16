@@ -113,11 +113,11 @@
         </div>
         <nav>
             <ul>
-                <li><a href="#">Home</a></li>
+                <li><a href="{{ url_for('auth_bp.home') }}">Home</a></li>
                 <li><a href="#">Templates</a></li>
                 <li><a href="#">My Reports</a></li>
                 <li><a href="#">Profile</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="{{ url_for('auth_bp.logout') }}">Logout</a></li>
             </ul>
         </nav>
     </header>
