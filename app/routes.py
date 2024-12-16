@@ -21,13 +21,13 @@ def register():
             return render_template('register.html', username=username, email=email)
 
         # Register the user if no existing user found
-        result = register_user(username, password, email)
+        result, error_message = register_user(username, password, email)
 
         if result:  # If the registration was successful
             flash("Registration successful! Please log in.", "success")
             return redirect(url_for('auth_bp.login'))
         else:  # If registration failed
-            flash("Registration failed. Please try again.", "error")
+            flash(f"Registration failed: {error_message}", "error")
             return redirect(url_for('auth_bp.register'))
             
 
@@ -42,9 +42,13 @@ def login():
 
         if login_user(username, password):  # Check login credentials
             flash("Login successful!", "success")
-            return redirect(url_for('auth_bp.home'))  # Redirect to the home route
+            return redirect(url_for('auth_bp.dashboard', username=username))  # Redirect to the dashboard route
         else:
             flash("Invalid username or password. Please try again.", "error")
             return redirect(url_for('auth_bp.login'))
 
     return render_template('login.html')
+
+@auth_bp.route('/dashboard/<username>')
+def dashboard(username):
+    return render_template('dashboard.html', username=username)
