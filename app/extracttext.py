@@ -84,6 +84,6 @@ def process_event_poster(image_path):
 
 # Example usage (replace 'path_to_your_image' with the actual image file path)
 #image_path = list(uploaded.keys())[0]
-image_path = "C:/Users/riyav/JupyterNotebook/img13.png"
+image_path = "C:/Users/riyav/JupyterNotebook/img14.png"
 event_data = process_event_poster(image_path)
 
