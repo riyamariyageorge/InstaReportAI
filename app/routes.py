@@ -21,13 +21,13 @@ def register():
             return render_template('register.html', username=username, email=email)
 
         # Register the user if no existing user found
-        result = register_user(username, password, email)
+        result, error_message = register_user(username, password, email)
 
         if result:  # If the registration was successful
             flash("Registration successful! Please log in.", "success")
             return redirect(url_for('auth_bp.login'))
         else:  # If registration failed
-            flash("Registration failed. Please try again.", "error")
+            flash(f"Registration failed: {error_message}", "error")
             return redirect(url_for('auth_bp.register'))
             
 

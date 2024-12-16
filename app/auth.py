@@ -9,11 +9,11 @@ def register_user(username, password, email):
     try:
         db.session.add(new_user)
         db.session.commit()
-        return True
+        return True, None
     except Exception as e:
         print(f"Error during registration: {e}")
         db.session.rollback()
-        return False
+        return False, str(e)
 
 def login_user(username, password):
     user = Login.query.filter_by(username=username).first()  # Get user by username
