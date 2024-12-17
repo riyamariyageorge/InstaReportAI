@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from app.auth import register_user, login_user
 from app.models import Login
-
+#from extracttext import process_event_poster
 auth_bp = Blueprint('auth_bp', __name__)
 
 @auth_bp.route('/')
@@ -68,5 +68,10 @@ def dashboard():
     return render_template('dashboard.html', username=username)
 
 @auth_bp.route('/upload2')
-def upload_page():
+def upload_poster():
     return render_template('upload2.html')
+
+
+
+    
+    

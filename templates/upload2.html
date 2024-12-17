@@ -11,7 +11,7 @@
             font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding-top: 30px;
-            background: url('') no-repeat center center fixed;
+            background: url('/static/Images/contact_us_bg.jpg') no-repeat center center fixed;
             background-size: cover;
         }
 
@@ -213,7 +213,7 @@
     <div class="container">
         <section class="upload-section">
             <h2>Upload Event Poster</h2>
-            <input type="file" id="fileInput" accept="image/*">
+            <input type="file" id="fileInput" accept="image/*" onchange="uploadFile(event)">
             <div class="preview" id="preview">
                 <!-- Preview of uploaded image -->
             </div>
