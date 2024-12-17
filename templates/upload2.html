@@ -70,9 +70,10 @@
             margin: 100px auto;
             padding: 30px;
             padding-right: 50px;
-            background: black;
+            background: rgba(0, 0, 0, 0.5);
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px) brightness(80%);
         }
 
         .upload-section, .details-section {
@@ -203,7 +204,7 @@
     <div class="menu-area">
         <a class="logo" href="#">InstaReport AI</a>
         <ul class="nav">
-            <li><a href="#home">Home</a></li>
+            <li><a href="{{ url_for('auth_bp.dashboard') }}">Home</a></li>
             <li><a href="#">Template</a></li>
             <li><a href="#">Reports</a></li>
         </ul>
@@ -274,6 +275,10 @@
          const proceedButton = document.getElementById('proceedButton');
         proceedButton.addEventListener('click', () => {
             window.location.href = 'chatbot.html';
+        });
+
+        document.getElementById('loginButton').addEventListener('click', function() {
+        window.location.href = "{{ url_for('auth_bp.logout') }}";
         });
 
     </script>
