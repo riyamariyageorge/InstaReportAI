@@ -10,7 +10,7 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-image: url('Images/contact_us_bg.jpg');
+            background-image: url('/static/Images/contact_us_bg.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -113,18 +113,18 @@
         </div>
         <nav>
             <ul>
-                <li><a href="#">Home</a></li>
+                <li><a href="{{ url_for('auth_bp.home') }}">Home</a></li>
                 <li><a href="#">Templates</a></li>
                 <li><a href="#">My Reports</a></li>
                 <li><a href="#">Profile</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="{{ url_for('auth_bp.logout') }}">Logout</a></li>
             </ul>
         </nav>
     </header>
 
     <div class="dashboard">
         <div class="welcome">
-            <h1>Welcome back, [User]!</h1>
+            <h1>Welcome back, {{ username }}!</h1>
             <p>Start generating professional reports seamlessly.</p>
         </div>
 

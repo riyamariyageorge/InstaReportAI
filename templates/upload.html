@@ -6,7 +6,7 @@
     <title>Upload Event Poster</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f7fc;
@@ -165,7 +165,7 @@
             </div>
         </section>
 
-        <button class="btn-proceed">Proceed to Chatbot</button>
+        <button class="btn-proceed" id="proceedButton">Proceed to Chatbot</button>
     </div>
 
     <script>
@@ -185,6 +185,13 @@
                 preview.innerHTML = '';
             }
         });
+         // Navigate to chatbot.html when Proceed button is clicked
+         const proceedButton = document.getElementById('proceedButton');
+        proceedButton.addEventListener('click', () => {
+            window.location.href = 'chatbot.html';
+        });
+
+
     </script>
 </body>
 </html>
