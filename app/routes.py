@@ -67,9 +67,7 @@ def dashboard():
         return redirect(url_for('auth_bp.login'))
     return render_template('dashboard.html', username=username)
 
-@auth_bp.route('/upload2')
-def upload_poster():
-    return render_template('upload2.html')
+
 
 
 
