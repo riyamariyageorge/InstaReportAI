@@ -66,3 +66,7 @@ def dashboard():
         flash("Please log in to access the dashboard.","warning")
         return redirect(url_for('auth_bp.login'))
     return render_template('dashboard.html', username=username)
+
+@auth_bp.route('/upload2')
+def upload_page():
+    return render_template('upload2.html')
