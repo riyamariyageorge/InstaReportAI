@@ -2,7 +2,7 @@ import easyocr
 import spacy
 import re
 from PIL import Image
-from dateutil.parser import parse
+#from dateutil.parser import parse
 from flask import session
 
 
