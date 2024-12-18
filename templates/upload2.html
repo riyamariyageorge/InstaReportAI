@@ -11,18 +11,18 @@
             font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding-top: 30px;
-            background: url('/static/Images/contact_us_bg.jpg') no-repeat center center fixed;
+            background: url('{{ url_for("static", filename="Images/contact_us_bg.jpg") }}') no-repeat center center fixed;
             background-size: cover;
         }
 
-        header {
+       /* header {
             background-color: rgba(0, 0, 0, 0.8);
             color: white;
             padding: 15px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-        }
+        } */
 
         .menu-area {          
             position: fixed;
@@ -208,27 +208,34 @@
             <li><a href="#">Template</a></li>
             <li><a href="#">Reports</a></li>
         </ul>
-        <button class="logout" id="loginButton">Log Out</button>
+        <form action="{{url_for('auth_bp.logout')}}" method="POST">
+            <button class="logout">Log Out</button>
+        </form>
+        
     </div>
 
     <div class="container">
+        <form action="{{url_for('upload_bp.upload_poster')}}" method="POST" enctype="multipart/form-data">
         <section class="upload-section">
             <h2>Upload Event Poster</h2>
-            <input type="file" id="fileInput" accept="image/*" onchange="uploadFile(event)">
+            <input type="file" id="fileInput" accept="image/*" onchange="previewFile()">
             <div class="preview" id="preview">
                 <!-- Preview of uploaded image -->
             </div>
         </section>
 
         <section class="details-section">
+            <div id="extractionButton" style="display: none;">
+                <button type="submit" class="btn-extract">Extract Details</button>
+            </div>
             <h3>Extracted Details</h3>
             <div class="form-group">
                 <label for="eventTitle">Event Title</label>
-                <input type="text" id="eventTitle" placeholder="Enter event title">
+                <input type="text" id="eventTitle" name="eventTitle" value="{{ event_data.get('title', '') }}" required>
             </div>
             <div class="form-group">
                 <label for="eventDate">Date</label>
-                <input type="date" id="eventDate">
+                <input type="date" id="eventDate" name="eventDate" value="{{ event_data.get('date', '') }}" required>
             </div>
             <!-- <div class="form-group">
                 <i class="fas fa-calendar-alt"></i>
@@ -237,50 +244,57 @@
             </div> -->
             <div class="form-group">
                 <label for="eventTime">Time</label>
-                <input type="time" id="eventTime">
+                <input type="time" id="eventTime" name="eventTime" value="{{ event_data.get('time', '') }}" required>
             </div>
             <div class="form-group">
                 <label for="eventVenue">Venue</label>
-                <input type="text" id="eventVenue" placeholder="Enter event venue">
+                <input type="text" id="eventVenue" name="eventVenue" value="{{ event_data.get('venue', '') }}" placeholder="Enter event venue">
             </div>
             <div class="buttons">
-                <button class="btn-save">Save Changes</button>
-                <button class="btn-reextract">Re-extract</button>
+                <button type="submit" class="btn-save">Save Changes</button>
+                <button type="button" class="btn-reextract">Re-extract</button>
             </div>
-
+            
                         
         </section>
 
         <button class="btn-proceed" id="proceedButton">Proceed to Chatbot</button>
+    </form>
     </div>
 
     <script>
-        // JavaScript for previewing the uploaded image
-        const fileInput = document.getElementById('fileInput');
-        const preview = document.getElementById('preview');
+     function previewFile() {
+                const fileInput = document.getElementById('fileInput');
+                const preview = document.getElementById('preview');
+                const extractionButton = document.getElementById('extractionButton');
 
-        fileInput.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    preview.innerHTML = `<img src="${e.target.result}" alt="Event Poster">`;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                preview.innerHTML = '';
-            }
-        });
-         // Navigate to chatbot.html when Proceed button is clicked
-         const proceedButton = document.getElementById('proceedButton');
-        proceedButton.addEventListener('click', () => {
-            window.location.href = 'chatbot.html';
-        });
+                // Show preview only if a file is selected
+                if (fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        preview.innerHTML = `<img src="${e.target.result}" alt="Poster Preview" style="max-width: 100%; max-height: 200px;">`;
+                    };
+                    reader.readAsDataURL(fileInput.files[0]);
+                }
 
-        document.getElementById('loginButton').addEventListener('click', function() {
-        window.location.href = "{{ url_for('auth_bp.logout') }}";
-        });
+                // Show the extraction button after a file is uploaded
+                extractionButton.style.display = "block";
+        }
+        
+
+
 
     </script>
+         // Navigate to chatbot.html when Proceed button is clicked
+       /*  const proceedButton = document.getElementById('proceedButton');
+        proceedButton.addEventListener('click', () => {
+            window.location.href = 'chatbot.html';
+        }); */
+
+       /* document.getElementById('loginButton').addEventListener('click', function() {
+        window.location.href = "{{ url_for('auth_bp.logout') }}";
+        }); */
+
+    
 </body>
 </html>
