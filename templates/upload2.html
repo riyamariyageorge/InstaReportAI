@@ -215,20 +215,22 @@
     </div>
 
     <div class="container">
-        <form>
+        <form method="POST" enctype="multipart/form-data">
         <section class="upload-section">
             <h2>Upload Event Poster</h2>
             <input type="file" id="fileInput" accept="image/*" onchange="previewFile()">
             <div class="preview" id="preview">
                 <!-- Preview of uploaded image -->
             </div>
+            <div id="extractionButton" style="display: none;">
+                <button type="button" class="btn-extract" onclick="extractText()">Extract Details</button>
+            </div>
         </section>
 
         <section class="details-section">
-            <div id="extractionButton" style="display: none;">
-                <button type="submit" class="btn-extract">Extract Details</button>
-            </div>
+            
             <h3>Extracted Details</h3>
+            <form id="detailsForm" method="POST" action="/upload2">
             <div class="form-group">
                 <label for="eventTitle">Event Title</label>
                 <input type="text" id="eventTitle" name="eventTitle" value="{{ event_data.get('title', '') }}" required>
@@ -251,11 +253,11 @@
                 <input type="text" id="eventVenue" name="eventVenue" value="{{ event_data.get('venue', '') }}" placeholder="Enter event venue">
             </div>
             <div class="buttons">
-                <button type="submit" class="btn-save">Save Changes</button>
-                <button type="button" class="btn-reextract">Re-extract</button>
+                <button type="submit" name="save" class="btn-save">Save Changes</button>
+              <!--  <button type="button" class="btn-reextract">Re-extract</button> -->
             </div>
             
-                        
+        </form>             
         </section>
 
         <button class="btn-proceed" id="proceedButton">Proceed to Chatbot</button>
@@ -263,7 +265,7 @@
     </div>
 
     <script>
-     function previewFile() {
+        function previewFile() {
                 const fileInput = document.getElementById('fileInput');
                 const preview = document.getElementById('preview');
                 const extractionButton = document.getElementById('extractionButton');
@@ -281,19 +283,61 @@
                 extractionButton.style.display = "block";
         }
         
+        function extractText() {
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+
+        // Check if file is selected
+        if (!file) {
+            alert("Please upload a poster first.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file); // Append the file to the form data
+
+        // Send the image file to the backend for OCR processing using fetch
+        fetch('/upload2', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Extracted data from the server
+                const extractedData = data.extracted_data;
+
+                // Populate the form fields with the extracted details
+                document.getElementById('eventTitle').value = extractedData.title || '';
+                document.getElementById('eventDate').value = extractedData.date || '';
+                document.getElementById('eventTime').value = extractedData.time || '';
+                document.getElementById('eventVenue').value = extractedData.venue || '';
+
+                // Show a success message or feedback
+                alert("Details extracted successfully!");
+            } else {
+                // If extraction fails
+                alert("Failed to extract details from the poster.");
+            }
+        })
+        .catch(error => {
+            console.error("Error extracting details:", error);
+            alert("There was an error while extracting details. Please try again.");
+        });
+    }
+    // Navigate to chatbot.html when Proceed button is clicked
+        const proceedButton = document.getElementById('proceedButton');
+        proceedButton.addEventListener('click', () => {
+            window.location.href = '/chatbot';
+        }); 
+
 
 
 
     </script>
-         // Navigate to chatbot.html when Proceed button is clicked
-       /*  const proceedButton = document.getElementById('proceedButton');
-        proceedButton.addEventListener('click', () => {
-            window.location.href = 'chatbot.html';
-        }); */
+         
 
-       /* document.getElementById('loginButton').addEventListener('click', function() {
-        window.location.href = "{{ url_for('auth_bp.logout') }}";
-        }); */
+       
 
     
 </body>

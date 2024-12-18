@@ -24,7 +24,9 @@ def create_app():
     from app.routes import auth_bp  # Import the Blueprint
     
     app.register_blueprint(auth_bp)  # Register the Blueprint
+    from app.upload import upload_bp  # Import the Blueprint
     
+    app.register_blueprint(upload_bp)  # Register the Blueprint
 
     # Import models and create tables if they don't exist
     '''
