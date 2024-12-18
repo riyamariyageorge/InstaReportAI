@@ -3,60 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatBot</title>
+    <title>ChatBot | InstaReport AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"> <!-- Load Montserrat font -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"> -->
-    <link href="style.css" rel="stylesheet">
     <style>
-    /* Target the Botpress chat container */
-    #bp-web-widget {
-        width: 400px !important;
-        height: 600px !important;
-    }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Montserrat, sans-serif;
+            background-color: #000; /* Black Background */
+            color: #fff; /* White Text */
+            display: flex;
+            height: 100vh;
+        }
 
-    /* Change the background color */
-    #bp-web-widget .bp-widget-web {
-        background-color: #f0f0f0 !important;
-    }
+        /* Left Section: 70% Content */
+        .content {
+            width: 70%;
+            padding: 40px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
 
-    /* Customize bot messages */
-    #bp-web-widget .bp-bot-message {
-        background-color: #1e90ff !important;
-        color: #fff !important;
-    }
+        .content h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #fff; /* White Text */
+        }
 
-    /* Customize user messages */
-    #bp-web-widget .bp-user-message {
-        background-color: #ddd !important;
-        color: #000 !important;
-    }
+        .content p {
+            text-align: left;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin: 10px 0;
+            color: #ddd; /* Slightly lighter white for description */
+        }
 
-    /* Customize header (if visible) */
-    #bp-web-widget .bp-header {
-        background: linear-gradient(160deg, #1e90ff, #80d0c7) !important;
-        color: white !important;
-    }
+        /* Right Section: 30% Chatbot */
+        .chatbot {
+            width: 30%;
+            background-color: #1e1e1e; /* Dark Grey for Chatbot Panel */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
 
-    :root {
-        --bp-widget-bg: #f5f5f5; /* Background color */
-        --bp-bot-bubble-bg: #1e90ff; /* Bot message background */
-        --bp-bot-bubble-text: #fff; /* Bot message text color */
-        --bp-user-bubble-bg: #ddd; /* User message background */
-        --bp-user-bubble-text: #000; /* User message text color */
-        --bp-widget-width: 800px; /* Widget width */
-        --bp-widget-height: 700px; /* Widget height */
-    }
-</style>    
+        /* Chat Button */
+        .chat-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background-color: #1e90ff;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            color: #ffffff;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        .chat-btn:hover {
+            background-color: #1e90ff;
+        }
+
+        /* Chatbot Widget Styling */
+        #bp-web-widget {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
 </head>
 <body>
-    <!-- Chat button to open Botpress Webchat -->
-    <button class="chat-btn" onclick="toggleBotpressChat()">
-        <i class="fa-solid fa-comments icon"></i>
-    </button>
+    <!-- Content Section (70% on the left) -->
+    <div class="content">
+        <h1>InstaReport AI Assistant</h1>
+        <p>
+            <strong>Our Interactive Chatbot</strong> is a key feature of InstaReport AI, designed to make creating event reports easy and efficient.
+            This smart assistant helps gather any missing details about your event, ensuring your report is accurate and complete.
+        </p>
+        <p>
+            It works by asking simple questions and collecting the information you provide. Whether it's event details, highlights, or outcomes, 
+            the chatbot ensures nothing important is missed. Experience seamless event reporting with our AI-driven solution!
+        </p>
+    </div>
 
-    <!-- Include Botpress Webchat -->
-    <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
-    <script src="https://files.bpcontent.cloud/2024/12/14/07/20241214070228-13ZKQAOI.js"></script>
+    <!-- Chatbot Section (30% on the right) -->
+    <div class="chatbot">
+        <button class="chat-btn" onclick="toggleBotpressChat()">
+            <i class="fa-solid fa-comments"></i>
+        </button>
+        <!-- Include Botpress Webchat -->
+        <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
+        <script src="https://files.bpcontent.cloud/2024/12/14/07/20241214070228-13ZKQAOI.js"></script>
+    </div>
 
     <script>
         function toggleBotpressChat() {
@@ -71,18 +117,15 @@
             botId: '7082f6a9-dbb0-468b-b17b-94846e3ad9b0', // Replace with your Botpress bot ID
             hostUrl: 'https://cdn.botpress.cloud/webchat',
             messagingUrl: 'https://files.bpcontent.cloud',
-            botName: 'My Chatbot', // Optional: Replace with your bot's name
-            showPoweredBy: false, // Optional: Hides "Powered by Botpress"
-            containerWidth: '900px', // Set custom width
-            containerHeight: '700px', // Set custom height
+            botName: 'InstaReport Chatbot',
+            showPoweredBy: false, 
             customStyle: {
-                botMessageBackground: '#1e90ff', // Change bot message background
-                userMessageBackground: '#ddd', // Change user message background
-                botMessageTextColor: '#fff', // Change bot message text color
-                userMessageTextColor: '#000', // Change user message text color
-                backgroundColor: '#000', // Change overall background color
-            },
-            showPoweredBy: false
+                botMessageBackground: '#1e90ff',
+                userMessageBackground: '#ddd',
+                botMessageTextColor: '#fff',
+                userMessageTextColor: '#000',
+                backgroundColor: '#1e1e1e', /* Dark grey for chat background */
+            }
         });
     </script>
 </body>
