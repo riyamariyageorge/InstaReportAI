@@ -3,6 +3,8 @@ import spacy
 import re
 from PIL import Image
 from dateutil.parser import parse
+from flask import session
+
 
 # Load SpaCy model (pre-trained English model)
 nlp = spacy.load("en_core_web_sm")
@@ -98,6 +100,6 @@ def process_event_poster(image_path):
 
 # Example usage (replace 'path_to_your_image' with the actual image file path)
 #image_path = list(uploaded.keys())[0]
-image_path = "C:/Users/riyav/JupyterNotebook/img1.png"
-event_data = process_event_poster(image_path)
+#image_path = "C:/Users/riyav/JupyterNotebook/img1.png"
+#event_data = process_event_poster(image_path)
 
