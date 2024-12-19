@@ -14,15 +14,44 @@
             background: url('{{ url_for("static", filename="Images/contact_us_bg.jpg") }}') no-repeat center center fixed;
             background-size: cover;
         }
+         /* Loading overlay styles */
+    #loadingOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px); /* Apply the blur effect */
+        display: none; /* Initially hidden */
+        align-items: center;
+        justify-content: center;
+        z-index: 9999; /* Ensure it's on top of everything */
+    }
 
-       /* header {
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        } */
+    /* Spinner styles */
+    .spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid rgba(255, 255, 255, 0.3);
+        border-top: 5px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Blur the container when overlay is active */
+    .blur {
+        filter: blur(5px);
+    }
 
         .menu-area {          
             position: fixed;
@@ -226,6 +255,10 @@
                 <button type="button" class="btn-extract" onclick="extractText()">Extract Details</button>
             </div>
         </section>
+        <div id="loadingOverlay">
+            <div class="spinner"></div>
+        </div>
+        
 
         <section class="details-section">
             
@@ -286,12 +319,19 @@
         function extractText() {
         const fileInput = document.getElementById('fileInput');
         const file = fileInput.files[0];
+        const container = document.querySelector('.container');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
 
         // Check if file is selected
         if (!file) {
             alert("Please upload a poster first.");
             return;
         }
+
+        loadingOverlay.style.display = "flex";
+        container.classList.add('blur');
+
 
         const formData = new FormData();
         formData.append('file', file); // Append the file to the form data
@@ -323,7 +363,13 @@
         .catch(error => {
             console.error("Error extracting details:", error);
             alert("There was an error while extracting details. Please try again.");
-        });
+        })
+        .finally(() => {
+                // Hide loading overlay and remove blur
+                loadingOverlay.style.display = "none";
+                container.classList.remove('blur');
+            });
+
     }
     // Navigate to chatbot.html when Proceed button is clicked
     const proceedButton = document.getElementById('proceedButton');
@@ -331,14 +377,7 @@
         window.location.href = '/chatbot';
         }); 
 
-
-
-
     </script>
-         
-
-       
-
     
 </body>
 </html>
