@@ -21,19 +21,24 @@ def allowed_file(filename):
 def upload_poster():
     username = session.get('user')
     if not username:
+        if request.is_json:
+            return {"success": False, "message": "Please log in to upload posters"}, 401
         flash("Please log in to upload posters.", "warning")
         return redirect(url_for('auth_bp.login'))
-    event_data = session.get('extracted_data', {})
+   # event_data = session.get('extracted_data', {})
 
     if request.method == 'POST':
         if 'file' not in request.files:
-            flash('No file uploaded', 'error')
-            return redirect(request.url)
+            #flash('No file uploaded', 'error')
+            #return redirect(request.url)
+            return {"success": False, "message": "No file selected."}, 400
 
         file = request.files['file']
         if file.filename == '':
-            flash('No file selected', 'error')
-            return redirect(request.url)
+            #flash('No file selected', 'error')
+            #return redirect(request.url)
+            return {"success": False, "message": "No file selected."}, 400
+
 
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
@@ -49,13 +54,15 @@ def upload_poster():
                 session['extracted_data'] = extracted_data
                 print("Stored in session:",session['extracted_data'])
                 session['poster_path'] = file_path
-                flash("Extraction successful! Please review the details below.", "success")
-                return redirect(url_for('upload_bp.edit_event_details'))
+                #flash("Extraction successful! Please review the details below.", "success")
+                #return redirect(url_for('upload_bp.edit_event_details'))
+                return {"success": True, "extracted_data": extracted_data}, 200
             else:
-                flash("Failed to extract data from the poster.", "error")
-                return redirect(request.url)
+                #flash("Failed to extract data from the poster.", "error")
+                #return redirect(request.url)
+                return {"success": False, "message": "Failed to extract data from the poster."}, 500
             
-     
+    event_data = session.get('extracted_data',{})
     return render_template('upload2.html', username=username, event_data=event_data)
 
 # Route: Edit Event Details
