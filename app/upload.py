@@ -4,6 +4,8 @@ import os
 from app.extracttext import process_event_poster
 from app.models import Event, db
 from datetime import datetime
+from dateutil.parser import parse as parse_date
+import re
 # Blueprint configuration
 upload_bp = Blueprint('upload_bp', __name__, template_folder='../templates', static_folder='../static')
 
@@ -78,19 +80,38 @@ def edit_event_details():
 
     if request.method == 'POST':
         title = request.form.get('eventTitle')
-        date = request.form.get('eventDate')
-        time = request.form.get('eventTime')
+        raw_date = request.form.get('eventDate')
+        raw_time = request.form.get('eventTime')
         venue = request.form.get('eventVenue')
-        if not (title and date and time and venue):
+        if not (title and raw_date and raw_time and venue):
             flash("All fields are required.", "error")
             return redirect(request.url)
         
 
         try:
+            try:
+                event_date = parse_date(raw_date, dayfirst=True).date()
+            except Exception as e:
+                raise ValueError(f"Invalid date format: {raw_date}")
+
+            start_time, end_time = None, None
+            if "to" in raw_time:
+                try:
+                    start_time, end_time = [datetime.strptime(t.strip(), '%I:%M %p').time() 
+                                            for t in raw_time.split("to")]
+                except Exception:
+                    raise ValueError(f"Invalid time range format: {raw_time}")
+            else:
+                try:
+                    start_time = datetime.strptime(raw_time.strip(), '%I:%M %p').time()
+                except Exception:
+                    raise ValueError(f"Invalid time format: {raw_time}")
+
             event = Event(
                 title=title,
-                date=datetime.strptime(date, '%Y-%m-%d').date(),
-                time=datetime.strptime(time, '%H:%M').time(),
+                date=event_date,
+                start_time=start_time,
+                end_time=end_time,
                 venue=venue,
                 poster_path=poster_path
             )
@@ -103,6 +124,10 @@ def edit_event_details():
 
             flash("Event saved successfully!", "success")
             return redirect(url_for('auth_bp.dashboard'))
+
+        except ValueError as ve:
+            flash(str(ve), "error")
+            return redirect(request.url)
 
         except Exception as e:
             db.session.rollback()
