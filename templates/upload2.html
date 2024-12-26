@@ -14,6 +14,30 @@
             background: url('{{ url_for("static", filename="Images/contact_us_bg.jpg") }}') no-repeat center center fixed;
             background-size: cover;
         }
+    .flash-messages {
+        margin: 10px 0;
+        padding: 10px;
+    }
+
+    .alert {
+        padding: 15px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
+
+    .alert.success {
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+    }
+
+    .alert.error {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        color: #721c24;
+    }
+
          /* Loading overlay styles */
     #loadingOverlay {
         position: fixed;
@@ -93,6 +117,7 @@
         .nav a:hover {
             color: gray;
         }
+        
 
         .container {
             max-width: 900px;
@@ -230,6 +255,15 @@
     </style>
 </head>
 <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
     <div class="menu-area">
         <a class="logo" href="#">InstaReport AI</a>
         <ul class="nav">
@@ -244,7 +278,7 @@
     </div>
 
     <div class="container">
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST" enctype="multipart/form-data" action="/upload2">
         <section class="upload-section">
             <h2>Upload Event Poster</h2>
             <input type="file" id="fileInput" accept="image/*" onchange="previewFile()">
@@ -254,6 +288,7 @@
             <div id="extractionButton" style="display: none;">
                 <button type="button" class="btn-extract" onclick="extractText()">Extract Details</button>
             </div>
+        </form>
         </section>
         <div id="loadingOverlay">
             <div class="spinner"></div>
@@ -263,7 +298,7 @@
         <section class="details-section">
             
             <h3>Extracted Details</h3>
-            <form id="detailsForm" method="POST" action="/upload2">
+            <form id="detailsForm" method="POST" action="/edit_event_details">
             <div class="form-group">
                 <label for="eventTitle">Event Title</label>
                 <input type="text" id="eventTitle" name="eventTitle" value="{{ event_data.get('title', '') }}" required>
@@ -294,7 +329,7 @@
         </section>
 
         <button class="btn-proceed" id="proceedButton">Proceed to Chatbot</button>
-    </form>
+    
     </div>
 
     <script>

@@ -12,7 +12,7 @@ class Login(db.Model):
 
 
 class Event(db.Model):
-    _tablename_ = 'events'
+    __tablename__ = 'events'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
     date = db.Column(db.Date, nullable=False)
