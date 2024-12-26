@@ -52,7 +52,7 @@ def login():
             return redirect(url_for('auth_bp.login'))
 
     return render_template('login.html')
-@auth_bp.route('/logout', methods=['POST'])
+@auth_bp.route('/logout')
 def logout():
     session.clear()
     flash("You have been logged out.","success")
