@@ -154,7 +154,7 @@
         <nav>
             <ul>
                 <li><a href="{{ url_for('auth_bp.home') }}">Home</a></li>
-                <li><a href="#">Templates</a></li>
+                <li><a href="{{url_for('auth_bp.templates') }}">Templates</a></li>
                 <li><a href="#">My Reports</a></li>
                 <li><a href="#">Profile</a></li>
                 <li><a href="{{ url_for('auth_bp.logout') }}">Logout</a></li>
@@ -178,7 +178,7 @@
             <div class="card">
                 <h2>View/Edit Templates</h2>
                 <p>Customize templates to match your preferences.</p>
-                <a href="#" class="btn">Edit Templates</a>
+                <a href="\templates" class="btn">Edit Templates</a>
             </div>
 
             <div class="card">

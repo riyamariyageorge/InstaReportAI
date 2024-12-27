@@ -76,6 +76,25 @@
             color: inherit;
         }
 
+        .back-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            color: #1a73e8;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 5px;
+            text-decoration: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .back-link:hover {
+            background-color: #e8f0fe;
+            color: #174ea6;
+        }
+
         /* Footer */
         footer {
             background-color: #1a73e8;
@@ -91,17 +110,19 @@
 <body>
     <!-- Header -->
     <header>
-        <h1>Choose Your Template</h1>
+        <h1>Welcome, {{ username}}! Choose Your Template</h1>
+        <a href="{{url_for('auth_bp.dashboard')}}" class="back-link">Back to Dashboard</a>
     </header>
 
     <!-- Main Container -->
     <div class="container">
         <div class="grid-container">
+            
             <!-- Template Card 1 -->
             <div class="template-card">
-                <a href="/static/templates3.docx" download>
-                    <img src="/static/templates3.docx" alt="Template 1" class="template-image">
-                    <div class="template-title">Proposal and Marketing Plan</div>
+                <a href="{{url_for('static', filename='templates3.docx') }}" download>
+                    <img src="{{url_for('static', filename='Images/temp1.png')}}" alt="Template 1" class="template-image">
+                    <div class="template-title">Workshop Report</div>
                 </a>
             </div>
 
@@ -112,12 +133,13 @@
         
 
             <!-- Add more templates as needed -->
+             
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer 
     <footer>
         &copy; 2024 InstaReport AI. All Rights Reserved.
-    </footer>
+    </footer> -->
 </body>
 </html>

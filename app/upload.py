@@ -54,7 +54,7 @@ def upload_poster():
             # Store the extracted data in session
             if extracted_data:
                 session['extracted_data'] = extracted_data
-                print("Stored in session:",session['extracted_data'])
+                #print("Stored in session:",session['extracted_data'])
                 session['poster_path'] = file_path
                 #flash("Extraction successful! Please review the details below.", "success")
                 #return redirect(url_for('upload_bp.edit_event_details'))
@@ -63,7 +63,7 @@ def upload_poster():
                 #flash("Failed to extract data from the poster.", "error")
                 #return redirect(request.url)
                 return {"success": False, "message": "Failed to extract data from the poster."}, 500
-            
+    session['_flashes']=[]        
     event_data = session.get('extracted_data',{})
     return render_template('upload2.html', username=username, event_data=event_data)
 
