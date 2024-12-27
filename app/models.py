@@ -12,14 +12,15 @@ class Login(db.Model):
 
 
 class Event(db.Model):
-    _tablename_ = 'events'
+    __tablename__ = 'events'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
     date = db.Column(db.Date, nullable=False)
-    time = db.Column(db.Time, nullable=False)
+    start_time = db.Column(db.Time, nullable=False)
+    end_time = db.Column(db.Time, nullable=True)  # Optional for ranges
     venue = db.Column(db.String(255), nullable=False)
-    poster_path = db.Column(db.String(255))
-
+    poster_path = db.Column(db.String(255), nullable=True)
+    '''
     def _init_(self, title, date, time, venue, poster_path=None):
         self.title = title
         self.date = date
@@ -27,7 +28,7 @@ class Event(db.Model):
         self.venue = venue
         self.poster_path = poster_path
 
-
+'''
 # Initialize the database
 def init_db(app):
     db.init_app(app)

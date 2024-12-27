@@ -4,6 +4,8 @@ import os
 from app.extracttext import process_event_poster
 from app.models import Event, db
 from datetime import datetime
+from dateutil.parser import parse as parse_date
+import re
 # Blueprint configuration
 upload_bp = Blueprint('upload_bp', __name__, template_folder='../templates', static_folder='../static')
 
@@ -73,43 +75,81 @@ def edit_event_details():
         flash("Please log in to edit event details.", "warning")
         return redirect(url_for('auth_bp.login'))
 
+    # Fetch existing session data
     event_data = session.get('extracted_data', {})
-    poster_path = session.get('poster_path','')
+    poster_path = session.get('poster_path', '')
 
     if request.method == 'POST':
+        print("POST request received at /edit_event_details")
+        # Capture edited details from the form
         title = request.form.get('eventTitle')
-        date = request.form.get('eventDate')
-        time = request.form.get('eventTime')
+        raw_date = request.form.get('eventDate')
+        raw_time = request.form.get('eventTime')
         venue = request.form.get('eventVenue')
-        if not (title and date and time and venue):
+
+        # Validate inputs
+        if not (title and raw_date and raw_time and venue):
             flash("All fields are required.", "error")
             return redirect(request.url)
-        
 
         try:
+
+            session['extracted_data'] = {
+                'title': title,
+                'date': raw_date,
+                'time': raw_time,
+                'venue': venue
+            }
+            
+            # Parse date and time inputs
+            event_date = parse_date(raw_date, dayfirst=True).date()
+            start_time, end_time = None, None
+
+            if "to" in raw_time:
+                start_time, end_time = [
+                    datetime.strptime(t.strip(), '%I:%M %p').time()
+                    for t in raw_time.split("to")
+                ]
+            else:
+                start_time = datetime.strptime(raw_time.strip(), '%I:%M %p').time()
+
+            # Save the event details to the database
+            
             event = Event(
                 title=title,
-                date=datetime.strptime(date, '%Y-%m-%d').date(),
-                time=datetime.strptime(time, '%H:%M').time(),
+                date=event_date,
+                start_time=start_time,
+                end_time=end_time,
                 venue=venue,
                 poster_path=poster_path
             )
             db.session.add(event)
             db.session.commit()
+            print("Event saved to the database successfully.")
 
             # Clear session data
-            session.pop('extracted_data', None)
+           # session.pop('extracted_data', None)
             session.pop('poster_path', None)
+            
+            
+
+            #print("Session updated with edited details:", session['extracted_data'])
+            #session.modified = True 
 
             flash("Event saved successfully!", "success")
-            return redirect(url_for('auth_bp.dashboard'))
+            return redirect(url_for('upload_bp.edit_event_details'))
+
+        except ValueError as ve:
+            flash(str(ve), "error")
+            return redirect(request.url)
 
         except Exception as e:
             db.session.rollback()
             flash(f"An error occurred: {e}", "error")
             return redirect(request.url)
-
+    #print("GET request received at /edit_event_details")
     return render_template('upload2.html', username=username, event_data=event_data)
+
 
 @upload_bp.route('/chatbot')
 def chatbot():
