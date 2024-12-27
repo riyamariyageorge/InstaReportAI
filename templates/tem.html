@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template Selection | InstaReport AI</title>
+    <style>
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body and Background */
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Header */
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* Container */
+        .container {
+            padding: 40px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .template-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .template-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .template-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .template-title {
+            padding: 10px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .template-card a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a73e8;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Choose Your Template</h1>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="grid-container">
+            <!-- Template Card 1 -->
+            <div class="template-card">
+                <a href="/static/templates3.docx" download>
+                    <img src="/static/templates3.docx" alt="Template 1" class="template-image">
+                    <div class="template-title">Proposal and Marketing Plan</div>
+                </a>
+            </div>
+
+            <!-- Template Card 2 -->
+            
+
+            <!-- Template Card 3 -->
+        
+
+            <!-- Add more templates as needed -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2024 InstaReport AI. All Rights Reserved.
+    </footer>
+</body>
+</html>
