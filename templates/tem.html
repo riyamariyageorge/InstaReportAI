@@ -14,14 +14,17 @@
 
         /* Body and Background */
         body {
-            background-color: #f8f9fa;
+            background: url('{{ url_for("static", filename="Images/about_bg.jpg") }}') no-repeat center center fixed;
+            background-size: cover;
             font-family: Arial, sans-serif;
+            color: #f8f9fa; /* Light text color */
         }
 
-        /* Header */
+        
+    /* Header */
         header {
-            background-color: #1a73e8;
-            color: white;
+            background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+            color: #5f1c1c; /* Blue font color */
             padding: 20px;
             text-align: center;
         }
@@ -29,7 +32,29 @@
         header h1 {
             font-size: 2rem;
             font-weight: bold;
+            margin-bottom: 10px;
         }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #5f1c1c; /* Solid blue for contrast */
+            color: white; /* White text */
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 5px;
+            text-decoration: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .back-link:hover {
+            background-color: #174ea6; /* Darker blue on hover */
+            color: white;
+        }
+
+
 
         /* Container */
         .container {
@@ -38,12 +63,12 @@
 
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
         }
 
         .template-card {
-            background-color: white;
+            background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
             border: 1px solid #ddd;
             border-radius: 8px;
             overflow: hidden;
@@ -59,7 +84,7 @@
 
         .template-image {
             width: 100%;
-            height: 150px;
+            height: 170px;
             object-fit: cover;
         }
 
@@ -76,28 +101,9 @@
             color: inherit;
         }
 
-        .back-link {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 10px 20px;
-            background-color: #ffffff;
-            color: #1a73e8;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 5px;
-            text-decoration: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .back-link:hover {
-            background-color: #e8f0fe;
-            color: #174ea6;
-        }
-
         /* Footer */
         footer {
-            background-color: #1a73e8;
+            background: rgba(26, 115, 232, 0.9); /* Semi-transparent blue */
             color: white;
             text-align: center;
             padding: 10px;
@@ -110,36 +116,66 @@
 <body>
     <!-- Header -->
     <header>
-        <h1>Welcome, {{ username}}! Choose Your Template</h1>
-        <a href="{{url_for('auth_bp.dashboard')}}" class="back-link">Back to Dashboard</a>
+        <h1>Welcome, {{ username }}! Choose Your Template</h1>
+        <a href="{{ url_for('auth_bp.dashboard') }}" class="back-link">Back to Dashboard</a>
     </header>
 
     <!-- Main Container -->
     <div class="container">
         <div class="grid-container">
-            
             <!-- Template Card 1 -->
             <div class="template-card">
-                <a href="{{url_for('static', filename='templates3.docx') }}" download>
-                    <img src="{{url_for('static', filename='Images/temp1.png')}}" alt="Template 1" class="template-image">
+                <a href="{{ url_for('static', filename='templates3.docx') }}" download>
+                    <img src="{{ url_for('static', filename='Images/temp1.png') }}" alt="Template 1" class="template-image">
                     <div class="template-title">Workshop Report</div>
                 </a>
             </div>
 
-            <!-- Template Card 2 -->
-            
+            <!-- Add more templates -->
+            <div class="template-card">
+                <a href="{{ url_for('static', filename='template2.docx') }}" download>
+                    <img src="{{ url_for('static', filename='Images/placeholder-image.jpg') }}" alt="Template 2" class="template-image">
+                    <div class="template-title">Business Report</div>
+                </a> 
+            </div>
 
-            <!-- Template Card 3 -->
+            <div class="template-card">
+                <a href="{{ url_for('static', filename='template1.docx') }}" download>
+                    <img src="{{ url_for('static', filename='Images/placeholder-image.jpg') }}" alt="Template 2" class="template-image">
+                    <div class="template-title"> Black and White Report</div>
+                </a> 
+            </div>
         
+            <div class="template-card">
+                <a href="{{ url_for('static', filename='template4.docx') }}" download>
+                    <img src="{{ url_for('static', filename='Images/placeholder-image.jpg') }}" alt="Template 2" class="template-image">
+                    <div class="template-title">Annual Report</div>
+                </a> 
+            </div>
 
-            <!-- Add more templates as needed -->
-             
+            <div class="template-card">
+                <a href="{{ url_for('static', filename='template1.docx') }}" download>
+                    <img src="{{ url_for('static', filename='Images/placeholder-image.jpg') }}" alt="Template 2" class="template-image">
+                    <div class="template-title"> Black and White Report</div>
+                </a> 
+            </div>
+
+            <div class="template-card">
+                <a href="{{ url_for('static', filename='template1.docx') }}" download>
+                    <img src="{{ url_for('static', filename='Images/placeholder-image.jpg') }}" alt="Template 2" class="template-image">
+                    <div class="template-title"> Black and White Report</div>
+                </a> 
+            </div>
+
+            <div class="template-card">
+                <a href="{{ url_for('static', filename='template1.docx') }}" download>
+                    <img src="{{ url_for('static', filename='Images/placeholder-image.jpg') }}" alt="Template 2" class="template-image">
+                    <div class="template-title"> Black and White Report</div>
+                </a> 
+            </div>
         </div>
     </div>
 
-    <!-- Footer 
-    <footer>
-        &copy; 2024 InstaReport AI. All Rights Reserved.
-    </footer> -->
+
 </body>
 </html>
