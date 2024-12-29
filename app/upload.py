@@ -151,6 +151,70 @@ def edit_event_details():
     return render_template('upload2.html', username=username, event_data=event_data)
 
 
+@routes_bp.route('/generate_report', methods=['POST'])
+def generate_report():
+    data = request.json
+    poster_data = data.get("poster_data", {})
+    chat_data = data.get("chat_data", {})
+
+    # Prepare prompt for Groq API
+    prompt = prepare_prompt(poster_data, chat_data)
+
+    try:
+        # Use Groq API to generate the report text
+        report_text = generate_report_with_groq(prompt)
+
+        # Save the report as a PDF
+        output_pdf_path = os.path.join(REPORT_FOLDER, "event_report.pdf")
+        create_pdf_report(report_text, output_pdf_path)
+
+        return jsonify({"success": True, "pdf_url": output_pdf_path}), 200
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+def prepare_prompt(poster_data, chat_data):
+    """
+    Create a prompt for the report generation using event poster and chatbot data.
+    """
+    title = poster_data.get("title", "Unknown Event")
+    date = poster_data.get("date", "Unknown Date")
+    time = poster_data.get("time", "Unknown Time")
+    venue = poster_data.get("venue", "Unknown Venue")
+    event_details = chat_data.get("details", "No additional details provided.")
+    
+    prompt = f"""
+    You are an AI assistant tasked with generating a detailed report for an event. 
+    Use the following details to create a report that provides a comprehensive overview:
+
+    Event Title: {title}
+    Event Date: {date}
+    Event Time: {time}
+    Venue: {venue}
+
+    Additional Details:
+    {event_details}
+
+    The report should be over 500 words, summarizing the event's purpose, key highlights, and outcomes. 
+    It should provide enough context for someone who wasn't present at the event to understand its significance.
+    """
+    return prompt
+
+def create_pdf_report(report_text, output_pdf_path):
+    """
+    Convert the generated report text into a PDF and save it.
+    """
+    pdf = FPDF()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.add_page()
+    
+    pdf.set_font("Arial", size=12)
+    pdf.multi_cell(0, 10, report_text)  # Add the report text
+    
+    # Save the PDF file
+    pdf.output(output_pdf_path)
+
+
 @upload_bp.route('/chatbot')
 def chatbot():
     return render_template('chatbot.html')
