@@ -14,15 +14,68 @@
             background: url('{{ url_for("static", filename="Images/contact_us_bg.jpg") }}') no-repeat center center fixed;
             background-size: cover;
         }
+    .flash-messages {
+        margin: 10px 0;
+        padding: 10px;
+    }
 
-       /* header {
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        } */
+    .alert {
+        padding: 15px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
+
+    .alert.success {
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+    }
+
+    .alert.error {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        color: #721c24;
+    }
+
+         /* Loading overlay styles */
+    #loadingOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px); /* Apply the blur effect */
+        display: none; /* Initially hidden */
+        align-items: center;
+        justify-content: center;
+        z-index: 9999; /* Ensure it's on top of everything */
+    }
+
+    /* Spinner styles */
+    .spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid rgba(255, 255, 255, 0.3);
+        border-top: 5px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Blur the container when overlay is active */
+    .blur {
+        filter: blur(5px);
+    }
 
         .menu-area {          
             position: fixed;
@@ -64,6 +117,7 @@
         .nav a:hover {
             color: gray;
         }
+        
 
         .container {
             max-width: 900px;
@@ -201,6 +255,15 @@
     </style>
 </head>
 <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
     <div class="menu-area">
         <a class="logo" href="#">InstaReport AI</a>
         <ul class="nav">
@@ -215,27 +278,34 @@
     </div>
 
     <div class="container">
-        <form>
+        <form method="POST" enctype="multipart/form-data" action="/upload2">
         <section class="upload-section">
             <h2>Upload Event Poster</h2>
             <input type="file" id="fileInput" accept="image/*" onchange="previewFile()">
             <div class="preview" id="preview">
                 <!-- Preview of uploaded image -->
             </div>
+            <div id="extractionButton" style="display: none;">
+                <button type="button" class="btn-extract" onclick="extractText()">Extract Details</button>
+            </div>
+        </form>
         </section>
+        <div id="loadingOverlay">
+            <div class="spinner"></div>
+        </div>
+        
 
         <section class="details-section">
-            <div id="extractionButton" style="display: none;">
-                <button type="submit" class="btn-extract">Extract Details</button>
-            </div>
+            
             <h3>Extracted Details</h3>
+            <form id="detailsForm" method="POST" action="/edit_event_details">
             <div class="form-group">
                 <label for="eventTitle">Event Title</label>
                 <input type="text" id="eventTitle" name="eventTitle" value="{{ event_data.get('title', '') }}" required>
             </div>
             <div class="form-group">
                 <label for="eventDate">Date</label>
-                <input type="date" id="eventDate" name="eventDate" value="{{ event_data.get('date', '') }}" required>
+                <input type="text" id="eventDate" name="eventDate" value="{{ event_data.get('date', '') }}" required>
             </div>
             <!-- <div class="form-group">
                 <i class="fas fa-calendar-alt"></i>
@@ -244,26 +314,26 @@
             </div> -->
             <div class="form-group">
                 <label for="eventTime">Time</label>
-                <input type="time" id="eventTime" name="eventTime" value="{{ event_data.get('time', '') }}" required>
+                <input type="text" id="eventTime" name="eventTime" value="{{ event_data.get('time', '') }}" required>
             </div>
             <div class="form-group">
                 <label for="eventVenue">Venue</label>
                 <input type="text" id="eventVenue" name="eventVenue" value="{{ event_data.get('venue', '') }}" placeholder="Enter event venue">
             </div>
             <div class="buttons">
-                <button type="submit" class="btn-save">Save Changes</button>
-                <button type="button" class="btn-reextract">Re-extract</button>
+                <button type="submit" name="save" class="btn-save">Save Changes</button>
+              <!--  <button type="button" class="btn-reextract">Re-extract</button> -->
             </div>
             
-                        
+        </form>             
         </section>
 
         <button class="btn-proceed" id="proceedButton">Proceed to Chatbot</button>
-    </form>
+    
     </div>
 
     <script>
-     function previewFile() {
+        function previewFile() {
                 const fileInput = document.getElementById('fileInput');
                 const preview = document.getElementById('preview');
                 const extractionButton = document.getElementById('extractionButton');
@@ -281,20 +351,68 @@
                 extractionButton.style.display = "block";
         }
         
+        function extractText() {
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+        const container = document.querySelector('.container');
+        const loadingOverlay = document.getElementById('loadingOverlay');
 
 
+        // Check if file is selected
+        if (!file) {
+            alert("Please upload a poster first.");
+            return;
+        }
+
+        loadingOverlay.style.display = "flex";
+        container.classList.add('blur');
+
+
+        const formData = new FormData();
+        formData.append('file', file); // Append the file to the form data
+
+        // Send the image file to the backend for OCR processing using fetch
+        fetch('/upload2', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Extracted data from the server
+                const extractedData = data.extracted_data;
+
+                // Populate the form fields with the extracted details
+                document.getElementById('eventTitle').value = extractedData.title || '';
+                document.getElementById('eventDate').value = extractedData.date || '';
+                document.getElementById('eventTime').value = extractedData.time || '';
+                document.getElementById('eventVenue').value = extractedData.venue || '';
+
+                // Show a success message or feedback
+                alert("Details extracted successfully!");
+            } else {
+                // If extraction fails
+                alert("Failed to extract details from the poster.");
+            }
+        })
+        .catch(error => {
+            console.error("Error extracting details:", error);
+            alert("There was an error while extracting details. Please try again.");
+        })
+        .finally(() => {
+                // Hide loading overlay and remove blur
+                loadingOverlay.style.display = "none";
+                container.classList.remove('blur');
+            });
+
+    }
+    // Navigate to chatbot.html when Proceed button is clicked
+    const proceedButton = document.getElementById('proceedButton');
+    proceedButton.addEventListener('click', () => {
+        window.location.href = '/chatbot';
+        }); 
 
     </script>
-         // Navigate to chatbot.html when Proceed button is clicked
-       /*  const proceedButton = document.getElementById('proceedButton');
-        proceedButton.addEventListener('click', () => {
-            window.location.href = 'chatbot.html';
-        }); */
-
-       /* document.getElementById('loginButton').addEventListener('click', function() {
-        window.location.href = "{{ url_for('auth_bp.logout') }}";
-        }); */
-
     
 </body>
 </html>

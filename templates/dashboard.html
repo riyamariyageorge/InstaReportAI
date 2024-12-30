@@ -14,20 +14,25 @@
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            color: #fff; /* Adjust text color to ensure readability */
+            color: #fff;
         }
 
         header {
-            background-color: white;
-            color: black;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
             padding: 15px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        header img {
-            height: 40px;
+        .logo-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ccc;
         }
 
         nav ul {
@@ -42,12 +47,21 @@
         }
 
         nav ul li a {
-            color: black;
+            color: #333;
             text-decoration: none;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: #5f1c1c;
+            color: white;
         }
 
         .dashboard {
-            padding: 20px;
+            padding: 40px;
             text-align: center;
         }
 
@@ -58,63 +72,89 @@
         .welcome h1 {
             font-size: 3em;
             font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
         }
 
         .welcome p {
             font-size: 1.5em;
+            margin-top: 10px;
         }
 
         .cards {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 20px;
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             color: #333;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             padding: 20px;
             text-align: center;
-            width: 80%;
-            max-width: 400px;
+            width: 100%;
+            max-width: 300px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         }
 
         .card h2 {
             margin-bottom: 10px;
+            font-size: 1.8em;
+            color: #5f1c1c;
+        }
+
+        .card p {
+            font-size: 1em;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #332c2c;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background-color: #1b1717;
+            transform: scale(1.05);
         }
 
         footer {
             text-align: center;
             margin-top: 20px;
-            padding: 10px;
+            padding: 15px;
             background: rgba(0, 0, 0, 0.7);
-        }
-
-        .btn {
-            padding: 10px 20px;
-            background-color: #007bff;
             color: white;
-            text-decoration: none;
-            border-radius: 5px;
+            font-size: 0.9em;
         }
 
-        .btn:hover {
-            background-color: #0056b3;
+        footer p {
+            margin: 0;
         }
     </style>
 </head>
 <body>
     <header>
         <div>
-            <img src="logo.png" alt="Logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo-circle">
         </div>
         <nav>
             <ul>
                 <li><a href="{{ url_for('auth_bp.home') }}">Home</a></li>
-                <li><a href="#">Templates</a></li>
+                <li><a href="{{url_for('auth_bp.templates') }}">Templates</a></li>
                 <li><a href="#">My Reports</a></li>
                 <li><a href="#">Profile</a></li>
                 <li><a href="{{ url_for('auth_bp.logout') }}">Logout</a></li>
@@ -138,7 +178,7 @@
             <div class="card">
                 <h2>View/Edit Templates</h2>
                 <p>Customize templates to match your preferences.</p>
-                <a href="#" class="btn">Edit Templates</a>
+                <a href="\templates" class="btn">Edit Templates</a>
             </div>
 
             <div class="card">
@@ -149,8 +189,8 @@
         </div>
     </div>
 
-   <!-- <footer>
+  <!--  <footer>
         <p>&copy; 2024 Report Generation System. All rights reserved.</p>
-    </footer>   -->
+    </footer> -->
 </body>
 </html>

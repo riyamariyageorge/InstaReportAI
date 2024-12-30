@@ -10,6 +10,25 @@ class Login(db.Model):
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(300), nullable=False)
 
+
+class Event(db.Model):
+    __tablename__ = 'events'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    start_time = db.Column(db.Time, nullable=False)
+    end_time = db.Column(db.Time, nullable=True)  # Optional for ranges
+    venue = db.Column(db.String(255), nullable=False)
+    poster_path = db.Column(db.String(255), nullable=True)
+    '''
+    def _init_(self, title, date, time, venue, poster_path=None):
+        self.title = title
+        self.date = date
+        self.time = time
+        self.venue = venue
+        self.poster_path = poster_path
+
+'''
 # Initialize the database
 def init_db(app):
     db.init_app(app)

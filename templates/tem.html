@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template Selection | InstaReport AI</title>
+    <style>
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body and Background */
+        body {
+            background: url('{{ url_for("static", filename="Images/about_bg.jpg") }}') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: #f8f9fa; /* Light text color */
+        }
+
+        
+    /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+            color: #5f1c1c; /* Blue font color */
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #5f1c1c; /* Solid blue for contrast */
+            color: white; /* White text */
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 5px;
+            text-decoration: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .back-link:hover {
+            background-color: #174ea6; /* Darker blue on hover */
+            color: white;
+        }
+
+
+
+        /* Container */
+        .container {
+            padding: 40px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .template-card {
+            background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .template-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .template-image {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+        }
+
+        .template-title {
+            padding: 10px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .template-card a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(26, 115, 232, 0.9); /* Semi-transparent blue */
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Welcome, {{ username }}! Choose Your Template</h1>
+        <a href="{{ url_for('auth_bp.dashboard') }}" class="back-link">Back to Dashboard</a>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="grid-container">
+            <!-- Template Card 1 -->
+            <div class="template-card">
+                <a href="{{ url_for('static', filename='templates3.docx') }}" download>
+                    <img src="{{ url_for('static', filename='Images/temp1.png') }}" alt="Template 1" class="template-image">
+                    <div class="template-title">Workshop Report</div>
+                </a>
+            </div>
+
+            <!-- Add more templates -->
+            <div class="template-card">
+                <a href="{{ url_for('static', filename='template2.docx') }}" download>
+                    <img src="{{ url_for('static', filename='Images/placeholder-image.jpg') }}" alt="Template 2" class="template-image">
+                    <div class="template-title">Business Report</div>
+                </a> 
+            </div>
+
+            <div class="template-card">
+                <a href="{{ url_for('static', filename='template1.docx') }}" download>
+                    <img src="{{ url_for('static', filename='Images/placeholder-image.jpg') }}" alt="Template 2" class="template-image">
+                    <div class="template-title"> Black and White Report</div>
+                </a> 
+            </div>
+        
+            <div class="template-card">
+                <a href="{{ url_for('static', filename='template4.docx') }}" download>
+                    <img src="{{ url_for('static', filename='Images/placeholder-image.jpg') }}" alt="Template 2" class="template-image">
+                    <div class="template-title">Annual Report</div>
+                </a> 
+            </div>
+
+            <div class="template-card">
+                <a href="{{ url_for('static', filename='template1.docx') }}" download>
+                    <img src="{{ url_for('static', filename='Images/placeholder-image.jpg') }}" alt="Template 2" class="template-image">
+                    <div class="template-title"> Black and White Report</div>
+                </a> 
+            </div>
+
+            <div class="template-card">
+                <a href="{{ url_for('static', filename='template1.docx') }}" download>
+                    <img src="{{ url_for('static', filename='Images/placeholder-image.jpg') }}" alt="Template 2" class="template-image">
+                    <div class="template-title"> Black and White Report</div>
+                </a> 
+            </div>
+
+            <div class="template-card">
+                <a href="{{ url_for('static', filename='template1.docx') }}" download>
+                    <img src="{{ url_for('static', filename='Images/placeholder-image.jpg') }}" alt="Template 2" class="template-image">
+                    <div class="template-title"> Black and White Report</div>
+                </a> 
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

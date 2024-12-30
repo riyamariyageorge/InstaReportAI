@@ -69,6 +69,20 @@ def dashboard():
 
 
 
+@auth_bp.route('/templates')
+def templates():
+    username = session.get('user')
+    if not username:
+        flash("Please log in to access the templates page.", "warning")
+        return redirect(url_for('auth_bp.login'))
+
+    # Define the list of templates
+   # templates = [
+    #    {"file": "templates3.docx", "image": "placeholder-image.jpg", "name": "Workshop Report"}
+       # {"file": "templates4.docx", "image": "template2.jpg", "name": "Project Report"},
+       # {"file": "templates5.docx", "image": "template3.jpg", "name": "Business Strategy Outline"}
+    #]
+    return render_template('tem.html', username=username)
 
 
     
