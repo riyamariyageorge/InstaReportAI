@@ -107,7 +107,7 @@
             margin-bottom: 15px; /* Added margin for spacing */
         }
 
-        /* New Google Sign-in Button Styles */
+        /* Updated Google Sign-in Button Styles */
         .google-btn {
             width: 100%;
             height: 40px;
@@ -123,6 +123,8 @@
             justify-content: center;
             margin: 15px 0;
             transition: background-color 0.3s;
+            text-decoration: none; /* Removes underline */
+            color: #000; /* Sets text color to black */
         }
 
         .google-btn:hover {
@@ -251,7 +253,7 @@
 
                     <!-- Google Sign-in Button -->
                     <a href="{{ url_for('auth_bp.google_login') }}" class="google-btn">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHBhdGggZmlsbD0iI0VBNDMzNSIgZD0iTTI0IDkuNWMzLjU0IDAgNi43MSAxLjIyIDkuMjEgMy42bDYuODUtNi44NUMzNS45IDIuMzggMzAuNDcgMCAyNCAwIDEyLjY2IDAgMy4yMyA1LjUyLjM2IDE0LjRsNy45OCA2LjE5QzEwLjI4IDEzLjIyIDE2LjYyIDkuNSAyNCA5LjV6Ii8+PHBhdGggZmlsbD0iIzRDQUY1MCIgZD0iTTQ2LjkzIDI0LjVjMC0xLjctLjE1LTMuNS0uNDUtNS4ySDI0djkuOTFoMTIuODljLTEuNDkgNy40NS01LjQ3IDEzLjA2LTEyLjg5IDEzLjA2LTcuMzcgMC0xMy42Ni01LjMtMTUuNjYtMTIuMTJsLTcuOTggNi4xOUM2LjUgNDIuNjIgMTQuNjIgNDggMjQgNDhjMTMuNTUgMCAyNS41Ni05Ljc1IDI1LjU2LTIzLjV6Ii8+PHBhdGggZmlsbD0iI0ZCQkMwNSIgZD0iTTguMzQgMTQuNTlsLTcuOTgtNi4xOUMuODYgMTAuNjYgMCAxMy4yMyAwIDE2czEuODYgMTAuOTIgNC40MyAxNS4yMWw3Ljk4LTYuMTlDMTAuOTggMjIuMjcgMTAuMzQgMjAgMTAuMzQgMTZzLjY0LTYuMjcgMi0xMy40MXoiLz48cGF0aCBmaWxsPSIjMTk3NkQyIiBkPSJNMjQgNDhjOS4zNiAwIDE3LjQ5LTUuMzggMjEuNDgtMTMuMTlMMzcuNSAyOC40NmMtMi4yMSAzLjUyLTYuMTIgNS44LTEzLjUgNS44LTcuMzcgMC0xMy42Ni01LjMtMTUuNjYtMTIuMTJsLTcuOTggNi4xOUM2LjUgNDIuNjIgMTQuNjIgNDggMjQgNDh6Ii8+PC9zdmc+" alt="Google logo">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHBhdGggZmlsbD0iI0VBNDMzNSIgZD0iTTI0IDkuNWMzLjU0IDAgNi43MSAxLjIyIDkuMjEgMy42bDYuODUtNi44NUMzNS45IDIuMzggMzAuNDcgMCAyNCAwIDEyLjY2IDAgMy4yMyA1LjUyLjM2IDE0LjRsNy45OCA2LjE5QzEwLjI4IDEzLjIyIDE2LjYyIDkuNSAyNCA5LjV6Ii8+PHBhdGggZmlsbD0iIzRDQUY1MCIgZD0iTTQ2LjkzIDI0LjVjMC0xLjctLjE1LTMuNS0uNDUtNS4ySDI0djkuOTFoMTIuODljLTEuNDkgNy40NS01LjQ3IDEzLjA2LTEyLjg5IDEzLjA2LTcuMzcgMC0xMy42Ni01LjMtMTUuNjYtMTIuMTJsLTcuOTggNi4xOUM2LjUgNDIuNjIgMTQuNjIgNDggMjQgNDh6Ii8+PHBhdGggZmlsbD0iI0ZCQkMwNSIgZD0iTTguMzQgMTQuNTlsLTcuOTgtNi4xOUMuODYgMTAuNjYgMCAxMy4yMyAwIDE2czEuODYgMTAuOTIgNC40MyAxNS4yMWw3Ljk4LTYuMTlDMTAuOTggMjIuMjcgMTAuMzQgMjAgMTAuMzQgMTZzLjY0LTYuMjcgMi0xMy40MXoiLz48cGF0aCBmaWxsPSIjMTk3NkQyIiBkPSJNMjQgNDhjOS4zNiAwIDE3LjQ5LTUuMzggMjEuNDgtMTMuMTlMMzcuNSAyOC40NmMtMi4yMSAzLjUyLTYuMTIgNS44LTEzLjUgNS44LTcuMzcgMC0xMy42Ni01LjMtMTUuNjYtMTIuMTJsLTcuOTggNi4xOUM2LjUgNDIuNjIgMTQuNjIgNDggMjQgNDh6Ii8+PC9zdmc+" alt="Google logo">
                         Sign in with Google
                     </a>
 
