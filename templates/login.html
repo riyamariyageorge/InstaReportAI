@@ -8,14 +8,13 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <style>
-        /* General Reset */
+        /* Previous styles remain the same */
         * {
             margin: 0;
             padding: 0;
             font-family: "Trebuchet MS", Arial, sans-serif;
         }
 
-        /* Section Styles */
         section {
             display: flex;
             justify-content: center;
@@ -27,12 +26,11 @@
             background-size: cover;
         }
 
-        /* Login Form Box Styles */
         .form-box {
             position: relative;
             width: 90%;
             max-width: 400px;
-            height: 450px;
+            height: 500px; /* Increased height to accommodate Google button */
             background: transparent;
             border: none;
             border-radius: 20px;
@@ -51,7 +49,6 @@
             margin-bottom: 20px;
         }
 
-        /* Input Box Styles */
         .inputbox {
             position: relative;
             margin: 30px 0;
@@ -97,7 +94,6 @@
             font-size: 1.2em;
         }
 
-        /* Button Styles */
         button {
             width: 100%;
             height: 40px;
@@ -108,9 +104,56 @@
             cursor: pointer;
             font-size: 1em;
             font-weight: 600;
+            margin-bottom: 15px; /* Added margin for spacing */
         }
 
-        /* Register and Forget Section */
+        /* New Google Sign-in Button Styles */
+        .google-btn {
+            width: 100%;
+            height: 40px;
+            border-radius: 40px;
+            background-color: #fff;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            transition: background-color 0.3s;
+        }
+
+        .google-btn:hover {
+            background-color: #f5f5f5;
+        }
+
+        .google-btn img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        .or-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            margin: 15px 0;
+        }
+
+        .or-divider::before,
+        .or-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #fff;
+        }
+
+        .or-divider span {
+            padding: 0 10px;
+        }
+
         .forget,
         .register {
             margin: 10px 0;
@@ -158,7 +201,6 @@
             background: #ffdddd;
         }
 
-        
         @media screen and (max-width: 480px) {
             .form-box {
                 width: 95%;
@@ -169,7 +211,6 @@
     </style>
 </head>
 <body>
-    <!-- Login Section -->
     <section id="login-section">
         <div class="form-box">
             <div class="form-value">
@@ -202,6 +243,18 @@
                         <a href="#">Forgot Password</a>
                     </div>
                     <button type="submit">Login</button>
+                    
+                    <!-- Added OR divider -->
+                    <div class="or-divider">
+                        <span>OR</span>
+                    </div>
+
+                    <!-- Google Sign-in Button -->
+                    <a href="{{ url_for('auth_bp.google_login') }}" class="google-btn">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHBhdGggZmlsbD0iI0VBNDMzNSIgZD0iTTI0IDkuNWMzLjU0IDAgNi43MSAxLjIyIDkuMjEgMy42bDYuODUtNi44NUMzNS45IDIuMzggMzAuNDcgMCAyNCAwIDEyLjY2IDAgMy4yMyA1LjUyLjM2IDE0LjRsNy45OCA2LjE5QzEwLjI4IDEzLjIyIDE2LjYyIDkuNSAyNCA5LjV6Ii8+PHBhdGggZmlsbD0iIzRDQUY1MCIgZD0iTTQ2LjkzIDI0LjVjMC0xLjctLjE1LTMuNS0uNDUtNS4ySDI0djkuOTFoMTIuODljLTEuNDkgNy40NS01LjQ3IDEzLjA2LTEyLjg5IDEzLjA2LTcuMzcgMC0xMy42Ni01LjMtMTUuNjYtMTIuMTJsLTcuOTggNi4xOUM2LjUgNDIuNjIgMTQuNjIgNDggMjQgNDhjMTMuNTUgMCAyNS41Ni05Ljc1IDI1LjU2LTIzLjV6Ii8+PHBhdGggZmlsbD0iI0ZCQkMwNSIgZD0iTTguMzQgMTQuNTlsLTcuOTgtNi4xOUMuODYgMTAuNjYgMCAxMy4yMyAwIDE2czEuODYgMTAuOTIgNC40MyAxNS4yMWw3Ljk4LTYuMTlDMTAuOTggMjIuMjcgMTAuMzQgMjAgMTAuMzQgMTZzLjY0LTYuMjcgMi0xMy40MXoiLz48cGF0aCBmaWxsPSIjMTk3NkQyIiBkPSJNMjQgNDhjOS4zNiAwIDE3LjQ5LTUuMzggMjEuNDgtMTMuMTlMMzcuNSAyOC40NmMtMi4yMSAzLjUyLTYuMTIgNS44LTEzLjUgNS44LTcuMzcgMC0xMy42Ni01LjMtMTUuNjYtMTIuMTJsLTcuOTggNi4xOUM2LjUgNDIuNjIgMTQuNjIgNDggMjQgNDh6Ii8+PC9zdmc+" alt="Google logo">
+                        Sign in with Google
+                    </a>
+
                     <div class="register">
                         <p>Don't have an account? <a href="/register">Sign Up</a></p>
                     </div>
@@ -209,12 +262,5 @@
             </div>
         </div>
     </section>
-   <!-- <script>
-        // JavaScript to navigate to Register page
-        document.querySelector('.register a').addEventListener('click', function(e) {
-            e.preventDefault();
-            window.location.href = 'register.html'; // Navigate to register page
-        });
-    </script>  -->
 </body>
 </html>
