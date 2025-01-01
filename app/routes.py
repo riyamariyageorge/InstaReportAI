@@ -58,6 +58,10 @@ def logout():
     flash("You have been logged out.","success")
     return redirect(url_for('auth_bp.login'))
 
+@auth_bp.route('/google-login', methods=['GET', 'POST'])
+def google_login():
+    # Your Google login logic
+    pass
 
 @auth_bp.route('/dashboard')
 def dashboard():
