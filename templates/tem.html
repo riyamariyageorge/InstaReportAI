@@ -213,7 +213,7 @@
 
             <div class="template-card" data-template="Strategic Highlights">
                 <img src="{{ url_for('static', filename='Images/temp6.png') }}" alt="Strategic Highlights Report" class="template-image">
-                <div class="template-title Report">Strategic Highlights Report</div>
+                <div class="template-title">Strategic Highlights Report</div>
             </div>
         </div>
     </div>
@@ -238,39 +238,39 @@
             const previewTitle = document.getElementById('previewTitle');
             const downloadButton = document.getElementById('downloadButton');
 
-            // Template data mapping
+            // Updated template data mapping to match data-template attributes exactly
             const templateData = {
-                blank: {
+                'blank': {
                     title: 'Create Your Own Template',
                     image: '{{ url_for("static", filename="Images/blank.png") }}',
                     file: 'blank.docx'
                 },
-                Minimalist: {
+                'Minimalist Metrics': {
                     title: 'Minimalist Metrics Template',
                     image: '{{ url_for("static", filename="Images/temp1.png") }}',
                     file: 'template1.docx'
                 },
-                Visionary: {
+                'Visionary': {
                     title: 'Visionary Report Template',
                     image: '{{ url_for("static", filename="Images/temp2.png") }}',
                     file: 'template2.docx'
                 },
-                Classic: {
+                'Classic Blueprint': {
                     title: 'Classic Blueprint Template',
                     image: '{{ url_for("static", filename="Images/temp3.png") }}',
                     file: 'template3.docx'
                 },
-                Professional: {
+                'Professional Pulse': {
                     title: 'Professional Pulse Template',
                     image: '{{ url_for("static", filename="Images/temp4.png") }}',
                     file: 'template4.docx'
                 },
-                Modern: {
+                'Modern Insight': {
                     title: 'Modern Insight Template',
                     image: '{{ url_for("static", filename="Images/temp5.png") }}',
                     file: 'template5.docx'
                 },
-                Strategic: {
+                'Strategic Highlights': {
                     title: 'Strategic Highlights Template',
                     image: '{{ url_for("static", filename="Images/temp6.png") }}',
                     file: 'template6.docx'
@@ -283,13 +283,16 @@
                     const templateType = this.dataset.template;
                     const template = templateData[templateType];
                     
-                    previewTitle.textContent = template.title;
-                    previewImage.src = template.image;
-                    downloadButton.onclick = () => {
-                        window.location.href = "{{ url_for('static', filename='') }}" + template.file;
-                    };
-                    
-                    modal.style.display = 'block';
+                    if (template) {
+                        previewTitle.textContent = template.title;
+                        previewImage.src = template.image;
+                        downloadButton.onclick = () => {
+                            window.location.href = "{{ url_for('static', filename='') }}" + template.file;
+                        };
+                        modal.style.display = 'block';
+                    } else {
+                        console.error('Template not found:', templateType);
+                    }
                 });
             });
 
