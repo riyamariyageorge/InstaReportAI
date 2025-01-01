@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <title>Template Selection | InstaReport AI</title>
     <style>
         /* Global Reset */
@@ -17,14 +18,13 @@
             background: url('{{ url_for("static", filename="Images/about_bg.jpg") }}') no-repeat center center fixed;
             background-size: cover;
             font-family: Arial, sans-serif;
-            color: #f8f9fa; /* Light text color */
+            color: #f8f9fa;
         }
 
-        
-    /* Header */
+        /* Header */
         header {
-            background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
-            color: #5f1c1c; /* Blue font color */
+            background: rgba(255, 255, 255, 0.9);
+            color: #5f1c1c;
             padding: 20px;
             text-align: center;
         }
@@ -39,8 +39,8 @@
             display: inline-block;
             margin-top: 10px;
             padding: 10px 20px;
-            background-color: #5f1c1c; /* Solid blue for contrast */
-            color: white; /* White text */
+            background-color: #5f1c1c;
+            color: white;
             font-size: 1rem;
             font-weight: bold;
             border-radius: 5px;
@@ -50,11 +50,9 @@
         }
 
         .back-link:hover {
-            background-color: #174ea6; /* Darker blue on hover */
+            background-color: #174ea6;
             color: white;
         }
-
-
 
         /* Container */
         .container {
@@ -68,13 +66,14 @@
         }
 
         .template-card {
-            background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+            background: rgba(255, 255, 255, 0.8);
             border: 1px solid #ddd;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
         }
 
         .template-card:hover {
@@ -96,20 +95,78 @@
             color: #333;
         }
 
-        .template-card a {
-            text-decoration: none;
-            color: inherit;
+        .plus-sign {
+            position: absolute;
+            font-size: 3rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #5f1c1c;
+            pointer-events: none;
         }
 
-        /* Footer */
-        footer {
-            background: rgba(26, 115, 232, 0.9); /* Semi-transparent blue */
-            color: white;
-            text-align: center;
-            padding: 10px;
+        /* Preview Modal */
+        .preview-modal {
+            display: none;
             position: fixed;
-            bottom: 0;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 8px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #5f1c1c;
+            cursor: pointer;
+        }
+
+        .preview-image {
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .preview-actions {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 0;
+        }
+
+        .preview-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .download-button {
+            background-color: #5f1c1c;
+            color: white;
+        }
+
+        .download-button:hover {
+            background-color: #174ea6;
         }
     </style>
 </head>
@@ -123,59 +180,127 @@
     <!-- Main Container -->
     <div class="container">
         <div class="grid-container">
-            <!-- Template Card 1 -->
-            <div class="template-card">
-                <a href="{{ url_for('static', filename='templates3.docx') }}" download>
-                    <img src="{{ url_for('static', filename='Images/temp1.png') }}" alt="Template 1" class="template-image">
-                    <div class="template-title">Workshop Report</div>
-                </a>
+            <div class="template-card" data-template="blank">
+                <img src="{{ url_for('static', filename='Images/blank.png') }}" alt="Create Your Own" class="template-image">
+                <div class="plus-sign">+</div>
+                <div class="template-title">Create Your Own</div>
             </div>
 
-            <!-- Add more templates -->
-            <div class="template-card">
-                <a href="{{ url_for('static', filename='template2.docx') }}" download>
-                    <img src="{{ url_for('static', filename='Images/placeholder-image.jpg') }}" alt="Template 2" class="template-image">
-                    <div class="template-title">Business Report</div>
-                </a> 
+            <div class="template-card" data-template="Minimalist Metrics">
+                <img src="{{ url_for('static', filename='Images/temp1.png') }}" alt="Minimalist Metrics Report" class="template-image">
+                <div class="template-title">Minimalist Metrics Report</div>
             </div>
 
-            <div class="template-card">
-                <a href="{{ url_for('static', filename='template1.docx') }}" download>
-                    <img src="{{ url_for('static', filename='Images/placeholder-image.jpg') }}" alt="Template 2" class="template-image">
-                    <div class="template-title"> Black and White Report</div>
-                </a> 
-            </div>
-        
-            <div class="template-card">
-                <a href="{{ url_for('static', filename='template4.docx') }}" download>
-                    <img src="{{ url_for('static', filename='Images/placeholder-image.jpg') }}" alt="Template 2" class="template-image">
-                    <div class="template-title">Annual Report</div>
-                </a> 
+            <div class="template-card" data-template="Visionary">
+                <img src="{{ url_for('static', filename='Images/temp2.png') }}" alt="Visionary Report" class="template-image">
+                <div class="template-title">Visionary Report</div>
             </div>
 
-            <div class="template-card">
-                <a href="{{ url_for('static', filename='template1.docx') }}" download>
-                    <img src="{{ url_for('static', filename='Images/placeholder-image.jpg') }}" alt="Template 2" class="template-image">
-                    <div class="template-title"> Black and White Report</div>
-                </a> 
+            <div class="template-card" data-template="Classic Blueprint">
+                <img src="{{ url_for('static', filename='Images/temp3.png') }}" alt="Classic Blueprint Report" class="template-image">
+                <div class="template-title">Classic Blueprint Report</div>
             </div>
 
-            <div class="template-card">
-                <a href="{{ url_for('static', filename='template1.docx') }}" download>
-                    <img src="{{ url_for('static', filename='Images/placeholder-image.jpg') }}" alt="Template 2" class="template-image">
-                    <div class="template-title"> Black and White Report</div>
-                </a> 
+            <div class="template-card" data-template="Professional Pulse">
+                <img src="{{ url_for('static', filename='Images/temp4.png') }}" alt="Professional Pulse Report" class="template-image">
+                <div class="template-title">Professional Pulse Report</div>
             </div>
 
-            <div class="template-card">
-                <a href="{{ url_for('static', filename='template1.docx') }}" download>
-                    <img src="{{ url_for('static', filename='Images/placeholder-image.jpg') }}" alt="Template 2" class="template-image">
-                    <div class="template-title"> Black and White Report</div>
-                </a> 
+            <div class="template-card" data-template="Modern Insight">
+                <img src="{{ url_for('static', filename='Images/temp5.png') }}" alt="Modern Insight Report" class="template-image">
+                <div class="template-title">Modern Insight Report</div>
+            </div>
+
+            <div class="template-card" data-template="Strategic Highlights">
+                <img src="{{ url_for('static', filename='Images/temp6.png') }}" alt="Strategic Highlights Report" class="template-image">
+                <div class="template-title Report">Strategic Highlights Report</div>
             </div>
         </div>
     </div>
 
+    <!-- Preview Modal -->
+    <div class="preview-modal" id="previewModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="previewTitle" style="color: #5f1c1c; margin-bottom: 20px;"></h2>
+            <img id="previewImage" class="preview-image" src="" alt="Template Preview">
+            <div class="preview-actions">
+                <button class="preview-button download-button" id="downloadButton">Download Template</button>
+            </div>
+        </div>
+    </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('previewModal');
+            const closeBtn = document.querySelector('.close-modal');
+            const previewImage = document.getElementById('previewImage');
+            const previewTitle = document.getElementById('previewTitle');
+            const downloadButton = document.getElementById('downloadButton');
+
+            // Template data mapping
+            const templateData = {
+                blank: {
+                    title: 'Create Your Own Template',
+                    image: '{{ url_for("static", filename="Images/blank.png") }}',
+                    file: 'blank.docx'
+                },
+                Minimalist: {
+                    title: 'Minimalist Metrics Template',
+                    image: '{{ url_for("static", filename="Images/temp1.png") }}',
+                    file: 'template1.docx'
+                },
+                Visionary: {
+                    title: 'Visionary Report Template',
+                    image: '{{ url_for("static", filename="Images/temp2.png") }}',
+                    file: 'template2.docx'
+                },
+                Classic: {
+                    title: 'Classic Blueprint Template',
+                    image: '{{ url_for("static", filename="Images/temp3.png") }}',
+                    file: 'template3.docx'
+                },
+                Professional: {
+                    title: 'Professional Pulse Template',
+                    image: '{{ url_for("static", filename="Images/temp4.png") }}',
+                    file: 'template4.docx'
+                },
+                Modern: {
+                    title: 'Modern Insight Template',
+                    image: '{{ url_for("static", filename="Images/temp5.png") }}',
+                    file: 'template5.docx'
+                },
+                Strategic: {
+                    title: 'Strategic Highlights Template',
+                    image: '{{ url_for("static", filename="Images/temp6.png") }}',
+                    file: 'template6.docx'
+                }
+            };
+
+            // Add click event to all template cards
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const templateType = this.dataset.template;
+                    const template = templateData[templateType];
+                    
+                    previewTitle.textContent = template.title;
+                    previewImage.src = template.image;
+                    downloadButton.onclick = () => {
+                        window.location.href = "{{ url_for('static', filename='') }}" + template.file;
+                    };
+                    
+                    modal.style.display = 'block';
+                });
+            });
+
+            // Close modal when clicking the close button or outside the modal
+            closeBtn.onclick = () => modal.style.display = 'none';
+            window.onclick = (event) => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            };
+        });
+    </script>
 </body>
 </html>
