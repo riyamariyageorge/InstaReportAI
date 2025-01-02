@@ -8,14 +8,13 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <style>
-        /* General Reset */
+        /* Previous styles remain the same */
         * {
             margin: 0;
             padding: 0;
             font-family: "Trebuchet MS", Arial, sans-serif;
         }
 
-        /* Section Styles */
         section {
             display: flex;
             justify-content: center;
@@ -27,12 +26,11 @@
             background-size: cover;
         }
 
-        /* Registration Form Box Styles */
         .form-box-1 {
             position: relative;
             width: 90%;
             max-width: 400px;
-            height: 500px;
+            height: 550px; /* Increased height to accommodate new button */
             background: transparent;
             border: none;
             border-radius: 20px;
@@ -46,12 +44,11 @@
 
         h2 {
             font-size: 2em;
-            color: #fff;
+            color: #fff; /* Heading remains white */
             text-align: center;
             margin-bottom: 20px;
         }
 
-        /* Input Box Styles */
         .inputbox {
             position: relative;
             margin: 30px 0;
@@ -97,7 +94,6 @@
             font-size: 1.2em;
         }
 
-        /* Button Styles */
         button {
             width: 100%;
             height: 40px;
@@ -108,9 +104,49 @@
             cursor: pointer;
             font-size: 1em;
             font-weight: 600;
+            margin-bottom: 15px;
         }
 
-        /* Flash Message Styles */
+        /* Updated Google Button Styles */
+        .google-btn {
+            background-color: #fff; /* Button background remains white */
+            color: #000; /* Text color changed to black */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            border: 1px solid #ccc; /* Optional: Light border for definition */
+            font-weight: 600;
+        }
+
+        .google-btn img {
+            width: 20px;
+            height: 20px;
+            background-color: #FFFFFF; /* Google blue */
+            padding: 5px;
+            border-radius: 50%;
+        }
+
+        .or-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            margin: 15px 0;
+        }
+
+        .or-divider::before,
+        .or-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #fff;
+        }
+
+        .or-divider span {
+            padding: 0 10px;
+        }
+
         .flash-messages {
             margin-bottom: 20px;
         }
@@ -130,8 +166,6 @@
             font-weight: bold;
         }
 
-
-        /* Register and Forget Section */
         .register {
             margin: 10px 0;
             font-size: 0.9em;
@@ -160,11 +194,9 @@
     </style>
 </head>
 <body>
-    <!-- Registration Section -->
     <section id="register-section">
         <div class="form-box-1">
             <div class="form-value">
-                <!-- Flash Messages -->
                 <div class="flash-messages">
                     {% with messages = get_flashed_messages(with_categories = True) %}
                         {% if messages %}
@@ -188,17 +220,22 @@
                         <input type="password" name="password" placeholder=" " required>
                         <label>Password</label>
                     </div>
-                  <!--  <div class="inputbox">
-                        <ion-icon name="lock-closed-outline"></ion-icon>
-                        <input type="password" name="confirm_password" placeholder=" " required>
-                        <label>Confirm Password</label>
-                    </div>  -->
                     <div class="inputbox">
                         <ion-icon name="mail-outline"></ion-icon>
                         <input type="email" name="email" placeholder=" " required value="{{ email|default('') }}">
                         <label>Email</label>
                     </div>
                     <button type="submit">Register</button>
+                    
+                    <div class="or-divider">
+                        <span>OR</span>
+                    </div>
+
+                    <button type="button" class="google-btn" onclick="window.location.href='{{ url_for('auth_bp.google_login') }}'">
+                        <img src="https://cdn.cdnlogo.com/logos/g/35/google-icon.svg" alt="Google logo">
+                        Sign up with Google
+                    </button>
+                    
                     <div class="register">
                         <p>Already have an account? <a href="{{ url_for('auth_bp.login') }}">Login here</a></p>
                     </div>
@@ -206,12 +243,5 @@
             </div>
         </div>
     </section>
-  <!--  <script>
-        // JavaScript to navigate to Login page
-        document.querySelector('.register a').addEventListener('click', function(e) {
-            e.preventDefault();
-            window.location.href = 'login.html'; // Navigate to login page
-        });
-    </script> -->
 </body>
 </html>
