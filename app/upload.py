@@ -1,11 +1,11 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session, jsonify
 from werkzeug.utils import secure_filename
 import os
-from app.extracttext import process_event_poster
+from app.extracttext import extract_event_details
 from app.models import Event, db
 from datetime import datetime
-from dateutil.parser import parse as parse_date
 import re
+
 # Blueprint configuration
 upload_bp = Blueprint('upload_bp', __name__, template_folder='../templates', static_folder='../static')
 
@@ -18,6 +18,51 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Ensure the folder exists
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+# Helper function to parse date in various formats
+def parse_date(date_str, dayfirst=False):
+    # Modify the format based on the 'dayfirst' flag
+    if dayfirst:
+        # For day-first, we expect formats like "27 July 2024"
+        formats = ("%d %B %Y", "%d %b %Y", "%d-%m-%Y")
+    else:
+        # For month-first, we expect formats like "July 27 2024" or "2024-07-27"
+        formats = ("%d %B %Y", "%d %b %Y", "%Y-%m-%d")
+
+    for fmt in formats:
+        try:
+            return datetime.strptime(date_str, fmt).date()
+        except ValueError:
+            continue
+    raise ValueError(f"Unknown date format: {date_str}")
+
+
+# Helper function to parse time ranges or single times
+def parse_time_range(time_str):
+    """Parse time ranges like '8pm-9pm', '8:00pm-9:00pm', '8.00pm-9.00pm', or single times."""
+    # Regex for time range with variations in formatting
+    time_range = re.match(
+        r"(\d{1,2}([:.]\d{2})?\s*(am|pm)?)[\s\-to]*(\d{1,2}([:.]\d{2})?\s*(am|pm)?)", 
+        time_str, re.IGNORECASE
+    )
+    
+    if time_range:
+        start, end = time_range.group(1), time_range.group(4)
+        
+        # Normalize and parse times
+        start_time = datetime.strptime(start.replace('.', ':'), "%I:%M %p") if ':' in start else datetime.strptime(start.replace('.', ''), "%I%p")
+        end_time = datetime.strptime(end.replace('.', ':'), "%I:%M %p") if ':' in end else datetime.strptime(end.replace('.', ''), "%I%p")
+        
+        return start_time.time(), end_time.time()  # Return only time parts
+
+    # Regex for single time
+    single_time = re.match(r"(\d{1,2}([:.]\d{2})?\s*(am|pm)?)", time_str, re.IGNORECASE)
+    if single_time:
+        start_time = datetime.strptime(single_time.group(1).replace('.', ':'), "%I:%M %p") if ':' in single_time.group(1) else datetime.strptime(single_time.group(1).replace('.', ''), "%I%p")
+        return start_time.time(), None
+
+    raise ValueError(f"Unknown time format: {time_str}")
+
+
 # Route: Upload Event Poster
 @upload_bp.route('/upload2', methods=['GET', 'POST'])
 def upload_poster():
@@ -27,44 +72,36 @@ def upload_poster():
             return {"success": False, "message": "Please log in to upload posters"}, 401
         flash("Please log in to upload posters.", "warning")
         return redirect(url_for('auth_bp.login'))
-   # event_data = session.get('extracted_data', {})
 
     if request.method == 'POST':
         if 'file' not in request.files:
-            #flash('No file uploaded', 'error')
-            #return redirect(request.url)
             return {"success": False, "message": "No file selected."}, 400
 
         file = request.files['file']
         if file.filename == '':
-            #flash('No file selected', 'error')
-            #return redirect(request.url)
             return {"success": False, "message": "No file selected."}, 400
-
 
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file_path = os.path.join(UPLOAD_FOLDER, filename)
             file.save(file_path)
 
-            # Process the file using OCR
-            extracted_data = process_event_poster(file_path)
-            print("Extracted Data:", extracted_data)
+            # Extract event details
+            extracted_data = extract_event_details(file_path)
 
-            # Store the extracted data in session
             if extracted_data:
-                session['extracted_data'] = extracted_data
-                #print("Stored in session:",session['extracted_data'])
+                session['extracted_data'] = {
+                    'event_name': extracted_data.get('event_name'),
+                    'date': extracted_data.get('date'),
+                    'time': extracted_data.get('time'),
+                    'venue': extracted_data.get('venue'),
+                }
                 session['poster_path'] = file_path
-                #flash("Extraction successful! Please review the details below.", "success")
-                #return redirect(url_for('upload_bp.edit_event_details'))
-                return {"success": True, "extracted_data": extracted_data}, 200
+                return {"success": True, "extracted_data": session['extracted_data']}, 200
             else:
-                #flash("Failed to extract data from the poster.", "error")
-                #return redirect(request.url)
                 return {"success": False, "message": "Failed to extract data from the poster."}, 500
-    session['_flashes']=[]        
-    event_data = session.get('extracted_data',{})
+
+    event_data = session.get('extracted_data', {})
     return render_template('upload2.html', username=username, event_data=event_data)
 
 # Route: Edit Event Details
@@ -75,146 +112,71 @@ def edit_event_details():
         flash("Please log in to edit event details.", "warning")
         return redirect(url_for('auth_bp.login'))
 
-    # Fetch existing session data
     event_data = session.get('extracted_data', {})
     poster_path = session.get('poster_path', '')
 
     if request.method == 'POST':
-        print("POST request received at /edit_event_details")
-        # Capture edited details from the form
+    # Capture edited details from the form
         title = request.form.get('eventTitle')
         raw_date = request.form.get('eventDate')
         raw_time = request.form.get('eventTime')
         venue = request.form.get('eventVenue')
 
-        # Validate inputs
         if not (title and raw_date and raw_time and venue):
             flash("All fields are required.", "error")
             return redirect(request.url)
 
         try:
-
             session['extracted_data'] = {
-                'title': title,
+                'event_name': title,
                 'date': raw_date,
                 'time': raw_time,
-                'venue': venue
+                'venue': venue,
             }
-            
-            # Parse date and time inputs
-            event_date = parse_date(raw_date, dayfirst=True).date()
+            event_date = parse_date(raw_date, dayfirst=True)
+
+            # Parse time range if provided
             start_time, end_time = None, None
-
             if "to" in raw_time:
-                start_time, end_time = [
-                    datetime.strptime(t.strip(), '%I:%M %p').time()
-                    for t in raw_time.split("to")
-                ]
+                start_time, end_time = parse_time_range(raw_time) 
             else:
-                start_time = datetime.strptime(raw_time.strip(), '%I:%M %p').time()
+                start_time, _ = parse_time_range(raw_time)
 
-            # Save the event details to the database
-            
+            # Save event details to the database
             event = Event(
                 title=title,
                 date=event_date,
                 start_time=start_time,
                 end_time=end_time,
                 venue=venue,
-                poster_path=poster_path
+                poster_path=session.get('poster_path', '')
             )
             db.session.add(event)
             db.session.commit()
-            print("Event saved to the database successfully.")
 
-            # Clear session data
-           # session.pop('extracted_data', None)
-            session.pop('poster_path', None)
-            
-            
-
-            #print("Session updated with edited details:", session['extracted_data'])
-            #session.modified = True 
-
+            session.pop('extracted_data', None)
             flash("Event saved successfully!", "success")
             return redirect(url_for('upload_bp.edit_event_details'))
 
         except ValueError as ve:
             flash(str(ve), "error")
             return redirect(request.url)
-
         except Exception as e:
             db.session.rollback()
             flash(f"An error occurred: {e}", "error")
             return redirect(request.url)
-    #print("GET request received at /edit_event_details")
+
+
     return render_template('upload2.html', username=username, event_data=event_data)
 
+# Route: Get Extracted Data (API)
+@upload_bp.route('/get_extracted_data', methods=['GET'])
+def get_extracted_data():
+    if 'extracted_data' in session:
+        return jsonify({'success': True, 'data': session['extracted_data']})
+    return jsonify({'success': False, 'error': 'No data found in session'}), 404
 
-@routes_bp.route('/generate_report', methods=['POST'])
-def generate_report():
-    data = request.json
-    poster_data = data.get("poster_data", {})
-    chat_data = data.get("chat_data", {})
-
-    # Prepare prompt for Groq API
-    prompt = prepare_prompt(poster_data, chat_data)
-
-    try:
-        # Use Groq API to generate the report text
-        report_text = generate_report_with_groq(prompt)
-
-        # Save the report as a PDF
-        output_pdf_path = os.path.join(REPORT_FOLDER, "event_report.pdf")
-        create_pdf_report(report_text, output_pdf_path)
-
-        return jsonify({"success": True, "pdf_url": output_pdf_path}), 200
-
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
-
-def prepare_prompt(poster_data, chat_data):
-    """
-    Create a prompt for the report generation using event poster and chatbot data.
-    """
-    title = poster_data.get("title", "Unknown Event")
-    date = poster_data.get("date", "Unknown Date")
-    time = poster_data.get("time", "Unknown Time")
-    venue = poster_data.get("venue", "Unknown Venue")
-    event_details = chat_data.get("details", "No additional details provided.")
-    
-    prompt = f"""
-    You are an AI assistant tasked with generating a detailed report for an event. 
-    Use the following details to create a report that provides a comprehensive overview:
-
-    Event Title: {title}
-    Event Date: {date}
-    Event Time: {time}
-    Venue: {venue}
-
-    Additional Details:
-    {event_details}
-
-    The report should be over 500 words, summarizing the event's purpose, key highlights, and outcomes. 
-    It should provide enough context for someone who wasn't present at the event to understand its significance.
-    """
-    return prompt
-
-def create_pdf_report(report_text, output_pdf_path):
-    """
-    Convert the generated report text into a PDF and save it.
-    """
-    pdf = FPDF()
-    pdf.set_auto_page_break(auto=True, margin=15)
-    pdf.add_page()
-    
-    pdf.set_font("Arial", size=12)
-    pdf.multi_cell(0, 10, report_text)  # Add the report text
-    
-    # Save the PDF file
-    pdf.output(output_pdf_path)
-
-
+# Route: Chatbot Page
 @upload_bp.route('/chatbot')
 def chatbot():
     return render_template('chatbot.html')

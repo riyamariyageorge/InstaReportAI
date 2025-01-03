@@ -3,8 +3,12 @@ from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
 
+
 # Initialize the database instance
 db = SQLAlchemy()
+
+
+
 
 def create_app():
     # Load environment variables
