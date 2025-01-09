@@ -20,6 +20,7 @@ class Event(db.Model):
     end_time = db.Column(db.Time, nullable=True)  # Optional for ranges
     venue = db.Column(db.String(255), nullable=False)
     poster_path = db.Column(db.String(255), nullable=True)
+    description = db.Column(db.Text, nullable=True)
     '''
     def _init_(self, title, date, time, venue, poster_path=None):
         self.title = title

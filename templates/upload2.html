@@ -280,8 +280,12 @@
             <li><a href="#">Template</a></li>
             <li><a href="#">Reports</a></li>
         </ul>
+        <!--
         <form action="{{url_for('auth_bp.logout')}}" method="POST">
             <button class="logout">Log Out</button>
+        </form> -->
+        <form action="{{ url_for('auth_bp.logout') }}" method="POST">
+            <button type="submit" class="btn btn-danger">Logout</button>
         </form>
         
     </div>
@@ -333,7 +337,14 @@
 
             <div class="buttons">
                 <button type="submit" name="save" class="btn-save">Save Changes</button>
-              <!--  <button type="button" class="btn-reextract">Re-extract</button> -->
+              <!--  <button type="button" class="btn-reextract">Re-extract</button> 
+              <a href="{{ url_for('upload_bp.view_pdf') }}" class="btn btn-primary" target="_blank">
+                View Event PDF
+            </a> 
+            <a href="{{ url_for('static', filename='uploads/event_report.pdf') }}" target="_blank">
+                <button>View PDF</button>
+            </a>     -->       
+            
             </div>
             
         </form>             
@@ -341,8 +352,7 @@
 
         <button class="btn-proceed" id="proceedButton">Proceed to Chatbot</button>
     
-       <!-- <button onclick="">Generate Report</button> -->
-    <div id="pdfPreview"></div>
+       
     </div>
 
     <script>

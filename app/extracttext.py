@@ -44,7 +44,7 @@ def extract_event_details(image_path):
             if raw_text.startswith("```") and raw_text.endswith("```"):
                 # Remove the leading and trailing code fences
                 raw_text = raw_text.split("\n", 1)[1].rsplit("\n", 1)[0]
-
+            '''
             print(f"Cleaned Response Text: {raw_text}")
             # Attempt to parse JSON from cleaned text
             extracted_data = json.loads(raw_text)
@@ -53,20 +53,22 @@ def extract_event_details(image_path):
             date = extracted_data.get('date')
             time = extracted_data.get('time')
             venue = extracted_data.get('venue')
-
+            '''
+            extracted_data = json.loads(raw_text)
             return {
-                'event_name': event_name,
-                'date': date,
-                'time': time,
-                'venue': venue
-            }
+                'event_name': extracted_data.get('event_name'),
+                'date': extracted_data.get('date'),
+                'time': extracted_data.get('time'),
+                'venue': extracted_data.get('venue')
+         }
         else:
-            print("Error: Response was empty or malformed.")
             return None
-
-    except json.JSONDecodeError:
-        print("Error: Unable to parse JSON from response text.")
-        return None
     except Exception as e:
         print(f"Error during extraction: {e}")
         return None
+'''
+    except json.JSONDecodeError:
+        print("Error: Unable to parse JSON from response text.")
+        return None
+'''
+    

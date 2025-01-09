@@ -46,13 +46,15 @@ def login():
         if login_user(username, password):  # Check login credentials
             session['user'] = username
             flash("Login successful!", "success")
+            session['_flashes'] = [] 
             return redirect(url_for('auth_bp.dashboard', username=username))  # Redirect to the dashboard route
         else:
             flash("Invalid username or password. Please try again.", "error")
             return redirect(url_for('auth_bp.login'))
 
     return render_template('login.html')
-@auth_bp.route('/logout')
+
+@auth_bp.route('/logout', methods=['GET','POST'])
 def logout():
     session.clear()
     flash("You have been logged out.","success")
