@@ -5,7 +5,7 @@ from app.extracttext import extract_event_details
 from app.models import Event, db
 from datetime import datetime
 import re
-import pandas as pd
+# import pandas as pd
 from flask import send_file
 from app.pdf_generator import generate_event_report
 from app.groq_api import generate_event_description
