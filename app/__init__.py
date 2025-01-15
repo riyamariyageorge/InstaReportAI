@@ -1,4 +1,5 @@
-from flask import Flask
+from flask import Flask, session, redirect, url_for, render_template
+from authlib.integrations.flask_client import OAuth
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
@@ -7,7 +8,7 @@ import os
 # Initialize the database instance
 db = SQLAlchemy()
 
-
+oauth = OAuth()
 
 
 def create_app():
@@ -23,6 +24,18 @@ def create_app():
 
     # Initialize the database with the app
     db.init_app(app)
+
+    oauth.init_app(app)
+
+    google = oauth.register(
+        name='google',
+        client_id=os.getenv('GOOGLE_CLIENT_ID'),
+        client_secret=os.getenv('GOOGLE_CLIENT_SECRET'),
+        #authorize_url='https://accounts.google.com/o/oauth2/auth',
+        #access_token_url='https://accounts.google.com/o/oauth2/token',
+        server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',  # OIDC discovery URL
+        client_kwargs={'scope': 'openid profile email'},
+    )
 
      # Import and register blueprints
     from app.routes import auth_bp  # Import the Blueprint

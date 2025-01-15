@@ -1,8 +1,18 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from app.auth import register_user, login_user
-from app.models import Login
+from app.models import Login, db
+from authlib.integrations.flask_client import OAuthError
+from app import oauth
+
+import secrets
+from dotenv import load_dotenv
 #from extracttext import process_event_poster
 auth_bp = Blueprint('auth_bp', __name__)
+
+load_dotenv()
+
+
+# Create the OAuth object for Google login
 
 @auth_bp.route('/')
 def home():
@@ -14,17 +24,20 @@ def home():
 @auth_bp.route('/register', methods=['GET','POST'])
 def register():
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
         email = request.form.get('email')
+        password = request.form.get('password')
+        username = request.form.get('username') 
 
-        existing_user = Login.query.filter((Login.username == username) | (Login.email == email)).first()
+        existing_user = Login.query.filter((Login.email == email) | (Login.username == username)).first()
         if existing_user:
             flash("Registration failed. Username or email already exists.", "error")
-            return render_template('register.html', username=username, email=email)
-
+            return render_template('register.html', email=email)
+        if not username:
+            flash("Username is required for traditional registration.", "error")
+            return render_template('register.html', email=email)
         # Register the user if no existing user found
-        result, error_message = register_user(username, password, email)
+        
+        result, error_message = register_user( username, password, email)
 
         if result:  # If the registration was successful
             flash("Registration successful! Please log in.", "success")
@@ -60,10 +73,43 @@ def logout():
     flash("You have been logged out.","success")
     return redirect(url_for('auth_bp.login'))
 
-@auth_bp.route('/google-login', methods=['GET', 'POST'])
+@auth_bp.route('/google-login')
 def google_login():
-    # Your Google login logic
-    pass
+    nonce = secrets.token_urlsafe(16)
+    session['oauth_nonce'] = nonce
+    redirect_uri = url_for('auth_bp.google_login_callback', _external=True)
+    return oauth.google.authorize_redirect(redirect_uri, nonce=nonce)
+
+# Google Authorized Callback Route
+@auth_bp.route('/auth/google/callback')
+def google_login_callback():
+    try:
+        token = oauth.google.authorize_access_token()
+        nonce = session.get('oauth_nonce')
+        user_info = oauth.google.parse_id_token(token, nonce=nonce)
+        email = user_info['email']
+        username = email.split('@')[0]  # Use email prefix as the username if needed
+        
+        # Check if the user already exists
+        existing_user = Login.query.filter_by(email=email).first()
+        if existing_user:
+            session['user'] = existing_user.username
+            #flash(f"Welcome back, {existing_user.username}!", "success")
+        else:
+            # Register the new Google user
+            new_user = Login(email=email, password=None, username=username, is_google_user=True)
+            db.session.add(new_user)
+            db.session.commit()
+            session['user'] = username 
+            flash(f"Welcome, {username}!", "success")
+
+        
+        #flash(f"Welcome, {username}!", "success") 
+        return redirect(url_for('auth_bp.dashboard'))
+
+    except OAuthError as e:
+        flash("Error during Google login. Please try again.", "error")
+        return redirect(url_for('auth_bp.login'))
 
 @auth_bp.route('/dashboard')
 def dashboard():
@@ -89,6 +135,7 @@ def templates():
        # {"file": "templates5.docx", "image": "template3.jpg", "name": "Business Strategy Outline"}
     #]
     return render_template('tem.html', username=username)
+
 
 
     

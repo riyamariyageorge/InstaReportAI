@@ -2,13 +2,15 @@
 from app import db
 from datetime import datetime
 
-class Login(db.Model):
-    __tablename__ = 'login'  # Explicitly setting the table name to 'login'
+    # Explicitly setting the table name to 'login'
 
+class Login(db.Model):
+    __tablename__ = 'login'  
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), unique=True, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(300), nullable=False)
+    password = db.Column(db.String(300), nullable=True)  # Nullable for Google logins
+    is_google_user = db.Column(db.Boolean, default=False)
+    username = db.Column(db.String(100), nullable=True) 
 
 
 class Event(db.Model):
