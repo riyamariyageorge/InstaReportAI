@@ -3,437 +3,343 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Event Poster</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"> <!-- Load Montserrat font -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-   
+    <title>Document Processing Chatbot</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            padding-top: 30px;
-            background: url('{{ url_for("static", filename="Images/contact_us_bg.jpg") }}') no-repeat center center fixed;
-            background-size: cover;
+        .chat-container {
+            height: calc(100vh - 300px);
         }
-    .flash-messages {
-        margin: 10px 0;
-        padding: 10px;
-    }
-
-    .alert {
-        padding: 15px;
-        border: 1px solid transparent;
-        border-radius: 4px;
-        margin-bottom: 10px;
-    }
-
-    .alert.success {
-        background-color: #d4edda;
-        border-color: #c3e6cb;
-        color: #155724;
-    }
-
-    .alert.error {
-        background-color: #f8d7da;
-        border-color: #f5c6cb;
-        color: #721c24;
-    }
-
-         /* Loading overlay styles */
-    #loadingOverlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(5px); /* Apply the blur effect */
-        display: none; /* Initially hidden */
-        align-items: center;
-        justify-content: center;
-        z-index: 9999; /* Ensure it's on top of everything */
-    }
-
-    /* Spinner styles */
-    .spinner {
-        width: 50px;
-        height: 50px;
-        border: 5px solid rgba(255, 255, 255, 0.3);
-        border-top: 5px solid white;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
+        .preview-container {
+            max-height: calc(100vh - 300px);
         }
-        100% {
-            transform: rotate(360deg);
+        .file-list {
+            max-height: 200px;
+            overflow-y: auto;
         }
-    }
-
-    /* Blur the container when overlay is active */
-    .blur {
-        filter: blur(5px);
-    }
-
-        .menu-area {          
-            position: fixed;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            top: 0; /* Stick to the top of the viewport */
-            /* padding-top: 100px; */
-            width: 100%;
-            height: 50px;
-            z-index: 1;
-            padding: 10px 20px; /* Adjusted padding to ensure spacing */
-            box-sizing: border-box; /* Include padding in width calculations */
+        .animate-spin {
+            animation: spin 1s linear infinite;
         }
-
-        .logo {
-            flex: 1 1 auto;
-            font-weight: bold;
-            font-size: 25px;
-            letter-spacing: 1px;
-            color: white;
-            margin: 0;
-            text-decoration: none;
-        }
-
-        .nav {
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            align-items: center; /* Aligns the links vertically */
-            height: 100%;
-        }
-        .nav a {
-            margin: 0 15px;
-            color: #fff;
-            text-decoration: none;
-        }
-        .nav a:hover {
-            color: gray;
-        }
-        
-
-        .container {
-            max-width: 900px;
-            margin: 100px auto;
-            padding: 30px;
-            padding-right: 50px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px) brightness(80%);
-        }
-
-        .upload-section, .details-section {
-            margin-bottom: 20px;
-        }
-
-        .upload-section h2, .details-section h3 {
-            color: white;
-        }
-
-        .upload-section input[type="file"] {
-            margin-top: 10px;
-            color: white;
-        }
-
-        .details-section h3 {
-            margin-bottom: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-            /* color: white; */
-            position: relative;
-        }
-
-        .form-group i {
-            /* color: white;  */
-            /* Make icons white */
-            position: absolute; /* Ensure proper positioning */
-            margin-left: 10px; /* Add spacing to icons */
-            top: 50%; /* Center vertically */
-            left: 10px; /* Position the icon inside the input */
-            transform: translateY(-50%); 
-        }
-
-        .form-group input {
-            padding-left: 40px; /* Add enough padding so the text doesn't overlap with the icon */
-            width: 100%;
-            padding: 10px;
-            background: black;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1em;
-            color: white;
-        }        
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: white;
-        }
-
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            background: black;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1em;
-            color: white;
-        }
-
-        .form-group input::placeholder {
-            color: gray;
-        }
-
-        .buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1em;
-            font-family: 'Montserrat', sans-serif;
-            cursor: pointer;
-            background-color: white;
-            color: black;
-        }
-
-        .preview {
-            margin-top: 10px;
-        }
-
-        .preview img {
-            max-width: 100%;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        #pdfPreview {
-            margin-top: 20px;
-        }
-        iframe {
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        /* @media (max-width: 800px) {
-            .logo {
-                text-align: center;
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
             }
-            .nav {
-                margin: 0;
-                padding: 0;
+            100% {
+                transform: rotate(360deg);
             }
-            .nav a {
-                font-size: 10px;
-                margin: 10px;
-            }
-        } */
-
-        .logout {
-            background-color: white;
-            color: black;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 4px;
-            margin-left: auto; /* Push the button to the far right */
-        }
-        .logout:hover,
-        .btn-save:hover,
-        .btn-reextract:hover,
-        .btn-proceed:hover
-         {
-            background-color: gray;
         }
     </style>
 </head>
-<body>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="flash-messages">
-                {% for category, message in messages %}
-                    <div class="alert {{ category }}">{{ message }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
-    <div class="menu-area">
-        <a class="logo" href="#">InstaReport AI</a>
-        <ul class="nav">
-            <li><a href="{{ url_for('auth_bp.dashboard') }}">Home</a></li>
-            <li><a href="#">Template</a></li>
-            <li><a href="#">Reports</a></li>
-        </ul>
-        <!--
-        <form action="{{url_for('auth_bp.logout')}}" method="POST">
-            <button class="logout">Log Out</button>
-        </form> -->
-        <form action="{{ url_for('auth_bp.logout') }}" method="POST">
-            <button type="submit" class="btn btn-danger">Logout</button>
-        </form>
-        
-    </div>
-
-    <div class="container">
-        <form method="POST" enctype="multipart/form-data" action="/upload2">
-        <section class="upload-section">
-            <h2>Upload Event Poster</h2>
-            <input type="file" id="fileInput" accept="image/*" onchange="previewFile()">
-            <div class="preview" id="preview">
-                <!-- Preview of uploaded image -->
-            </div>
-            <div id="extractionButton" style="display: none;">
-                <button type="button" class="btn-extract" onclick="extractText()">Extract Details</button>
-            </div>
-        </form>
-        </section>
-        <div id="loadingOverlay">
-            <div class="spinner"></div>
+<body class="bg-gray-100">
+    <!-- Navigation Bar -->
+    <nav class="bg-blue-500 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold">DocBot</div>
+            <ul class="hidden md:flex space-x-6">
+                <li><a href="#" class="hover:text-blue-300">Home</a></li>
+                <li><a href="#about" class="hover:text-blue-300">About Us</a></li>
+                <li><a href="{{ url_for('auth_bp.logout') }}" class="hover:text-blue-300">Logout</a></li>
+            </ul>
+            <button class="block md:hidden text-xl focus:outline-none" id="navToggle">
+                ☰
+            </button>
         </div>
+        <!-- Mobile Menu -->
+        <div class="hidden md:hidden bg-blue-600" id="mobileMenu">
+            <ul class="space-y-2 text-center py-4">
+                <li><a href="#" class="block text-white hover:text-blue-300">Home</a></li>
+                <li><a href="#about" class="block text-white hover:text-blue-300">About Us</a></li>
+                <li><a href="#logout" class="block text-white hover:text-blue-300">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-8 text-center">Document Processing Chatbot</h1>
         
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Left Column: File Upload and Preview -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="mb-6">
+                    <h2 class="text-xl font-semibold mb-4">Upload Documents</h2>
+                    <div class="flex items-center justify-center w-full">
+                        <label class="w-full flex flex-col items-center px-4 py-6 bg-white rounded-lg shadow-lg tracking-wide border border-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white">
+                            <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                            </svg>
+                            <span class="mt-2 text-base">Select files</span>
+                            <input type='file' id="fileInput" class="hidden" accept=".pdf,.png,.jpg,.jpeg" multiple />
+                        </label>
+                    </div>
+                    <!-- Loader -->
+                    <div id="fileProcessing" class="hidden mt-4 text-center text-blue-500">
+                        <div class="flex items-center justify-center space-x-2">
+                            <svg class="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                            </svg>
+                            <span>Processing file(s)...</span>
+                        </div>
+                    </div>
+                </div>
 
-        <section class="details-section">
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-2">Uploaded Files</h3>
+                    <div id="fileList" class="file-list bg-gray-50 p-4 rounded-lg"></div>
+                </div>
+                
+                <div class="preview-container overflow-y-auto">
+                    <h2 class="text-xl font-semibold mb-4">Document Preview</h2>
+                    <div id="previewContent" class="bg-gray-50 p-4 rounded-lg">
+                        <p class="text-gray-500">No document uploaded yet</p>
+                    </div>
+                </div>
+            </div>
             
-            <h3>Extracted Details</h3>
-            <form id="detailsForm" method="POST" action="{{ url_for('upload_bp.edit_event_details') }}">
-            <div class="form-group">
-                <label for="eventTitle">Event Title</label>
-                <input type="text" id="eventTitle" name="eventTitle" value="{{ event_data.get('event_name', '') }}" required>
+            <!-- Right Column: Chat Interface -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="chat-container flex flex-col">
+                    <div id="chatMessages" class="flex-1 overflow-y-auto mb-4">
+                        <!-- Chat messages will be inserted here -->
+                    </div>
+                    
+                    <div class="mt-4">
+                        <div class="flex space-x-4">
+                            <input type="text" id="userInput" class="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Type your message...">
+                            <button onclick="sendMessage()" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Send</button>
+                        </div>
+                        <button onclick="generateReport()" class="mt-4 w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500">Generate Report</button>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="eventDate">Date</label>
-                <input type="text" id="eventDate" name="eventDate" value="{{ event_data.get('date', '') }}" required>
-            </div>
-            <!-- <div class="form-group">
-                <i class="fas fa-calendar-alt"></i>
-                <label for="eventDate">Date</label>
-                <input type="date" id="eventDate">
-            </div> -->
-            <div class="form-group">
-                <label for="eventTime">Time</label>
-                <input type="text" id="eventTime" name="eventTime" value="{{ event_data.get('time', '') }}" required>
-            </div>
-            <div class="form-group">
-                <label for="eventVenue">Venue</label>
-                <input type="text" id="eventVenue" name="eventVenue" value="{{ event_data.get('venue', '') }}" placeholder="Enter event venue">
-            </div>
-           
+        </div>
 
-            <div class="buttons">
-                <button type="submit" name="save" class="btn-save">Save Changes</button>
-              <!--  <button type="button" class="btn-reextract">Re-extract</button> 
-              <a href="{{ url_for('upload_bp.view_pdf') }}" class="btn btn-primary" target="_blank">
-                View Event PDF
-            </a> 
-            <a href="{{ url_for('static', filename='uploads/event_report.pdf') }}" target="_blank">
-                <button>View PDF</button>
-            </a>     -->       
-            
+        <!-- Report Modal -->
+        <div id="reportModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+            <div class="relative top-20 mx-auto p-5 border w-4/5 shadow-lg rounded-md bg-white">
+                <div class="mt-3">
+                    <h3 class="text-xl font-semibold mb-4">Generated Report</h3>
+                    <div id="reportContent" class="mt-2 p-4 bg-gray-50 rounded-lg max-h-96 overflow-y-auto">
+                    </div>
+                    <div class="mt-4 flex justify-end space-x-4">
+                        <button onclick="downloadReport()" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Download Report</button>
+                        <button onclick="closeReportModal()" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">Close</button>
+                    </div>
+                </div>
             </div>
-            
-        </form>             
-        </section>
-
-        <button class="btn-proceed" id="proceedButton">Proceed to Chatbot</button>
-    
-       
+        </div>
     </div>
 
     <script>
-        function previewFile() {
-                const fileInput = document.getElementById('fileInput');
-                const preview = document.getElementById('preview');
-                const extractionButton = document.getElementById('extractionButton');
-
-                // Show preview only if a file is selected
-                if (fileInput.files && fileInput.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        preview.innerHTML = `<img src="${e.target.result}" alt="Poster Preview" style="max-width: 100%; max-height: 200px;">`;
-                    };
-                    reader.readAsDataURL(fileInput.files[0]);
-                }
-
-                // Show the extraction button after a file is uploaded
-                extractionButton.style.display = "block";
-        }
-        
-        function extractText() {
-        const fileInput = document.getElementById('fileInput');
-        const file = fileInput.files[0];
-        const container = document.querySelector('.container');
-        const loadingOverlay = document.getElementById('loadingOverlay');
-
-
-        // Check if file is selected
-        if (!file) {
-            alert("Please upload a poster first.");
-            return;
-        }
-
-        loadingOverlay.style.display = "flex";
-        container.classList.add('blur');
-
-
-        const formData = new FormData();
-        formData.append('file', file); // Append the file to the form data
-
-        // Send the image file to the backend for OCR processing using fetch
-        fetch('/upload2', {
-            method: 'POST',
-            body: formData,
-})
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                const extractedData = data.extracted_data;
-                document.getElementById('eventTitle').value = extractedData.event_name || '';
-                document.getElementById('eventDate').value = extractedData.date || '';
-                document.getElementById('eventTime').value = extractedData.time || '';
-                document.getElementById('eventVenue').value = extractedData.venue || '';
-                alert("Details extracted successfully!");
-            } else {
-                alert(data.message || "Failed to extract details.");
-            }
-        })
-        .catch(error => {
-            console.error("Error extracting details:", error);
-            alert("An error occurred while extracting details. Please try again.");
-        })
-        .finally(() => {
-            loadingOverlay.style.display = "none";
-            container.classList.remove('blur');
+        // Mobile menu toggle
+        document.getElementById('navToggle').addEventListener('click', () => {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
         });
 
+        let documentContexts = [];
+        let chatHistory = [];
+        let uploadedFiles = [];
 
-    }
-    // Navigate to chatbot.html when Proceed button is clicked
-    const proceedButton = document.getElementById('proceedButton');
-    proceedButton.addEventListener('click', () => {
-        window.location.href = '/chatbot';
-        }); 
+        // Function to format text with Markdown
+        function formatMarkdown(text) {
+            return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        }
+
+        // File upload handling
+        document.getElementById('fileInput').addEventListener('change', async function(e) {
+            const files = Array.from(e.target.files);
+            if (files.length === 0) return;
+
+            const fileProcessing = document.getElementById('fileProcessing');
+            fileProcessing.classList.remove('hidden');
+
+            for (const file of files) {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                try {
+                    const response = await fetch('/api/upload', { // Updated to /api/upload
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.status === 'success') {
+                        uploadedFiles.push({
+                            name: file.name,
+                            summary: data.summary
+                        });
+
+                        documentContexts.push(data.summary);
+                        updateFileList();
+                        updatePreview();
+
+                        // Save missing details for later use
+                        sessionStorage.setItem('missingDetails', data.missingDetails);
+
+                        // Bot asks if the user wants to add additional details
+                        addMessageToChat('Bot', 'The document has been processed. Do you want to add additional details? Please respond with "Yes" or "No."');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert(`Error uploading file: ${file.name}`);
+                }
+            }
+
+            fileProcessing.classList.add('hidden');
+        });
+
+        function updateFileList() {
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = uploadedFiles.map((file, index) => `
+                <div class="mb-2 p-2 bg-white rounded border">
+                    <div class="flex justify-between items-center">
+                        <span class="font-medium">${file.name}</span>
+                        <button onclick="previewFile(${index})" class="text-blue-500 hover:text-blue-700">Preview</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function previewFile(index) {
+            const file = uploadedFiles[index];
+            document.getElementById('previewContent').innerHTML = `
+                <div class="prose">
+                    <h3 class="text-lg font-semibold mb-2">${file.name}</h3>
+                    <div class="whitespace-pre-wrap">${formatMarkdown(file.summary)}</div>
+                </div>
+            `;
+        }
+
+        function updatePreview() {
+            if (uploadedFiles.length > 0) {
+                previewFile(uploadedFiles.length - 1);
+            }
+        }
+
+        // Chat functionality
+        async function sendMessage() {
+            const userInput = document.getElementById('userInput');
+            const message = userInput.value.trim();
+            
+            if (!message) return;
+            
+            addMessageToChat('User', message);
+            userInput.value = '';
+            
+            const lastBotMessage = document.getElementById('chatMessages').lastChild?.innerText || '';
+            
+            // Handle "Do you want to add additional details?" interaction
+            if (lastBotMessage.includes('Do you want to add additional details')) {
+                if (message.toLowerCase() === 'yes') {
+                    const missingDetails = sessionStorage.getItem('missingDetails');
+                    addMessageToChat('Bot', `
+                        Thank you! Here are some missing details you can provide:
+                        <div class="whitespace-pre-wrap">${formatMarkdown(missingDetails)}</div>
+                        Please provide the additional information.
+                    `);
+                } else {
+                    addMessageToChat('Bot', 'Okay! Let me know if you need help with anything else.');
+                }
+                return;
+            }
+
+            // Handle other generic chat inputs
+            try {
+                const response = await fetch('/api/chat', { // Updated to /api/chat
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        contexts: documentContexts
+                    })
+                });
+                
+                const data = await response.json();
+                addMessageToChat('Bot', formatMarkdown(data.response));
+                
+                chatHistory.push({
+                    question: message,
+                    answer: data.response,
+                    timestamp: new Date().toISOString()
+                });
+            } catch (error) {
+                console.error('Error:', error);
+                addMessageToChat('System', 'Error processing your message');
+            }
+        }
+
+        function addMessageToChat(sender, message) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `mb-4 ${sender === 'User' ? 'text-right' : ''}`;
+            
+            messageDiv.innerHTML = `
+                <div class="${sender === 'User' ? 'bg-blue-100 ml-auto' : 'bg-gray-100'} inline-block rounded-lg px-4 py-2 max-w-3/4">
+                    <p class="font-semibold">${sender}</p>
+                    <p class="whitespace-pre-wrap">${message}</p>
+                </div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Generate report
+        async function generateReport() {
+            if (documentContexts.length === 0 && chatHistory.length === 0) {
+                alert('Please upload documents and/or have some chat interaction first.');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/generate-report', { // Updated to /api/generate-report
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        contexts: documentContexts,
+                        chatHistory: chatHistory,
+                        files: uploadedFiles.map(f => f.name)
+                    })
+                });
+                
+                const data = await response.json();
+                
+                document.getElementById('reportContent').innerHTML = `
+                    <div class="prose">
+                        <div class="whitespace-pre-wrap">${formatMarkdown(data.report)}</div>
+                    </div>
+                `;
+                
+                document.getElementById('reportModal').classList.remove('hidden');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error generating report.');
+            }
+        }
+
+        function downloadReport() {
+            const reportContent = document.getElementById('reportContent').innerText;
+            const blob = new Blob([reportContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `report-${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+
+        function closeReportModal() {
+            document.getElementById('reportModal').classList.add('hidden');
+        }
     </script>
-    
 </body>
 </html>

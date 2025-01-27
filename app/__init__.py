@@ -43,7 +43,7 @@ def create_app():
     app.register_blueprint(auth_bp)  # Register the Blueprint
     from app.upload import upload_bp  # Import the Blueprint
     
-    app.register_blueprint(upload_bp)  # Register the Blueprint
+    app.register_blueprint(upload_bp, url_prefix="/api")  # Register the Blueprint
 
     # Import models and create tables if they don't exist
     '''
