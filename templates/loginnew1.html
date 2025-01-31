@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            /* font-family: "Trebuchet MS", Arial, sans-serif; */
+            box-sizing: border-box;
+        }
+
+        section {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+            background-color: rgb(61, 58, 58);
+        }
+
+        .info-panel {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Montserrat', sans-serif;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .info-content {
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .info-panel img {
+            width: 80%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .info-panel h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .info-panel p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .feature-list {
+            text-align: left;
+            margin-top: 30px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .feature-icon {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        /* .login-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        } */
+
+        .login-container {
+            flex: 1;
+            font-family: "Trebuchet MS", Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            background: url('{{ url_for("static", filename="Images/7971.jpg") }}') no-repeat;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .login-container > img {
+            display: none;
+        }
+
+        /* .form-box {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            padding: 40px;
+        } */
+
+        .form-box {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .inputbox {
+            position: relative;
+            margin: 30px 0;
+            border-bottom: 2px solid #fff;
+        }
+
+        .inputbox label {
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            transform: translateY(-50%);
+            color: #fff;
+            font-size: 1em;
+            pointer-events: none;
+            transition: 0.3s ease;
+        }
+
+        .inputbox input {
+            width: 100%;
+            height: 40px;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 1em;
+            padding: 10px 35px 5px 5px;
+            color: #fff;
+        }
+
+        .inputbox input:focus ~ label,
+        .inputbox input:valid ~ label {
+            top: -5px;
+        }
+
+        .inputbox ion-icon {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fff;
+            font-size: 1.2em;
+        }
+
+        .forget {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        .forget label {
+            color: #fff;
+            font-size: 0.9em;
+        }
+
+        .forget label input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        .forget a {
+            color: #fff;
+            font-size: 0.9em;
+            text-decoration: none;
+        }
+
+        .forget a:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            width: 100%;
+            height: 40px;
+            border-radius: 40px;
+            background: #fff;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .google-btn {
+            width: 100%;
+            height: 40px;
+            border-radius: 40px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            text-decoration: none;
+            color: #000;
+            font-weight: 500;
+        }
+
+        .google-btn img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        .or-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            margin: 15px 0;
+        }
+
+        .or-divider::before,
+        .or-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #fff;
+        }
+
+        .or-divider span {
+            padding: 0 10px;
+        }
+
+        .register {
+            text-align: center;
+            font-size: 0.9em;
+            color: #fff;
+            margin-top: 25px;
+        }
+
+        .register p a {
+            text-decoration: underline;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .info-panel {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .info-content {
+            max-width: 600px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .info-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('{{ url_for("static", filename="Images/new.jpg") }}') no-repeat;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.6;
+            z-index: 0;
+        }
+
+        /* Remove the img tag from showing directly */
+        .info-content > img {
+            display: none;
+        }
+
+        
+
+        @media screen and (max-width: 768px) {
+            section {
+                flex-direction: column;
+            }
+            
+            .info-panel {
+                padding: 20px;
+            }
+            
+            .info-panel img {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .form-box {
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <div class="info-panel">
+            <div class="info-content">
+                <!-- <img src="{{ url_for('static', filename='Images/contact_us_bg.jpg') }}"> -->
+                <h1>Why use InstaReport AI?</h1>
+                <p>Transform your event documentation process with AI-powered efficiency and simplicity.</p>
+                <!-- <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <ion-icon name="document-text-outline"></ion-icon>
+                        </div>
+                        <span>Simplified event report creation with AI-driven precision and speed.</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <ion-icon name="folder-outline"></ion-icon>
+                        </div>
+                        <span>Upload multiple PDFs or documents for comprehensive analysis.</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <ion-icon name="bot-outline"></ion-icon>
+                        </div>
+                        <span>Uses AI to extract key details and structure reports professionally.</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <ion-icon name="flash-outline"></ion-icon>
+                        </div>
+                        <span>Generate polished reports in just minutes, saving time and effort.</span>
+                    </div>
+                </div> -->
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-file-alt" style="color: white;"></i>
+                        </div>
+                        <span>Simplified event report creation with AI-driven precision and speed.</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-folder-open" style="color: white;"></i>
+                        </div>
+                        <span>Upload multiple PDFs or documents for comprehensive analysis.</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-robot" style="color: white;"></i>
+                        </div>
+                        <span>Uses AI to extract key details and structure reports professionally.</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt" style="color: white;"></i>
+                        </div>
+                        <span>Generate polished reports in just minutes, saving time and effort.</span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="login-container">
+            <!-- <img src="{{ url_for('static', filename='Images/lbg.jpg') }}"> -->
+            <div class="form-box">
+                <form action="">
+                    <h2>Login</h2>
+                    <div class="inputbox">
+                        <ion-icon name="person-outline"></ion-icon>
+                        <input type="text" required>
+                        <label>Username</label>
+                    </div>
+                    <div class="inputbox">
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+                        <input type="password" required>
+                        <label>Password</label>
+                    </div>
+                    <div class="forget">
+                        <label>
+                            <input type="checkbox"> Remember me
+                        </label>
+                        <a href="#">Forgot Password</a>
+                    </div>
+                    <button type="submit">Login</button>
+                    
+                    <div class="or-divider">
+                        <span>OR</span>
+                    </div>
+
+                    <a href="#" class="google-btn">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHBhdGggZmlsbD0iI0VBNDMzNSIgZD0iTTI0IDkuNWMzLjU0IDAgNi43MSAxLjIyIDkuMjEgMy42bDYuODUtNi44NUMzNS45IDIuMzggMzAuNDcgMCAyNCAwIDEyLjY2IDAgMy4yMyA1LjUyLjM2IDE0LjRsNy45OCA2LjE5QzEwLjI4IDEzLjIyIDE2LjYyIDkuNSAyNCA5LjV6Ii8+PHBhdGggZmlsbD0iIzRDQUY1MCIgZD0iTTQ2LjkzIDI0LjVjMC0xLjctLjE1LTMuNS0uNDUtNS4ySDI0djkuOTFoMTIuODljLTEuNDkgNy40NS01LjQ3IDEzLjA2LTEyLjg5IDEzLjA2LTcuMzcgMC0xMy42Ni01LjMtMTUuNjYtMTIuMTJsLTcuOTggNi4xOUM2LjUgNDIuNjIgMTQuNjIgNDggMjQgNDh6Ii8+PHBhdGggZmlsbD0iI0ZCQkMwNSIgZD0iTTguMzQgMTQuNTlsLTcuOTgtNi4xOUMuODYgMTAuNjYgMCAxMy4yMyAwIDE2czEuODYgMTAuOTIgNC40MyAxNS4yMWw3Ljk4LTYuMTlDMTAuOTggMjIuMjcgMTAuMzQgMjAgMTAuMzQgMTZzLjY0LTYuMjcgMi0xMy40MXoiLz48cGF0aCBmaWxsPSIjMTk3NkQyIiBkPSJNMjQgNDhjOS4zNiAwIDE3LjQ5LTUuMzggMjEuNDgtMTMuMTlMMzcuNSAyOC40NmMtMi4yMSAzLjUyLTYuMTIgNS44LTEzLjUgNS44LTcuMzcgMC0xMy42Ni01LjMtMTUuNjYtMTIuMTJsLTcuOTggNi4xOUM2LjUgNDIuNjIgMTQuNjIgNDggMjQgNDh6Ii8+PC9zdmc+" alt="Google logo">
+                        Sign in with Google
+                    </a>
+
+                    <div class="register">
+                        <p>Don't have an account? <a href="#">Sign Up</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

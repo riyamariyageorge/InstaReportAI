@@ -21,20 +21,20 @@
             align-items: center;
             min-height: 100vh;
             width: 100%;
-            background: url("{{ url_for('static', filename='Images/login.jpg') }}") no-repeat center center;
+            background: url("{{ url_for('static', filename='Images/new.jpg') }}") no-repeat center center;
             background-color: rgb(61, 58, 58);
             background-size: cover;
         }
 
-        .form-box-1 {
+        /* .form-box-1 {
             position: relative;
             width: 90%;
             max-width: 400px;
-            height: 550px; /* Increased height to accommodate new button */
+            height: 550px;
             background: transparent;
             border: none;
             border-radius: 20px;
-            backdrop-filter: blur(15px) brightness(80%);
+            backdrop-filter: blur(20px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -44,7 +44,7 @@
 
         h2 {
             font-size: 2em;
-            color: #fff; /* Heading remains white */
+            color: #fff; 
             text-align: center;
             margin-bottom: 20px;
         }
@@ -105,19 +105,115 @@
             font-size: 1em;
             font-weight: 600;
             margin-bottom: 15px;
-        }
+        } */
+
+        .form-box-1 {
+    position: relative;
+    width: 90%;
+    max-width: 400px;
+    height: 550px; /* Keeps the same height */
+    background: transparent;
+    border: none;
+    border-radius: 20px;
+    backdrop-filter: blur(55px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    margin: 20px auto; /* Centered form */
+}
+
+h2 {
+    font-size: 2em;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.inputbox {
+    position: relative;
+    margin: 30px 0;
+    width: 100%; /* Ensures full use of form space */
+    max-width: 370px; /* Keeps the field wide while within the form */
+    border-bottom: 2px solid #fff;
+}
+
+.inputbox label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 1em;
+    pointer-events: none;
+    transition: 0.3s ease;
+}
+
+.inputbox input:focus ~ label,
+.inputbox input:not(:placeholder-shown) ~ label {
+    top: -10px;
+    font-size: 0.8em;
+    color: #ddd;
+}
+
+.inputbox input {
+    width: 100%; /* Ensures input fills available space */
+    height: 50px; /* Slightly taller for better appearance */
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1.1em; /* Slightly larger text */
+    padding: 10px 50px 5px 10px; /* Extra padding for spacing */
+    color: #fff;
+}
+
+.inputbox ion-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 1.4em;
+}
+
+button {
+    width: 100%;
+    height: 50px;
+    border-radius: 40px;
+    background-color: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+
 
         /* Updated Google Button Styles */
         .google-btn {
-            background-color: #fff; /* Button background remains white */
-            color: #000; /* Text color changed to black */
+            /* background-color: #fff; 
+            color: #000; 
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 40px;
             gap: 10px;
             margin-top: 15px;
-            border: 1px solid #ccc; /* Optional: Light border for definition */
-            font-weight: 600;
+            border: 1px solid #ccc; 
+            font-weight: 600; */
+            width: 100%;
+            height: 40px;
+            border-radius: 40px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            text-decoration: none;
+            color: #000;
+            font-weight: 500;
         }
 
         .google-btn img {
