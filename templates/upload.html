@@ -3,195 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Event Poster</title>
+    <title>DocBot Dashboard</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        :root {
+            --primary: #2C3E50;
+            --secondary: #3498db;
+            --accent: #1abc9c;
+            --background: #f8fafc;
+            --text: #2c3e50;
+            --gray: #64748b;
+            --border: #e2e8f0;
+            --white: #ffffff;
+        }
+
         body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f7fc;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
         }
 
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 15px 20px;
+        .navbar {
+            background: var(--white);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        header nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-
-        header nav ul li {
-            margin-right: 20px;
-        }
-
-        header nav ul li a {
-            color: white;
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
             text-decoration: none;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .upload-section, .details-section {
-            margin-bottom: 20px;
-        }
-
-        .upload-section input[type="file"] {
-            margin-top: 10px;
-        }
-
-        .details-section h3 {
-            margin-bottom: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-
-        .buttons {
+        .nav-links {
             display: flex;
-            gap: 10px;
+            gap: 2rem;
         }
 
-        button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1em;
+        .nav-links a {
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .upload-section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 3rem 2rem;
+            text-align: center;
             cursor: pointer;
+            transition: border-color 0.3s, background-color 0.3s;
         }
 
-        .btn-upload {
-            background-color: #007bff;
-            color: white;
+        .upload-area:hover {
+            border-color: var(--secondary);
+            background-color: rgba(52, 152, 219, 0.05);
         }
 
-        .btn-save {
-            background-color: #28a745;
-            color: white;
+        .upload-icon {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
         }
 
-        .btn-reextract {
-            background-color: #ffc107;
-            color: white;
+        .file-list {
+            margin-top: 2rem;
         }
 
-        .btn-proceed {
-            background-color: #17a2b8;
-            color: white;
+        .preview-section {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
-        .preview {
-            margin-top: 10px;
+        .chat-container {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            overflow: hidden;
         }
 
-        .preview img {
-            max-width: 100%;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        .chat-header {
+            background: var(--primary);
+            color: var(--white);
+            padding: 1.5rem;
+            font-weight: 600;
+        }
+
+        .chat-messages {
+            padding: 1.5rem;
+            height: 400px;
+            overflow-y: auto;
+        }
+
+        .message {
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            max-width: 80%;
+        }
+
+        .message.bot {
+            background: var(--primary);
+            color: var(--white);
+            margin-left: auto;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-right: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .chat-input button {
+            background: var(--secondary);
+            color: var(--white);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .chat-input button:hover {
+            background: #2980b9;
+        }
+
+        .generate-btn {
+            display: block;
+            width: 100%;
+            background: var(--accent);
+            color: var(--white);
+            padding: 1rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            margin-top: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .generate-btn:hover {
+            background: #16a085;
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                margin-top: 1rem;
+                gap: 1rem;
+            }
+
+            .main-container {
+                padding: 0 1rem;
+                margin: 1rem auto;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>InstaReport AI</h1>
-        <nav>
-            <ul>
-                <li><a href="dashboard.html">Home</a></li>
-                <li><a href="#">Templates</a></li>
-                <li><a href="#">Reports</a></li>
-                <li><a href="#">Logout</a></li>
-            </ul>
-        </nav>
-    </header>
+    <nav class="navbar">
+        <a href="#" class="logo">DocBot</a>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">About Us</a>
+            <a href="#">Logout</a>
+        </div>
+    </nav>
 
-    <div class="container">
-        <section class="upload-section">
-            <h2>Upload Event Poster</h2>
-            <input type="file" id="fileInput" accept="image/*">
-            <div class="preview" id="preview">
-                <!-- Preview of uploaded image -->
+    <div class="main-container">
+        <div class="upload-section">
+            <h2 class="section-title">Upload Documents</h2>
+            <div class="upload-area">
+                <div class="upload-icon">📄</div>
+                <p>Drag and drop files here or click to select</p>
             </div>
-        </section>
+            <div class="file-list">
+                <h3>Uploaded Files</h3>
+                <!-- Files will be listed here -->
+            </div>
+            <div class="preview-container">
+                <h3 class="section-title">Document Preview</h3>
+                <div class="preview-content">
+                    <p>No document uploaded yet</p>
+                </div>
+            </div>
+        </div>
 
-        <section class="details-section">
-            <h3>Extracted Details</h3>
-            <div class="form-group">
-                <label for="eventTitle">Event Title</label>
-                <input type="text" id="eventTitle" placeholder="Enter event title">
+        <div class="chat-container">
+            <div class="chat-header">
+                DocBot Assistant
             </div>
-            <div class="form-group">
-                <label for="eventDate">Date</label>
-                <input type="date" id="eventDate">
+            <div class="chat-messages">
+                <div class="message bot">
+                    Hello! I'm here to help you process and analyze your documents. Please upload a file to get started.
+                </div>
+                <!-- More messages will appear here -->
             </div>
-            <div class="form-group">
-                <label for="eventTime">Time</label>
-                <input type="time" id="eventTime">
+            <div class="chat-input">
+                <input type="text" placeholder="Type your message..." />
+                <button>Send</button>
             </div>
-            <div class="form-group">
-                <label for="eventVenue">Venue</label>
-                <input type="text" id="eventVenue" placeholder="Enter event venue">
-            </div>
-            <div class="buttons">
-                <button class="btn-save">Save Changes</button>
-                <button class="btn-reextract">Re-extract</button>
-            </div>
-        </section>
-
-        <button class="btn-proceed" id="proceedButton">Proceed to Chatbot</button>
+            <button class="generate-btn">Generate Report</button>
+        </div>
     </div>
-
-    <script>
-        // JavaScript for previewing the uploaded image
-        const fileInput = document.getElementById('fileInput');
-        const preview = document.getElementById('preview');
-
-        fileInput.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    preview.innerHTML = `<img src="${e.target.result}" alt="Event Poster">`;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                preview.innerHTML = '';
-            }
-        });
-         // Navigate to chatbot.html when Proceed button is clicked
-         const proceedButton = document.getElementById('proceedButton');
-        proceedButton.addEventListener('click', () => {
-            window.location.href = 'chatbot.html';
-        });
-
-
-    </script>
 </body>
 </html>

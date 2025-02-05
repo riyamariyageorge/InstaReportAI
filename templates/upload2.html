@@ -6,8 +6,21 @@
     <title>Document Processing Chatbot</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-size: cover; 
+            /*background-size: contain;  or 'cover' depending on your need */
+            background-position: center; 
+            background-repeat: no-repeat;
+        }
+        .navbar {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
         .chat-container {
             height: calc(100vh - 300px);
+
         }
         .preview-container {
             max-height: calc(100vh - 300px);
@@ -16,39 +29,28 @@
             max-height: 200px;
             overflow-y: auto;
         }
-        .animate-spin {
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-white text-gray-800">
     <!-- Navigation Bar -->
-    <nav class="bg-blue-500 text-white shadow-lg">
+    <nav class="bg-gray-800 text-white shadow-lg">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <div class="text-2xl font-bold">DocBot</div>
             <ul class="hidden md:flex space-x-6">
-                <li><a href="#" class="hover:text-blue-300">Home</a></li>
-                <li><a href="#about" class="hover:text-blue-300">About Us</a></li>
-                <li><a href="{{ url_for('auth_bp.logout') }}" class="hover:text-blue-300">Logout</a></li>
+                <li><a href="#" class="hover:text-gray-300">Home</a></li>
+                <li><a href="#about" class="hover:text-gray-300">About Us</a></li>
+                <li><a href="{{ url_for('auth_bp.logout') }}" class="hover:text-gray-300">Logout</a></li>
             </ul>
             <button class="block md:hidden text-xl focus:outline-none" id="navToggle">
                 ☰
             </button>
         </div>
         <!-- Mobile Menu -->
-        <div class="hidden md:hidden bg-blue-600" id="mobileMenu">
+        <div class="hidden md:hidden bg-gray-700" id="mobileMenu">
             <ul class="space-y-2 text-center py-4">
-                <li><a href="#" class="block text-white hover:text-blue-300">Home</a></li>
-                <li><a href="#about" class="block text-white hover:text-blue-300">About Us</a></li>
-                <li><a href="#logout" class="block text-white hover:text-blue-300">Logout</a></li>
+                <li><a href="#" class="block text-white hover:text-gray-300">Home</a></li>
+                <li><a href="#about" class="block text-white hover:text-gray-300">About Us</a></li>
+                <li><a href="#logout" class="block text-white hover:text-gray-300">Logout</a></li>
             </ul>
         </div>
     </nav>
@@ -56,14 +58,14 @@
     <!-- Main Content -->
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold mb-8 text-center">Document Processing Chatbot</h1>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Left Column: File Upload and Preview -->
-            <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="bg-gray-100 rounded-xl shadow-lg p-6">
                 <div class="mb-6">
                     <h2 class="text-xl font-semibold mb-4">Upload Documents</h2>
                     <div class="flex items-center justify-center w-full">
-                        <label class="w-full flex flex-col items-center px-4 py-6 bg-white rounded-lg shadow-lg tracking-wide border border-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white">
+                        <label class="w-full flex flex-col items-center px-4 py-6 bg-white rounded-xl shadow-md tracking-wide border border-gray-400 cursor-pointer hover:bg-gray-800 hover:text-white">
                             <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                 <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
                             </svg>
@@ -71,8 +73,8 @@
                             <input type='file' id="fileInput" class="hidden" accept=".pdf,.png,.jpg,.jpeg" multiple />
                         </label>
                     </div>
-                    <!-- Loader -->
-                    <div id="fileProcessing" class="hidden mt-4 text-center text-blue-500">
+                     <!-- Loader -->
+                     <div id="fileProcessing" class="hidden mt-4 text-center text-blue-500">
                         <div class="flex items-center justify-center space-x-2">
                             <svg class="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -85,30 +87,34 @@
 
                 <div class="mb-6">
                     <h3 class="text-lg font-semibold mb-2">Uploaded Files</h3>
-                    <div id="fileList" class="file-list bg-gray-50 p-4 rounded-lg"></div>
+                    <div id="fileList" class="file-list bg-white p-4 rounded-lg shadow-sm"></div>
                 </div>
-                
+
                 <div class="preview-container overflow-y-auto">
                     <h2 class="text-xl font-semibold mb-4">Document Preview</h2>
-                    <div id="previewContent" class="bg-gray-50 p-4 rounded-lg">
+                    <div id="previewContent" class="bg-white p-4 rounded-lg shadow-sm">
                         <p class="text-gray-500">No document uploaded yet</p>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Right Column: Chat Interface -->
-            <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="bg-gray-100 rounded-xl shadow-lg p-6">
                 <div class="chat-container flex flex-col">
                     <div id="chatMessages" class="flex-1 overflow-y-auto mb-4">
                         <!-- Chat messages will be inserted here -->
+                        <div class="message-bubble bg-gray-700 text-white rounded-xl p-4 mb-4">
+                            <p class="font-semibold text-white">DocBot</p>
+                            <p class="text-gray-300">Hello! I'm here to help you process and analyze your documents. Please upload a file to get started.</p>
+                        </div>
                     </div>
-                    
+
                     <div class="mt-4">
                         <div class="flex space-x-4">
-                            <input type="text" id="userInput" class="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Type your message...">
-                            <button onclick="sendMessage()" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Send</button>
+                            <input type="text" id="userInput" class="flex-1 p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-700" placeholder="Type your message...">
+                            <button onclick="sendMessage()" class="px-4 py-2 bg-gray-800 text-white rounded-xl hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-700">Send</button>
                         </div>
-                        <button onclick="generateReport()" class="mt-4 w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500">Generate Report</button>
+                        <button onclick="generateReport()" class="mt-4 w-full px-4 py-2 bg-gray-700 text-white rounded-xl hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-700">Generate Report</button>
                     </div>
                 </div>
             </div>
@@ -116,13 +122,13 @@
 
         <!-- Report Modal -->
         <div id="reportModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
-            <div class="relative top-20 mx-auto p-5 border w-4/5 shadow-lg rounded-md bg-white">
+            <div class="relative top-20 mx-auto p-5 border w-4/5 shadow-lg rounded-xl bg-white">
                 <div class="mt-3">
                     <h3 class="text-xl font-semibold mb-4">Generated Report</h3>
                     <div id="reportContent" class="mt-2 p-4 bg-gray-50 rounded-lg max-h-96 overflow-y-auto">
                     </div>
                     <div class="mt-4 flex justify-end space-x-4">
-                        <button onclick="downloadReport()" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Download Report</button>
+                        <button onclick="downloadReport()" class="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900">Download Report</button>
                         <button onclick="closeReportModal()" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">Close</button>
                     </div>
                 </div>
@@ -136,7 +142,12 @@
             const menu = document.getElementById('mobileMenu');
             menu.classList.toggle('hidden');
         });
-
+        document.getElementById('userInput').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // Prevents the default action (new line in some cases)
+        sendMessage(); // Calls the function to send the message
+    }
+});
         let documentContexts = [];
         let chatHistory = [];
         let uploadedFiles = [];

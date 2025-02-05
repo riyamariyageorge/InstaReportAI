@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocBot - Intelligent Document Processing</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        
+        .chat-container {
+            height: calc(100vh - 320px);
+            scrollbar-width: thin;
+            scrollbar-color: #CBD5E0 #EDF2F7;
+        }
+        
+        .chat-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .chat-container::-webkit-scrollbar-track {
+            background: #EDF2F7;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb {
+            background-color: #CBD5E0;
+            border-radius: 4px;
+        }
+        
+        .preview-container {
+            max-height: calc(100vh - 320px);
+        }
+        
+        .file-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .drop-zone {
+            border: 2px dashed #CBD5E0;
+            transition: all 0.3s ease;
+        }
+        
+        .drop-zone:hover {
+            border-color: #3B82F6;
+            background-color: #EFF6FF;
+        }
+        
+        .message-bubble {
+            max-width: 80%;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .btn-primary {
+            background-color: #3B82F6;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2563EB;
+            transform: translateY(-1px);
+        }
+        
+        .btn-success {
+            background-color: #10B981;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success:hover {
+            background-color: #059669;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="bg-white border-b border-gray-200 fixed w-full z-10">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-robot text-blue-500 text-2xl"></i>
+                    <span class="text-2xl font-bold text-gray-800">DocBot</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-gray-600 hover:text-blue-500 transition-colors">Home</a>
+                    <a href="#about" class="text-gray-600 hover:text-blue-500 transition-colors">About Us</a>
+                    <a href="{{ url_for('auth_bp.logout') }}" class="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors">Logout</a>
+                </div>
+                <button class="md:hidden text-gray-600 focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 pt-20 pb-8">
+        <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">Intelligent Document Processing</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Left Column -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800">Upload Documents</h2>
+                    <div class="drop-zone rounded-xl p-8">
+                        <label class="w-full flex flex-col items-center cursor-pointer">
+                            <i class="fas fa-cloud-upload-alt text-4xl text-blue-500 mb-4"></i>
+                            <span class="text-lg text-gray-600 mb-2">Drag and drop files here</span>
+                            <span class="text-sm text-gray-500">or click to browse</span>
+                            <input type='file' id="fileInput" class="hidden" accept=".pdf,.png,.jpg,.jpeg" multiple />
+                        </label>
+                    </div>
+                    <div id="fileProcessing" class="hidden mt-4 text-center text-blue-500">
+                        <div class="flex items-center justify-center space-x-3">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <span>Processing files...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-3 text-gray-800">Uploaded Files</h3>
+                    <div id="fileList" class="file-list bg-gray-50 rounded-xl p-4"></div>
+                </div>
+                
+                <div class="preview-container">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-800">Document Preview</h2>
+                    <div id="previewContent" class="bg-gray-50 rounded-xl p-6">
+                        <p class="text-gray-500 text-center">No document selected</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <div class="flex flex-col h-full">
+                    <div id="chatMessages" class="chat-container flex-1 overflow-y-auto mb-4 p-4">
+                        <!-- Initial welcome message -->
+                        <div class="message-bubble bg-blue-50 rounded-xl p-4 mb-4">
+                            <p class="font-semibold text-blue-600">DocBot</p>
+                            <p class="text-gray-700">Hello! I'm here to help you process and analyze your documents. Please upload a file to get started.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-auto">
+                        <div class="flex space-x-4">
+                            <div class="flex-1 relative">
+                                <input type="text" id="userInput" 
+                                    class="w-full p-3 pr-12 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                    placeholder="Type your message...">
+                                <button onclick="sendMessage()" 
+                                    class="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-600">
+                                    <i class="fas fa-paper-plane text-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button onclick="generateReport()" 
+                            class="mt-4 w-full p-3 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-colors flex items-center justify-center space-x-2">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Generate Report</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Report Modal -->
+        <div id="reportModal" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50">
+            <div class="relative top-20 mx-auto p-6 border w-4/5 max-w-4xl shadow-xl rounded-xl bg-white">
+                <div class="mb-6">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-2xl font-semibold text-gray-800">Generated Report</h3>
+                        <button onclick="closeReportModal()" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="reportContent" class="mt-4 p-6 bg-gray-50 rounded-xl max-h-[60vh] overflow-y-auto"></div>
+                <div class="mt-6 flex justify-end space-x-4">
+                    <button onclick="downloadReport()" 
+                        class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center space-x-2">
+                        <i class="fas fa-download"></i>
+                        <span>Download Report</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Previous JavaScript code remains the same, but update the message display function:
+        function addMessageToChat(sender, message) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message-bubble mb-4 ${sender === 'User' ? 'ml-auto' : 'mr-auto'}`;
+            
+            const bgColor = sender === 'User' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-800';
+            
+            messageDiv.innerHTML = `
+                <div class="${bgColor} rounded-xl px-4 py-3 max-w-[calc(100%-2rem)]">
+                    <p class="font-semibold mb-1">${sender}</p>
+                    <div class="whitespace-pre-wrap">${message}</div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Add drag and drop functionality
+        const dropZone = document.querySelector('.drop-zone');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            dropZone.classList.add('border-blue-500', 'bg-blue-50');
+        }
+
+        function unhighlight(e) {
+            dropZone.classList.remove('border-blue-500', 'bg-blue-50');
+        }
+
+        dropZone.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            document.getElementById('fileInput').files = files;
+            // Trigger the existing file input change handler
+            document.getElementById('fileInput').dispatchEvent(new Event('change'));
+        }
+
+        // Rest of the JavaScript code remains the same
+    </script>
+</body>
+</html>
