@@ -7,7 +7,7 @@ from app import oauth
 import secrets
 from dotenv import load_dotenv
 #from extracttext import process_event_poster
-auth_bp = Blueprint('auth_bp', __name__)
+auth_bp = Blueprint('auth_bp', __name__, template_folder='templates')
 
 load_dotenv()
 
@@ -60,7 +60,7 @@ def login():
             session['user'] = username
             flash("Login successful!", "success")
             session['_flashes'] = [] 
-            return redirect(url_for('auth_bp.dashboard', username=username))  # Redirect to the dashboard route
+            return redirect(url_for('auth_bp.dashboard'))  # Redirect to the dashboard route
         else:
             flash("Invalid username or password. Please try again.", "error")
             return redirect(url_for('auth_bp.login'))
