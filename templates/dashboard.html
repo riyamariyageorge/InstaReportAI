@@ -3,11 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< Updated upstream
     <title>Report Management Dashboard</title>
     <style> 
     body {
         font-family: 'Arial', sans-serif;
         background: url('{{ url_for("static", filename="Images/uploadimage.jpg") }}');
+=======
+    <title>InstaReportAI</title>
+    <style> 
+    body {
+        font-family: 'Arial', sans-serif;
+        background-image: url('/static/Images/uploadimg.jpg');
+>>>>>>> Stashed changes
         background-size: cover; 
         /*background-size: contain;  or 'cover' depending on your need */
         background-position: center; 
@@ -43,6 +51,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+<<<<<<< Updated upstream
         }
         .nav-links {
             display: flex;
@@ -179,6 +188,144 @@
             background: var(--primary);
             color: white;
             padding: 0.75rem 2rem;
+=======
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #a3c4f3;
+        }
+
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            padding: 40px;
+            text-align: center;
+        
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .welcome-section h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-section p {
+            color: var(--gray);
+        }
+
+        .main-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .action-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            width: 220px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .icon-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .icon-circle svg {
+            width: 30px;
+            height: 30px;
+            color: var(--primary);
+        }
+
+        .action-card h2 {
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .action-card p {
+            color: var(--gray);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .action-btn {
+            background: var(--primary);
+            color: white;
+            padding: 0.6rem 1.5rem;
+>>>>>>> Stashed changes
             border-radius: 6px;
             text-decoration: none;
             font-weight: 500;
@@ -186,6 +333,10 @@
             display: inline-block;
             border: none;
             cursor: pointer;
+<<<<<<< Updated upstream
+=======
+            font-size: 0.9rem;
+>>>>>>> Stashed changes
         }
 
         .action-btn:hover {
@@ -205,6 +356,7 @@
 
         @media (max-width: 1000px) {
             .main-actions {
+<<<<<<< Updated upstream
                 flex-direction: column;
                 align-items: center;
             }
@@ -212,6 +364,10 @@
             .action-card {
                 width: 100%;
                 max-width: 400px;
+=======
+                flex-wrap: wrap;
+                justify-content: center;
+>>>>>>> Stashed changes
             }
         }
 
@@ -231,6 +387,19 @@
             .welcome-section h1 {
                 font-size: 1.5rem;
             }
+<<<<<<< Updated upstream
+=======
+            
+            .main-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .action-card {
+                width: 100%;
+                max-width: 280px;
+            }
+>>>>>>> Stashed changes
         }
     </style>
 </head>
@@ -238,11 +407,18 @@
     <div class="top-bar">
         <div class="logo">
             <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+<<<<<<< Updated upstream
             <h2>Report Generation</h2>
         </div>
         <nav class="nav-links">
             <a href="{{ url_for('auth_bp.home') }}">Home</a>
             <a href="{{url_for('auth_bp.templates') }}">Templates</a>
+=======
+            <h2>InstaReportAI</h2>
+        </div>
+        <nav class="nav-links">
+            <a href="{{ url_for('auth_bp.home') }}">Home</a>
+>>>>>>> Stashed changes
             <a href="#">My Reports</a>
             <a href="#">Profile</a>
         </nav>
@@ -261,33 +437,69 @@
             <div class="action-card">
                 <div class="icon-circle">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<<<<<<< Updated upstream
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
                     </svg>
                 </div>
                 <h2>Upload Documents</h2>
                 <p>Upload your files for processing and report generation</p>
                 <a href="/api/upload2" class="action-btn">Upload Now</a>
+=======
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                </div>
+                <h2>User Guide</h2>
+                <p>Learn how to use InstaReportAI</p>
+                <a href="\userguide" class="action-btn">View Guide</a>
+>>>>>>> Stashed changes
             </div>
 
             <div class="action-card">
                 <div class="icon-circle">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<<<<<<< Updated upstream
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
                     </svg>
                 </div>
                 <h2>Select Templates</h2>
                 <p>Choose and customize templates for your reports</p>
                 <a href="/templates" class="action-btn">View Templates</a>
+=======
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                    </svg>
+                </div>
+                <h2>Upload Documents</h2>
+                <p>Upload your files for processing</p>
+                <a href="\upload" class="action-btn">Upload Now</a>
+>>>>>>> Stashed changes
             </div>
 
             <div class="action-card">
                 <div class="icon-circle">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<<<<<<< Updated upstream
+=======
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <h2>Image Gallery</h2>
+                <p>View your report images</p>
+                <a href="\imagegallary" class="action-btn">View Gallery</a>
+            </div>
+
+            <div class="action-card">
+                <div class="icon-circle">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+>>>>>>> Stashed changes
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
                 </div>
                 <h2>View Reports</h2>
+<<<<<<< Updated upstream
                 <p>Access and manage your generated reports</p>
+=======
+                <p>Access your generated reports</p>
+>>>>>>> Stashed changes
                 <a href="#" class="action-btn">Browse Reports</a>
             </div>
         </div>

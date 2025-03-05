@@ -121,22 +121,22 @@ def dashboard():
 
 
 
-@auth_bp.route('/templates')
-def templates():
+@auth_bp.route('/userguide')
+def userguide():
     username = session.get('user')
     if not username:
-        flash("Please log in to access the templates page.", "warning")
+        flash("Please log in to access the userguide page.", "warning")
         return redirect(url_for('auth_bp.login'))
-
-    # Define the list of templates
-   # templates = [
-    #    {"file": "templates3.docx", "image": "placeholder-image.jpg", "name": "Workshop Report"}
-       # {"file": "templates4.docx", "image": "template2.jpg", "name": "Project Report"},
-       # {"file": "templates5.docx", "image": "template3.jpg", "name": "Business Strategy Outline"}
-    #]
-    return render_template('tem.html', username=username)
+    return render_template('userguide.html', username=username)
 
 
+@auth_bp.route('/imagegallary')
+def imagegallary():
+    username = session.get('user')
+    if not username:
+        flash("Please log in to access the gallary page.", "warning")
+        return redirect(url_for('auth_bp.login'))
+    return render_template('imagegallary.html', username=username)
 
     
     

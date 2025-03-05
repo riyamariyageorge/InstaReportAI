@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>InstaReportAI - User Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f7;
+            color: #333;
+            background-image: url('/static/Images/uploadimg.jpg');
+            /*background-image: url('https://via.placeholder.com/1920x1080/f5f5f7/f5f5f7?text='); */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSgzMCkiPjxsaW5lIHgxPSIwIiB5MT0iMCIgeDI9IjQwIiB5Mj0iNDAiIHN0cm9rZT0iI2VlZWVmNSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI3BhdHRlcm4pIi8+PC9zdmc+');
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        header {
+            background-color: #1e3a5f;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style-type: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #ddd;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: white;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .logout-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .guide-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .guide-header h1 {
+            font-size: 2.5rem;
+            color: #1e3a5f;
+            margin-bottom: 1rem;
+        }
+
+        .guide-header p {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .guide-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section-title i {
+            font-size: 1.5rem;
+            color: #1e3a5f;
+            background-color: rgba(30, 58, 95, 0.1);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .section-title h2 {
+            color: #1e3a5f;
+            font-size: 1.7rem;
+        }
+
+        .section-content {
+            padding-left: 3.5rem;
+        }
+
+        .section-content p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .section-content ul {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        .section-content li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .step {
+            margin-bottom: 1.5rem;
+            background-color: #f9f9f9;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 4px solid #1e3a5f;
+        }
+
+        .step-number {
+            font-weight: bold;
+            color: #1e3a5f;
+            margin-bottom: 0.5rem;
+            display: block;
+            font-size: 1.1rem;
+        }
+
+        .tip {
+            background-color: rgba(240, 248, 255, 0.7);
+            border-left: 4px solid #3498db;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .tip strong {
+            color: #2980b9;
+        }
+
+        .warning {
+            background-color: rgba(255, 248, 240, 0.7);
+            border-left: 4px solid #e67e22;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .warning strong {
+            color: #d35400;
+        }
+
+        .image-container {
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #eee;
+        }
+
+        .image-caption {
+            margin-top: 0.5rem;
+            color: #666;
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        .toc {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .toc h2 {
+            color: #1e3a5f;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .toc-list {
+            list-style-type: none;
+        }
+
+        .toc-list li {
+            margin-bottom: 0.8rem;
+        }
+
+        .toc-list a {
+            color: #444;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: block;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+
+        .toc-list a:hover {
+            background-color: #f5f5f7;
+            color: #1e3a5f;
+        }
+
+        .toc-list a.active {
+            background-color: #1e3a5f;
+            color: white;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 2rem;
+        }
+
+        .content-col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        footer {
+            background-color: #1e3a5f;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        footer p {
+            margin-bottom: 1rem;
+        }
+
+        @media screen and (max-width: 992px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+
+            .toc {
+                position: static;
+                margin-top: 2rem;
+                order: -1;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .logout-btn {
+                margin-top: 1rem;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            .guide-header h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+
+            .section-content {
+                padding-left: 0;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+        </h2>InstaReportAI</h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('auth_bp.home') }}">Home</a></li>
+                <li><a href="#">My Reports</a></li>
+                <li><a href="#">Profile</a></li>
+            </ul>
+        </nav>
+        <a href="{{ url_for('auth_bp.logout') }}">
+        <button class="logout-btn">Logout</button>
+        </a>
+    </header>
+
+    <main>
+        <div class="guide-header">
+            <h1>InstaReportAI User Guide</h1>
+            <p>Learn how to use InstaReportAI efficiently to generate professional reports seamlessly.</p>
+        </div>
+
+        <div class="grid-container">
+            <div class="content-col">
+                <section id="introduction" class="guide-section">
+                    <div class="section-title">
+                        <i class="fas fa-info-circle"></i>
+                        <h2>Introduction to InstaReportAI</h2>
+                    </div>
+                    <div class="section-content">
+                        <p>Welcome to InstaReportAI, your all-in-one solution for creating professional reports with the help of artificial intelligence. This guide will walk you through all the features and functionalities available on the platform to help you get the most out of InstaReportAI.</p>
+                        <p>InstaReportAI allows you to:</p>
+                        <ul>
+                            <li>Upload multiple posters and documents for information extraction</li>
+                            <li>Use AI-powered chatbot assistance for additional information and clarification</li>
+                            <li>Preview reports before exporting to PDF</li>
+                            <li>Edit generated text with inline editing</li>
+                            <li>Insert images from the Image Gallery</li>
+                            <li>View and manage your created reports</li>
+                        </ul>
+                        <p>Let's dive into each of these features in detail.</p>
+                    </div>
+                </section>
+
+                <section id="upload-documents" class="guide-section">
+                    <div class="section-title">
+                        <i class="fas fa-upload"></i>
+                        <h2>Uploading Documents</h2>
+                    </div>
+                    <div class="section-content">
+                        <p>The document upload feature allows you to upload multiple posters and event materials for information extraction and processing.</p>
+                        
+                        <div class="step">
+                            <span class="step-number">Step 1: Navigate to the Upload Documents Section</span>
+                            <p>From the dashboard, click on the "Upload Documents" card or navigate to the upload section from the main menu.</p>
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">Step 2: Select Files for Upload</span>
+                            <p>Click on the "Upload Now" button or drag and drop your files into the designated area. You can upload multiple files at once.</p>
+                            <div class="tip">
+                                <strong>Tip:</strong> InstaReportAI supports various file formats including PDF, JPG, PNG, and DOCX. For best results, ensure your files are clear and legible.
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">Step 3: Process the Uploaded Documents</span>
+                            <p>After uploading, click on "Process Documents" to start the AI-powered information extraction. The system will analyze your documents and extract relevant information about the events.</p>
+                        </div>
+                        
+                        <div class="image-container">
+                            <img src="/api/placeholder/600/300" "uploading document  Interface">
+                            <p class="image-caption">The document upload interface showing the drag and drop area and file selection button</p>
+                        </div>
+                        
+                        <div class="warning">
+                            <strong>Note:</strong> The processing time depends on the number and size of the uploaded documents. Larger files may take longer to process.
+                        </div>
+                    </div>
+                </section>
+
+                <section id="chatbot-assistance" class="guide-section">
+                    <div class="section-title">
+                        <i class="fas fa-robot"></i>
+                        <h2>Using Chatbot Assistance</h2>
+                    </div>
+                    <div class="section-content">
+                        <p>InstaReportAI's intelligent chatbot is designed to help you gather additional information about the event and identify missing details from your uploaded documents.</p>
+                        
+                        <div class="step">
+                            <span class="step-number">Step 1: Access the Chatbot</span>
+                            <p>After document processing is complete, you'll see the chatbot interface on the right side of the screen. You can also access it by clicking the chat icon in the bottom right corner.</p>
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">Step 2: Ask for Additional Information</span>
+                            <p>Use the chatbot to ask questions about the event or to provide details that weren't included in the uploaded documents. For example:</p>
+                            <ul>
+                                <li>"What details are missing from my event poster?"</li>
+                                <li>"Can you suggest a better description for this event?"</li>
+                                <li>"Help me organize the schedule information."</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">Step 3: Review and Add Suggestions</span>
+                            <p>The chatbot will provide suggestions and identify missing information. You can add these suggestions directly to your report by clicking "Add to Report" next to each suggestion.</p>
+                        </div>
+                        
+                        <div class="image-container">
+                            <img src="/api/placeholder/600/300" alt="Chatbot Assistance Interface">
+                            <p class="image-caption">The chatbot interface showing a conversation about event details</p>
+                        </div>
+                        
+                        <div class="tip">
+                            <strong>Tip:</strong> The more specific your questions, the more helpful the chatbot's responses will be. Try to ask one question at a time for best results.
+                        </div>
+                    </div>
+                </section>
+
+                <section id="preview-edit" class="guide-section">
+                    <div class="section-title">
+                        <i class="fas fa-edit"></i>
+                        <h2>Previewing and Editing Reports</h2>
+                    </div>
+                    <div class="section-content">
+                        <p>Before finalizing your report, you can preview how it will look and make any necessary edits to the content.</p>
+                        
+                        <div class="step">
+                            <span class="step-number">Step 1: Preview Your Report</span>
+                            <p>After the information extraction and any additional input from the chatbot, click on "Preview Report" to see how your final report will look.</p>
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">Step 2: Use Inline Editing</span>
+                            <p>InstaReportAI features an inline editing tool that allows you to modify any text directly in the preview. Simply click on any text element to edit it.</p>
+                            <ul>
+                                <li>Click on a heading or paragraph to edit the text</li>
+                                <li>Use the formatting toolbar to change text styling</li>
+                                <li>Rearrange sections by dragging and dropping</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">Step 3: Save Your Edits</span>
+                            <p>After making changes, click "Save Changes" to update your report. You can continue editing until you're satisfied with the result.</p>
+                        </div>
+                        
+                        <div class="image-container">
+                            <img src="/api/placeholder/600/300" alt="Report Editing Interface">
+                            <p class="image-caption">The report preview interface with inline editing capabilities</p>
+                        </div>
+                        
+                        <div class="warning">
+                            <strong>Important:</strong> Always save your changes before navigating away from the preview page to avoid losing your edits.
+                        </div>
+                    </div>
+                </section>
+
+                <section id="image-gallery" class="guide-section">
+                    <div class="section-title">
+                        <i class="fas fa-images"></i>
+                        <h2>Using the Image Gallery</h2>
+                    </div>
+                    <div class="section-content">
+                        <p>The Image Gallery allows you to view, manage, and insert images into your reports.</p>
+                        
+                        <div class="step">
+                            <span class="step-number">Step 1: Access the Image Gallery</span>
+                            <p>Click on the "Image Gallery" card on the dashboard or navigate to it from the main menu.</p>
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">Step 2: Browse and Select Images</span>
+                            <p>Browse through the available images extracted from your uploaded documents. You can also upload additional images by clicking "Upload New Image".</p>
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">Step 3: Insert Images into Reports</span>
+                            <p>While editing your report, click on the "Insert Image" button to open the Image Gallery. Select an image and click "Insert" to add it to your report at the cursor position.</p>
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">Step 4: Customize Image Display</span>
+                            <p>After inserting an image, you can:</p>
+                            <ul>
+                                <li>Resize the image by dragging the corner handles</li>
+                                <li>Add a caption by clicking below the image</li>
+                                <li>Align the image (left, center, right) using the formatting toolbar</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="image-container">
+                            <img src="/api/placeholder/600/300" alt="Image Gallery Interface">
+                            <p class="image-caption">The Image Gallery interface showing extracted and uploaded images</p>
+                        </div>
+                        
+                        <div class="tip">
+                            <strong>Tip:</strong> For a professional-looking report, use high-resolution images and add descriptive captions to provide context.
+                        </div>
+                    </div>
+                </section>
+
+                <section id="view-reports" class="guide-section">
+                    <div class="section-title">
+                        <i class="fas fa-file-alt"></i>
+                        <h2>Viewing and Managing Reports</h2>
+                    </div>
+                    <div class="section-content">
+                        <p>The View Reports section lets you access, manage, and export your generated reports.</p>
+                        
+                        <div class="step">
+                            <span class="step-number">Step 1: Access Your Reports</span>
+                            <p>Click on the "View Reports" card on the dashboard or navigate to "My Reports" from the main menu.</p>
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">Step 2: Browse and Filter Reports</span>
+                            <p>Browse through your previously generated reports. Use the search bar and filters to find specific reports by date, title, or content.</p>
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">Step 3: View and Edit Reports</span>
+                            <p>Click on a report to view it. If needed, you can make additional edits by clicking the "Edit" button.</p>
+                        </div>
+                        
+                        <div class="step">
+                            <span class="step-number">Step 4: Export Reports to PDF</span>
+                            <p>When you're satisfied with your report, click the "Export to PDF" button to download a PDF version of your report that you can share or print.</p>
+                        </div>
+                        
+                        <div class="image-container">
+                            <img src="/api/placeholder/600/300" alt="Reports Management Interface">
+                            <p class="image-caption">The Reports Management interface showing a list of generated reports</p>
+                        </div>
+                        
+                        <div class="warning">
+                            <strong>Note:</strong> Reports are automatically saved, but you should export important reports to PDF for external sharing and backup purposes.
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="sidebar-col">
+                <div class="toc">
+                    <h2>Table of Contents</h2>
+                    <ul class="toc-list">
+                        <li><a href="#introduction" class="active">Introduction</a></li>
+                        <li><a href="#upload-documents">Uploading Documents</a></li>
+                        <li><a href="#chatbot-assistance">Using Chatbot Assistance</a></li>
+                        <li><a href="#preview-edit">Previewing and Editing Reports</a></li>
+                        <li><a href="#image-gallery">Using the Image Gallery</a></li>
+                        <li><a href="#view-reports">Viewing and Managing Reports</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+<!--
+    <footer>
+        <p>&copy; 2025 InstaReportAI. All rights reserved.</p>
+        <p>For support, contact: support@instareportai.com</p>
+    </footer>   -->
+
+    <script>
+        // Table of Contents active link highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocLinks = document.querySelectorAll('.toc-list a');
+            const sections = document.querySelectorAll('.guide-section');
+            
+            // Highlight the active section in TOC when scrolling
+            window.addEventListener('scroll', function() {
+                let currentSection = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (window.scrollY >= sectionTop - 100) {
+                        currentSection = '#' + section.getAttribute('id');
+                    }
+                });
+                
+                tocLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === currentSection) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+            
+            // Smooth scrolling for TOC links
+            tocLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                    
+                    tocLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+        
+        // Example of interactive elements for demonstration (can be expanded)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sample image zoom functionality
+            const images = document.querySelectorAll('.image-container img');
+            
+            images.forEach(img => {
+                img.addEventListener('click', function() {
+                    this.classList.toggle('zoomed');
+                    if (this.classList.contains('zoomed')) {
+                        this.style.transform = 'scale(1.5)';
+                        this.style.transition = 'transform 0.3s ease';
+                        this.style.cursor = 'zoom-out';
+                    } else {
+                        this.style.transform = 'scale(1)';
+                        this.style.cursor = 'zoom-in';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

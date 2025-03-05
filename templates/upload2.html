@@ -3,354 +3,749 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document Processing Chatbot</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>InstaReport AI - Event Report Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #4a2e9b;
+            --secondary-color: #7e57c2;
+            --accent-color: #ff7043;
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+            --card-color: #ffffff;
+            --border-color: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
         body {
-            font-family: 'Arial', sans-serif;
-            background-size: cover; 
-            /*background-size: contain;  or 'cover' depending on your need */
-            background-position: center; 
+            background-image: url("{{ url_for('static', filename='Images/uploadimg.jpg') }}");
+            background-size: cover;
+            background-position: center;
             background-repeat: no-repeat;
-        }
-        .navbar {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background-attachment: fixed;
+            background-color: var(--bg-color); /* Fallback color */
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            transition: var(--transition);
+            overflow-x: hidden;
         }
 
-        .chat-container {
-            height: calc(100vh - 300px);
+        .main-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            position: relative;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
 
+        .container {
+            width: 900px;
+            background: var(--card-color);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            position: relative;
+            transition: var(--transition);
         }
-        .preview-container {
-            max-height: calc(100vh - 300px);
+
+        .header {
+            margin-bottom: 25px;
+            text-align: center;
         }
+
+        h2 {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subheading {
+            color: #666;
+            font-weight: 400;
+            font-size: 16px;
+        }
+
+        .upload-section {
+            margin-bottom: 25px;
+        }
+
+        .upload-box {
+            text-align: center;
+            padding: 40px 20px;
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            background: rgba(245, 247, 250, 0.5);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .upload-box:hover {
+            border-color: var(--primary-color);
+            background: rgba(126, 87, 194, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 50px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            color: #555;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .upload-subtext {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .upload-progress {
+            width: 100%;
+            height: 6px;
+            background-color: #f0f0f0;
+            border-radius: 3px;
+            margin-top: 15px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .upload-status {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+            display: none;
+        }
+
         .file-list {
-            max-height: 200px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .file-item {
+            background: #f5f5f5;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            color: #555;
+        }
+
+        .file-item-icon {
+            margin-right: 5px;
+        }
+
+        .details-section {
+            margin-top: 30px;
+        }
+
+        .details-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .details-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 18px;
+        }
+
+        .generate-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: none;
+        }
+
+        .generate-btn:hover {
+            background-color: #e8663b;
+            transform: translateY(-2px);
+        }
+
+        .details-box {
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            min-height: 250px;
+            max-height: 400px;
+            background: #fff;
+            border-radius: 10px;
             overflow-y: auto;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05) inset;
+        }
+
+        /* Chatbot styling */
+        .chatbot-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100%;
+            background: var(--card-color);
+            box-shadow: -2px 0 15px rgba(0, 0, 0, 0.1);
+            transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .chatbot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 20px;
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .chatbot-title {
+            font-weight: 600;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .chatbox {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f9f9f9;
+            max-height: calc(100% - 140px);
+        }
+
+        .message {
+            padding: 12px 16px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            max-width: 85%;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .bot-message {
+            background: #f0f0f0;
+            text-align: left;
+            border-top-left-radius: 2px;
+        }
+
+        .user-message {
+            background: var(--primary-color);
+            color: white;
+            text-align: right;
+            margin-left: auto;
+            border-top-right-radius: 2px;
+        }
+
+        .chat-input-container {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 15px;
+            background: #f9f9f9;
+            transition: var(--transition);
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(126, 87, 194, 0.1);
+        }
+
+
+        .send-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+        }
+
+        .send-btn:hover {
+            background: var(--secondary-color);
+        }
+
+        /* Show chatbot */
+        .show-chatbot {
+            right: 0;
+        }
+
+        /* Shift main content when chatbot is open */
+        .shift-content {
+            transform: translateX(-190px);
+        }
+
+        /* Placeholder loading animation */
+        .loading-placeholder {
+            display: none;
+            margin: 20px 0;
+        }
+
+        .loading-bar {
+            height: 15px;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 4px;
+        }
+
+        .loading-bar:nth-child(1) { width: 100%; }
+        .loading-bar:nth-child(2) { width: 85%; }
+        .loading-bar:nth-child(3) { width: 95%; }
+        .loading-bar:nth-child(4) { width: 90%; }
+        .loading-bar:nth-child(5) { width: 70%; }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            .container {
+                width: 750px;
+            }
+            .shift-content {
+                transform: translateX(-100px);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+            .shift-content {
+                transform: translateX(-50px);
+            }
+            .chatbot-panel {
+                width: 320px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 100%;
+                padding: 15px;
+            }
+            .shift-content {
+                transform: none;
+            }
+            .chatbot-panel {
+                width: 100%;
+                right: -100%;
+            }
         }
     </style>
 </head>
-<body class="bg-white text-gray-800">
-    <!-- Navigation Bar -->
-    <nav class="bg-gray-800 text-white shadow-lg">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="text-2xl font-bold">DocBot</div>
-            <ul class="hidden md:flex space-x-6">
-                <li><a href="#" class="hover:text-gray-300">Home</a></li>
-                <li><a href="#about" class="hover:text-gray-300">About Us</a></li>
-                <li><a href="{{ url_for('auth_bp.logout') }}" class="hover:text-gray-300">Logout</a></li>
-            </ul>
-            <button class="block md:hidden text-xl focus:outline-none" id="navToggle">
-                ☰
-            </button>
-        </div>
-        <!-- Mobile Menu -->
-        <div class="hidden md:hidden bg-gray-700" id="mobileMenu">
-            <ul class="space-y-2 text-center py-4">
-                <li><a href="#" class="block text-white hover:text-gray-300">Home</a></li>
-                <li><a href="#about" class="block text-white hover:text-gray-300">About Us</a></li>
-                <li><a href="#logout" class="block text-white hover:text-gray-300">Logout</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-8 text-center">Document Processing Chatbot</h1>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Left Column: File Upload and Preview -->
-            <div class="bg-gray-100 rounded-xl shadow-lg p-6">
-                <div class="mb-6">
-                    <h2 class="text-xl font-semibold mb-4">Upload Documents</h2>
-                    <div class="flex items-center justify-center w-full">
-                        <label class="w-full flex flex-col items-center px-4 py-6 bg-white rounded-xl shadow-md tracking-wide border border-gray-400 cursor-pointer hover:bg-gray-800 hover:text-white">
-                            <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-                            </svg>
-                            <span class="mt-2 text-base">Select files</span>
-                            <input type='file' id="fileInput" class="hidden" accept=".pdf,.png,.jpg,.jpeg" multiple />
-                        </label>
-                    </div>
-                     <!-- Loader -->
-                     <div id="fileProcessing" class="hidden mt-4 text-center text-blue-500">
-                        <div class="flex items-center justify-center space-x-2">
-                            <svg class="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                            </svg>
-                            <span>Processing file(s)...</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mb-6">
-                    <h3 class="text-lg font-semibold mb-2">Uploaded Files</h3>
-                    <div id="fileList" class="file-list bg-white p-4 rounded-lg shadow-sm"></div>
-                </div>
-
-                <div class="preview-container overflow-y-auto">
-                    <h2 class="text-xl font-semibold mb-4">Document Preview</h2>
-                    <div id="previewContent" class="bg-white p-4 rounded-lg shadow-sm">
-                        <p class="text-gray-500">No document uploaded yet</p>
-                    </div>
-                </div>
+<body>
+    <div class="main-container" id="mainContainer">
+        <div class="container">
+            <div class="header">
+                <h2>InstaReport AI</h2>
+                <p class="subheading">Upload event materials and generate comprehensive reports in minutes</p>
             </div>
-
-            <!-- Right Column: Chat Interface -->
-            <div class="bg-gray-100 rounded-xl shadow-lg p-6">
-                <div class="chat-container flex flex-col">
-                    <div id="chatMessages" class="flex-1 overflow-y-auto mb-4">
-                        <!-- Chat messages will be inserted here -->
-                        <div class="message-bubble bg-gray-700 text-white rounded-xl p-4 mb-4">
-                            <p class="font-semibold text-white">DocBot</p>
-                            <p class="text-gray-300">Hello! I'm here to help you process and analyze your documents. Please upload a file to get started.</p>
-                        </div>
+            
+            <div class="upload-section">
+                <div class="upload-box" id="uploadBox" onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-icon">📤</div>
+                    <h3 class="upload-text">Drag & drop files or click to upload</h3>
+                    <p class="upload-subtext">Support for PDF, PNG, JPG, JPEG (Max 16MB per file)</p>
+                    <div class="file-list" id="fileList"></div>
+                    <div class="upload-progress" id="uploadProgress">
+                        <div class="progress-bar" id="progressBar"></div>
                     </div>
-
-                    <div class="mt-4">
-                        <div class="flex space-x-4">
-                            <input type="text" id="userInput" class="flex-1 p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-700" placeholder="Type your message...">
-                            <button onclick="sendMessage()" class="px-4 py-2 bg-gray-800 text-white rounded-xl hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-700">Send</button>
-                        </div>
-                        <button onclick="generateReport()" class="mt-4 w-full px-4 py-2 bg-gray-700 text-white rounded-xl hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-700">Generate Report</button>
-                    </div>
+                    <div class="upload-status" id="uploadStatus">Processing files...</div>
                 </div>
+                <input type="file" id="fileInput" style="display:none;" multiple accept=".png,.jpg,.jpeg,.pdf" onchange="handleFiles(this.files)">
             </div>
-        </div>
-
-        <!-- Report Modal -->
-        <div id="reportModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
-            <div class="relative top-20 mx-auto p-5 border w-4/5 shadow-lg rounded-xl bg-white">
-                <div class="mt-3">
-                    <h3 class="text-xl font-semibold mb-4">Generated Report</h3>
-                    <div id="reportContent" class="mt-2 p-4 bg-gray-50 rounded-lg max-h-96 overflow-y-auto">
-                    </div>
-                    <div class="mt-4 flex justify-end space-x-4">
-                        <button onclick="downloadReport()" class="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900">Download Report</button>
-                        <button onclick="closeReportModal()" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">Close</button>
-                    </div>
+            
+            <div class="details-section">
+                <div class="details-header">
+                    <h3 class="details-title">Extracted Details</h3>
+                    <button class="generate-btn" id="generateReportBtn" onclick="generateReport()">Generate Report</button>
+                </div>
+                
+                <div class="details-box" id="detailsBox">
+                    <p style="color: #777; text-align: center;">Upload files to extract event details</p>
+                </div>
+                
+                <div class="loading-placeholder" id="loadingPlaceholder">
+                    <div class="loading-bar"></div>
+                    <div class="loading-bar"></div>
+                    <div class="loading-bar"></div>
+                    <div class="loading-bar"></div>
+                    <div class="loading-bar"></div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Chatbot Side Panel -->
+    <div class="chatbot-panel" id="chatbotPanel">
+        <div class="chatbot-header">
+            <div class="chatbot-title">
+                <span>🤖</span>
+                <span>AI Assistant</span>
+            </div>
+            <button class="close-btn" onclick="toggleChatbot()">✖</button>
+        </div>
+          
+        <div class="chatbox" id="chatbox"></div>
+   
+        <div class="chat-input-container">
+            <input type="text" class="chat-input" id="userMessage" placeholder="Type your message..." onkeypress="if(event.key === 'Enter') sendMessage()">
+            <button class="send-btn" onclick="sendMessage()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    
+
     <script>
-        // Mobile menu toggle
-        document.getElementById('navToggle').addEventListener('click', () => {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
-        });
-        document.getElementById('userInput').addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault(); // Prevents the default action (new line in some cases)
-        sendMessage(); // Calls the function to send the message
-    }
-});
-        let documentContexts = [];
-        let chatHistory = [];
-        let uploadedFiles = [];
-
-        // Function to format text with Markdown
-        function formatMarkdown(text) {
-            return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        // Selected files array
+        let selectedFiles = [];
+        
+        // Handle files selection
+        function handleFiles(files) {
+            selectedFiles = Array.from(files);
+            displayFileList();
+            uploadFiles();
         }
-
-        // File upload handling
-        document.getElementById('fileInput').addEventListener('change', async function(e) {
-            const files = Array.from(e.target.files);
-            if (files.length === 0) return;
-
-            const fileProcessing = document.getElementById('fileProcessing');
-            fileProcessing.classList.remove('hidden');
-
-            for (const file of files) {
-                const formData = new FormData();
-                formData.append('file', file);
-
-                try {
-                    const response = await fetch('/api/upload', { // Updated to /api/upload
-                        method: 'POST',
-                        body: formData
-                    });
-                    
-                    const data = await response.json();
-                    
-                    if (data.status === 'success') {
-                        uploadedFiles.push({
-                            name: file.name,
-                            summary: data.summary
-                        });
-
-                        documentContexts.push(data.summary);
-                        updateFileList();
-                        updatePreview();
-
-                        // Save missing details for later use
-                        sessionStorage.setItem('missingDetails', data.missingDetails);
-
-                        // Bot asks if the user wants to add additional details
-                        addMessageToChat('Bot', 'The document has been processed. Do you want to add additional details? Please respond with "Yes" or "No."');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert(`Error uploading file: ${file.name}`);
+        
+        // Display list of selected files
+        function displayFileList() {
+            const fileList = document.getElementById("fileList");
+            fileList.innerHTML = "";
+            
+            selectedFiles.forEach(file => {
+                const fileItem = document.createElement("div");
+                fileItem.className = "file-item";
+                
+                let icon = "📄";
+                if (file.type.includes("image")) {
+                    icon = "🖼️";
+                } else if (file.type.includes("pdf")) {
+                    icon = "📑";
                 }
+                
+                fileItem.innerHTML = `<span class="file-item-icon">${icon}</span> ${file.name}`;
+                fileList.appendChild(fileItem);
+            });
+        }
+        
+        // Upload files to server
+        function uploadFiles() {
+            if (selectedFiles.length === 0) {
+                alert("Please select at least one file.");
+                return;
             }
-
-            fileProcessing.classList.add('hidden');
-        });
-
-        function updateFileList() {
-            const fileList = document.getElementById('fileList');
-            fileList.innerHTML = uploadedFiles.map((file, index) => `
-                <div class="mb-2 p-2 bg-white rounded border">
-                    <div class="flex justify-between items-center">
-                        <span class="font-medium">${file.name}</span>
-                        <button onclick="previewFile(${index})" class="text-blue-500 hover:text-blue-700">Preview</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function previewFile(index) {
-            const file = uploadedFiles[index];
-            document.getElementById('previewContent').innerHTML = `
-                <div class="prose">
-                    <h3 class="text-lg font-semibold mb-2">${file.name}</h3>
-                    <div class="whitespace-pre-wrap">${formatMarkdown(file.summary)}</div>
-                </div>
-            `;
-        }
-
-        function updatePreview() {
-            if (uploadedFiles.length > 0) {
-                previewFile(uploadedFiles.length - 1);
-            }
-        }
-
-        // Chat functionality
-        async function sendMessage() {
-            const userInput = document.getElementById('userInput');
-            const message = userInput.value.trim();
             
-            if (!message) return;
+            const uploadProgress = document.getElementById("uploadProgress");
+            const progressBar = document.getElementById("progressBar");
+            const uploadStatus = document.getElementById("uploadStatus");
+            const detailsBox = document.getElementById("detailsBox");
+            const loadingPlaceholder = document.getElementById("loadingPlaceholder");
             
-            addMessageToChat('User', message);
-            userInput.value = '';
+            // Show upload elements
+            uploadProgress.style.display = "block";
+            uploadStatus.style.display = "block";
+            loadingPlaceholder.style.display = "block";
+            detailsBox.innerHTML = '<p style="color: #777; text-align: center;">Processing your files...</p>';
             
-            const lastBotMessage = document.getElementById('chatMessages').lastChild?.innerText || '';
+            // Create FormData
+            let formData = new FormData();
+            selectedFiles.forEach(file => {
+                formData.append("files", file);
+            });
             
-            // Handle "Do you want to add additional details?" interaction
-            if (lastBotMessage.includes('Do you want to add additional details')) {
-                if (message.toLowerCase() === 'yes') {
-                    const missingDetails = sessionStorage.getItem('missingDetails');
-                    addMessageToChat('Bot', `
-                        Thank you! Here are some missing details you can provide:
-                        <div class="whitespace-pre-wrap">${formatMarkdown(missingDetails)}</div>
-                        Please provide the additional information.
-                    `);
+            // Simulate progress (since actual progress events require advanced server configuration)
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += 5;
+                if (progress > 90) {
+                    clearInterval(progressInterval);
+                }
+                progressBar.style.width = `${progress}%`;
+                
+                if (progress < 30) {
+                    uploadStatus.textContent = "Uploading files...";
+                } else if (progress < 60) {
+                    uploadStatus.textContent = "Processing documents...";
                 } else {
-                    addMessageToChat('Bot', 'Okay! Let me know if you need help with anything else.');
+                    uploadStatus.textContent = "Extracting information...";
                 }
+            }, 150);
+            
+            // Send files to server
+            fetch("/upload", { 
+                method: "POST", 
+                body: formData 
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Complete progress animation
+                clearInterval(progressInterval);
+                progressBar.style.width = "100%";
+                uploadStatus.textContent = "Processing complete!";
+                
+                // Show extracted details
+                detailsBox.innerHTML = data.summary;
+                document.getElementById("generateReportBtn").style.display = "block";
+                loadingPlaceholder.style.display = "none";
+                
+                // Open chatbot with animation
+                setTimeout(() => {
+                    openChatbot();
+                }, 500);
+            })
+            .catch(error => {
+                clearInterval(progressInterval);
+                progressBar.style.width = "0%";
+                uploadStatus.textContent = "Error: " + error;
+                loadingPlaceholder.style.display = "none";
+                detailsBox.innerHTML = '<p style="color: #c00; text-align: center;">❌ An error occurred while processing your files. Please try again.</p>';
+                console.error("Upload error:", error);
+            });
+        }
+        
+        // Toggle chatbot panel visibility
+        function toggleChatbot() {
+            const chatbotPanel = document.getElementById("chatbotPanel");
+            const mainContainer = document.getElementById("mainContainer");
+            
+            chatbotPanel.classList.toggle("show-chatbot");
+            mainContainer.classList.toggle("shift-content");
+            
+            // Initialize chat if opening for the first time
+            initializeChatIfNeeded();
+        }
+        
+        // Open chatbot panel
+        function openChatbot() {
+            const chatbotPanel = document.getElementById("chatbotPanel");
+            const mainContainer = document.getElementById("mainContainer");
+            
+            chatbotPanel.classList.add("show-chatbot");
+            mainContainer.classList.add("shift-content");
+            
+            // Initialize chat if opening for the first time
+            initializeChatIfNeeded();
+        }
+        
+        // Initialize chat with welcome message if needed
+        function initializeChatIfNeeded() {
+            const chatbox = document.getElementById("chatbox");
+            
+            if (chatbox.innerHTML.trim() === "") {
+                setTimeout(() => {
+                    addBotMessage("Hello! This your chatbot here.");
+                }, 500);
+            }
+        }
+        
+        // Add bot message to chat
+        function addBotMessage(text) {
+            const chatbox = document.getElementById("chatbox");
+            chatbox.innerHTML += `<div class="message bot-message">${text}</div>`;
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+        
+        // Add user message to chat
+        function addUserMessage(text) {
+            const chatbox = document.getElementById("chatbox");
+            chatbox.innerHTML += `<div class="message user-message">${text}</div>`;
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+        
+        // Send message to chatbot
+        function sendMessage() {
+            const userMessageInput = document.getElementById("userMessage");
+            const message = userMessageInput.value.trim();
+            
+            if (message === "") {
                 return;
             }
-
-            // Handle other generic chat inputs
-            try {
-                const response = await fetch('/api/chat', { // Updated to /api/chat
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: message,
-                        contexts: documentContexts
-                    })
-                });
-                
-                const data = await response.json();
-                addMessageToChat('Bot', formatMarkdown(data.response));
-                
-                chatHistory.push({
-                    question: message,
-                    answer: data.response,
-                    timestamp: new Date().toISOString()
-                });
-            } catch (error) {
-                console.error('Error:', error);
-                addMessageToChat('System', 'Error processing your message');
-            }
-        }
-
-        function addMessageToChat(sender, message) {
-            const chatMessages = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `mb-4 ${sender === 'User' ? 'text-right' : ''}`;
             
-            messageDiv.innerHTML = `
-                <div class="${sender === 'User' ? 'bg-blue-100 ml-auto' : 'bg-gray-100'} inline-block rounded-lg px-4 py-2 max-w-3/4">
-                    <p class="font-semibold">${sender}</p>
-                    <p class="whitespace-pre-wrap">${message}</p>
-                </div>
-            `;
+            // Add user message to chat
+            addUserMessage(message);
+            userMessageInput.value = "";
             
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        // Generate report
-        async function generateReport() {
-            if (documentContexts.length === 0 && chatHistory.length === 0) {
-                alert('Please upload documents and/or have some chat interaction first.');
-                return;
-            }
+            // Add typing indicator
+            const chatbox = document.getElementById("chatbox");
+            const typingIndicator = document.createElement("div");
+            typingIndicator.className = "message bot-message";
+            typingIndicator.id = "typingIndicator";
+            typingIndicator.textContent = "...";
+            chatbox.appendChild(typingIndicator);
+            chatbox.scrollTop = chatbox.scrollHeight;
             
-            try {
-                const response = await fetch('/api/generate-report', { // Updated to /api/generate-report
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        contexts: documentContexts,
-                        chatHistory: chatHistory,
-                        files: uploadedFiles.map(f => f.name)
-                    })
-                });
+            // Send to server
+            fetch("/chatbot", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Remove typing indicator
+                document.getElementById("typingIndicator").remove();
                 
-                const data = await response.json();
+                // Add bot response
+                addBotMessage(data.response);
                 
-                document.getElementById('reportContent').innerHTML = `
-                    <div class="prose">
-                        <div class="whitespace-pre-wrap">${formatMarkdown(data.report)}</div>
-                    </div>
-                `;
+                // If response mentions generating a report, show the button
+                if (data.response.includes("generate the report") || data.response.includes("report is now ready")) {
+                    document.getElementById("generateReportBtn").style.display = "block";
+                }
+            })
+            .catch(error => {
+                // Remove typing indicator
+                document.getElementById("typingIndicator").remove();
                 
-                document.getElementById('reportModal').classList.remove('hidden');
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error generating report.');
+                // Show error message
+                addBotMessage("Sorry, I'm having trouble connecting. Please try again.");
+                console.error("Chatbot error:", error);
+            });
+        }
+        
+        
+        // Allow drag and drop functionality
+        const uploadBox = document.getElementById("uploadBox");
+        
+        uploadBox.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            uploadBox.style.borderColor = "#7e57c2";
+            uploadBox.style.backgroundColor = "rgba(126, 87, 194, 0.05)";
+        });
+        
+        uploadBox.addEventListener("dragleave", (e) => {
+            e.preventDefault();
+            uploadBox.style.borderColor = "#e0e0e0";
+            uploadBox.style.backgroundColor = "rgba(245, 247, 250, 0.5)";
+        });
+        
+        uploadBox.addEventListener("drop", (e) => {
+            e.preventDefault();
+            uploadBox.style.borderColor = "#e0e0e0";
+            uploadBox.style.backgroundColor = "rgba(245, 247, 250, 0.5)";
+            
+            if (e.dataTransfer.files.length > 0) {
+                handleFiles(e.dataTransfer.files);
             }
-        }
+        });
+       
+       // Generate Report Function
+       function generateReport() {
+    const generateBtn = document.getElementById("generateReportBtn");
+    generateBtn.textContent = "Generating..."; 
+    generateBtn.disabled = true;
+    
+fetch('/generate_report', { 
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({})
+})
+.then(response => {
+    if (!response.ok) {
+        // Handle HTTP errors (404, 500, etc.)
+        throw new Error(`HTTP Error: ${response.status}`);
+    }
+    // Ensure the response is JSON
+    return response.json().catch(() => { throw new Error("Invalid JSON response"); });
+})
+.then(data => {
+    if (data.success) {
+        alert("Report generated successfully! Click OK to download.");
+        window.location.href = data.download_url;
+    } else {
+        alert("Error: " + (data.error || "Something went wrong"));
+    }
+})
+.catch(error => {
+    alert("Error: " + error.message);
+    console.error("Report Generation Error:", error);
+})
+.finally(() => {
+    generateBtn.textContent = "Generate Report";
+    generateBtn.disabled = false;
+});
+}
 
-        function downloadReport() {
-            const reportContent = document.getElementById('reportContent').innerText;
-            const blob = new Blob([reportContent], { type: 'text/plain' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `report-${new Date().toISOString().split('T')[0]}.txt`;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-        }
-
-        function closeReportModal() {
-            document.getElementById('reportModal').classList.add('hidden');
-        }
-    </script>
+</script>
 </body>
 </html>

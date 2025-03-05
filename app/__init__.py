@@ -20,7 +20,9 @@ def create_app():
     # Configure the app
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.secret_key = os.getenv("SECRET_KEY")
+    app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
+    app.config['UPLOAD_FOLDER'] = 'uploads'
+
 
     # Initialize the database with the app
     db.init_app(app)
@@ -43,7 +45,9 @@ def create_app():
     app.register_blueprint(auth_bp)  # Register the Blueprint
     from app.upload import upload_bp  # Import the Blueprint
     
-    app.register_blueprint(upload_bp, url_prefix="/api")  # Register the Blueprint
+    app.register_blueprint(upload_bp)  # Register the Blueprint
+
+    
 
     # Import models and create tables if they don't exist
     '''
